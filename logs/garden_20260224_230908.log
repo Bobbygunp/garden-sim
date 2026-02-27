@@ -1,0 +1,160 @@
+=== GARDEN SIMULATION LOG ===
+Started: 2026-02-24 23:09:08.350
+============================================================
+
+[2026-02-24 23:09:08.351] [INFO] [APPLICATION] Garden Simulation starting up...
+[2026-02-24 23:09:08.361] [INFO] [GARDEN] Garden 'My Automated Garden' created: 20x20 grid
+[2026-02-24 23:09:08.361] [INFO] [GARDEN] === Initializing Default Garden ===
+[2026-02-24 23:09:08.369] [INFO] [PLANT] Tomato [PLANT-1] (Solanum lycopersicum) planted at (2, 3)
+[2026-02-24 23:09:08.369] [INFO] [PLANT] Tomato [PLANT-2] (Solanum lycopersicum) planted at (2, 5)
+[2026-02-24 23:09:08.380] [INFO] [PLANT] Tomato [PLANT-3] (Solanum lycopersicum) planted at (2, 7)
+[2026-02-24 23:09:08.380] [INFO] [PLANT] Rose [PLANT-4] (Rosa) planted at (5, 2)
+[2026-02-24 23:09:08.381] [INFO] [PLANT] Rose [PLANT-5] (Rosa) planted at (5, 4)
+[2026-02-24 23:09:08.381] [INFO] [PLANT] Rose [PLANT-6] (Rosa) planted at (5, 6)
+[2026-02-24 23:09:08.381] [INFO] [PLANT] Sunflower [PLANT-7] (Helianthus annuus) planted at (8, 1)
+[2026-02-24 23:09:08.382] [INFO] [PLANT] Sunflower [PLANT-8] (Helianthus annuus) planted at (8, 3)
+[2026-02-24 23:09:08.382] [INFO] [PLANT] Sunflower [PLANT-9] (Helianthus annuus) planted at (8, 5)
+[2026-02-24 23:09:08.382] [INFO] [PLANT] Carrot [PLANT-10] (Daucus carota) planted at (11, 2)
+[2026-02-24 23:09:08.383] [INFO] [PLANT] Carrot [PLANT-11] (Daucus carota) planted at (11, 4)
+[2026-02-24 23:09:08.383] [INFO] [PLANT] Carrot [PLANT-12] (Daucus carota) planted at (11, 6)
+[2026-02-24 23:09:08.383] [INFO] [PLANT] Carrot [PLANT-13] (Daucus carota) planted at (11, 8)
+[2026-02-24 23:09:08.383] [INFO] [PLANT] Lettuce [PLANT-14] (Lactuca sativa) planted at (14, 1)
+[2026-02-24 23:09:08.384] [INFO] [PLANT] Lettuce [PLANT-15] (Lactuca sativa) planted at (14, 3)
+[2026-02-24 23:09:08.384] [INFO] [PLANT] Lettuce [PLANT-16] (Lactuca sativa) planted at (14, 5)
+[2026-02-24 23:09:08.385] [INFO] [PLANT] Cactus [PLANT-17] (Cactaceae) planted at (17, 8)
+[2026-02-24 23:09:08.385] [INFO] [PLANT] Cactus [PLANT-18] (Cactaceae) planted at (17, 10)
+[2026-02-24 23:09:08.386] [INFO] [PLANT] Tomato [PLANT-19] (Solanum lycopersicum) planted at (3, 10)
+[2026-02-24 23:09:08.386] [INFO] [PLANT] Rose [PLANT-20] (Rosa) planted at (6, 12)
+[2026-02-24 23:09:08.386] [INFO] [PLANT] Sunflower [PLANT-21] (Helianthus annuus) planted at (9, 14)
+[2026-02-24 23:09:08.387] [INFO] [PLANT] Lettuce [PLANT-22] (Lactuca sativa) planted at (12, 16)
+[2026-02-24 23:09:08.387] [INFO] [PLANT] Carrot [PLANT-23] (Daucus carota) planted at (15, 12)
+[2026-02-24 23:09:08.387] [INFO] [PLANT] Cactus [PLANT-24] (Cactaceae) planted at (18, 14)
+[2026-02-24 23:09:08.390] [INFO] [SENSOR] Temperature Sensor [SENSOR-1] installed at (0, 0) (range: 40.0-95.0 °F)
+[2026-02-24 23:09:08.391] [INFO] [SENSOR] Temperature Sensor [SENSOR-2] installed at (10, 10) (range: 40.0-95.0 °F)
+[2026-02-24 23:09:08.391] [INFO] [SENSOR] Temperature Sensor [SENSOR-3] installed at (19, 19) (range: 40.0-95.0 °F)
+[2026-02-24 23:09:08.392] [INFO] [SENSOR] Moisture Sensor [SENSOR-4] installed at (3, 3) (range: 20.0-80.0 %)
+[2026-02-24 23:09:08.392] [INFO] [SENSOR] Moisture Sensor [SENSOR-5] installed at (10, 5) (range: 20.0-80.0 %)
+[2026-02-24 23:09:08.392] [INFO] [SENSOR] Moisture Sensor [SENSOR-6] installed at (15, 15) (range: 20.0-80.0 %)
+[2026-02-24 23:09:08.393] [INFO] [SENSOR] Light Sensor [SENSOR-7] installed at (5, 10) (range: 20.0-90.0 lux)
+[2026-02-24 23:09:08.393] [INFO] [SENSOR] Light Sensor [SENSOR-8] installed at (15, 5) (range: 20.0-90.0 lux)
+[2026-02-24 23:09:08.395] [INFO] [INSECT] Bee [INSECT-1] (POLLINATOR) appeared at (4, 4)
+[2026-02-24 23:09:08.395] [INFO] [INSECT] Bee [INSECT-2] (POLLINATOR) appeared at (8, 8)
+[2026-02-24 23:09:08.396] [INFO] [INSECT] Ladybug [INSECT-3] (NEUTRAL) appeared at (6, 6)
+[2026-02-24 23:09:08.396] [INFO] [INSECT] Aphid [INSECT-4] (PEST) appeared at (3, 5)
+[2026-02-24 23:09:08.396] [INFO] [INSECT] Caterpillar [INSECT-5] (PEST) appeared at (11, 3)
+[2026-02-24 23:09:08.398] [INFO] [WATERING] Watering System initialized.
+[2026-02-24 23:09:08.400] [INFO] [WATERING] Sprinkler SPR-1 added at (3, 4) (radius: 4.0, flow: 5.0)
+[2026-02-24 23:09:08.401] [INFO] [WATERING] Sprinkler SPR-2 added at (8, 4) (radius: 4.0, flow: 5.0)
+[2026-02-24 23:09:08.401] [INFO] [WATERING] Sprinkler SPR-3 added at (13, 4) (radius: 4.0, flow: 5.0)
+[2026-02-24 23:09:08.402] [INFO] [WATERING] Sprinkler SPR-4 added at (17, 9) (radius: 4.0, flow: 5.0)
+[2026-02-24 23:09:08.402] [INFO] [WATERING] Sprinkler SPR-5 added at (6, 12) (radius: 4.0, flow: 5.0)
+[2026-02-24 23:09:08.402] [INFO] [WATERING] Sprinkler SPR-6 added at (12, 14) (radius: 4.0, flow: 5.0)
+[2026-02-24 23:09:08.404] [INFO] [HEATING] Heating System initialized. Target: 72.0°F, Mode: AUTO
+[2026-02-24 23:09:08.406] [INFO] [PEST_CONTROL] Pest Control initialized. Method: TARGETED, Threshold: 3 pests
+[2026-02-24 23:09:08.407] [INFO] [LIGHTING] Lighting System initialized. Target light level: 60
+[2026-02-24 23:09:08.408] [INFO] [GARDEN] Garden initialized: 24 plants, 5 insects, 8 sensors, 4 modules
+[2026-02-24 23:09:08.408] [INFO] [GARDEN] === Garden Ready ===
+[2026-02-24 23:09:08.417] [INFO] [APPLICATION] Simulation Engine initialized.
+[2026-02-24 23:09:10.187] [INFO] [APPLICATION] Simulation STARTED.
+[2026-02-24 23:09:10.187] [INFO] [APPLICATION] Garden Simulation started successfully.
+[2026-02-24 23:09:10.695] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-7] at (5, 10) reading 4.5 lux (threshold: 20.0-90.0)
+[2026-02-24 23:09:10.695] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-8] at (15, 5) reading 4.4 lux (threshold: 20.0-90.0)
+[2026-02-24 23:09:10.696] [INFO] [HEATING] Heater ON: Current 60.3°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:10.696] [INFO] [LIGHTING] Grow lights ON: Natural light 5 below target 60
+[2026-02-24 23:09:10.697] [INFO] [PLANT] Tomato [PLANT-2] took 1.4 pest damage (resistance: 30%). Health: 98.6%
+[2026-02-24 23:09:10.697] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 5)
+[2026-02-24 23:09:10.697] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 97.9%
+[2026-02-24 23:09:10.698] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:10.698] [INFO] [PLANT] Carrot [PLANT-11] took 2.1 pest damage (resistance: 40%). Health: 97.9%
+[2026-02-24 23:09:10.698] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 4)
+[2026-02-24 23:09:11.202] [INFO] [HEATING] Heater ON: Current 59.2°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:11.203] [INFO] [PLANT] Tomato [PLANT-2] took 1.4 pest damage (resistance: 30%). Health: 97.8%
+[2026-02-24 23:09:11.203] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 5)
+[2026-02-24 23:09:11.203] [INFO] [PLANT] Tomato [PLANT-3] took 1.4 pest damage (resistance: 30%). Health: 98.6%
+[2026-02-24 23:09:11.203] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 7)
+[2026-02-24 23:09:11.203] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 96.8%
+[2026-02-24 23:09:11.203] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:11.205] [INFO] [PLANT] Carrot [PLANT-11] took 2.1 pest damage (resistance: 40%). Health: 96.8%
+[2026-02-24 23:09:11.205] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 4)
+[2026-02-24 23:09:11.713] [INFO] [HEATING] Heater ON: Current 60.3°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:11.713] [INFO] [PLANT] Tomato [PLANT-2] took 1.4 pest damage (resistance: 30%). Health: 97.4%
+[2026-02-24 23:09:11.713] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 5)
+[2026-02-24 23:09:11.714] [INFO] [PLANT] Tomato [PLANT-3] took 1.4 pest damage (resistance: 30%). Health: 98.2%
+[2026-02-24 23:09:11.714] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 7)
+[2026-02-24 23:09:11.714] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 95.7%
+[2026-02-24 23:09:11.714] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:11.716] [INFO] [PLANT] Carrot [PLANT-11] took 2.1 pest damage (resistance: 40%). Health: 95.7%
+[2026-02-24 23:09:11.716] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 4)
+[2026-02-24 23:09:12.226] [INFO] [HEATING] Heater ON: Current 59.1°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:12.227] [INFO] [PLANT] Tomato [PLANT-1] took 1.4 pest damage (resistance: 30%). Health: 98.6%
+[2026-02-24 23:09:12.227] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 3)
+[2026-02-24 23:09:12.227] [INFO] [PLANT] Tomato [PLANT-2] took 1.4 pest damage (resistance: 30%). Health: 96.6%
+[2026-02-24 23:09:12.227] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 5)
+[2026-02-24 23:09:12.227] [INFO] [PLANT] Tomato [PLANT-3] took 1.4 pest damage (resistance: 30%). Health: 97.4%
+[2026-02-24 23:09:12.228] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 7)
+[2026-02-24 23:09:12.228] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 94.6%
+[2026-02-24 23:09:12.228] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:12.229] [INFO] [PLANT] Carrot [PLANT-11] took 2.1 pest damage (resistance: 40%). Health: 94.6%
+[2026-02-24 23:09:12.229] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 4)
+[2026-02-24 23:09:12.737] [INFO] [HEATING] Heater ON: Current 59.8°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:12.739] [INFO] [PLANT] Tomato [PLANT-2] took 1.4 pest damage (resistance: 30%). Health: 96.2%
+[2026-02-24 23:09:12.739] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 5)
+[2026-02-24 23:09:12.739] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 93.5%
+[2026-02-24 23:09:12.739] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:13.249] [INFO] [HEATING] Heater ON: Current 60.9°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:13.250] [INFO] [PLANT] Tomato [PLANT-2] took 1.4 pest damage (resistance: 30%). Health: 95.8%
+[2026-02-24 23:09:13.250] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 5)
+[2026-02-24 23:09:13.250] [INFO] [PLANT] Rose [PLANT-5] took 1.6 pest damage (resistance: 20%). Health: 98.4%
+[2026-02-24 23:09:13.250] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 4)
+[2026-02-24 23:09:13.251] [INFO] [PLANT] Rose [PLANT-6] took 1.6 pest damage (resistance: 20%). Health: 98.4%
+[2026-02-24 23:09:13.251] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 6)
+[2026-02-24 23:09:13.251] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 96.1%
+[2026-02-24 23:09:13.251] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)
+[2026-02-24 23:09:13.252] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 92.4%
+[2026-02-24 23:09:13.252] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:13.762] [INFO] [HEATING] Heater ON: Current 60.6°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:13.762] [INFO] [PLANT] Rose [PLANT-5] took 1.6 pest damage (resistance: 20%). Health: 97.8%
+[2026-02-24 23:09:13.762] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 4)
+[2026-02-24 23:09:13.762] [INFO] [PLANT] Rose [PLANT-6] took 1.6 pest damage (resistance: 20%). Health: 97.8%
+[2026-02-24 23:09:13.762] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 6)
+[2026-02-24 23:09:13.762] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 94.1%
+[2026-02-24 23:09:13.762] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)
+[2026-02-24 23:09:13.763] [INFO] [PLANT] Carrot [PLANT-10] took 2.1 pest damage (resistance: 40%). Health: 91.3%
+[2026-02-24 23:09:13.763] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Carrot at (11, 2)
+[2026-02-24 23:09:14.279] [INFO] [HEATING] Heater ON: Current 60.2°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:14.280] [INFO] [PLANT] Rose [PLANT-5] took 1.6 pest damage (resistance: 20%). Health: 97.2%
+[2026-02-24 23:09:14.280] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 4)
+[2026-02-24 23:09:14.280] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 92.1%
+[2026-02-24 23:09:14.280] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)
+[2026-02-24 23:09:14.786] [INFO] [HEATING] Heater ON: Current 60.8°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:14.787] [INFO] [PLANT] Rose [PLANT-4] took 1.6 pest damage (resistance: 20%). Health: 98.4%
+[2026-02-24 23:09:14.787] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 2)
+[2026-02-24 23:09:14.787] [INFO] [PLANT] Rose [PLANT-5] took 1.6 pest damage (resistance: 20%). Health: 96.6%
+[2026-02-24 23:09:14.787] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 4)
+[2026-02-24 23:09:14.787] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 90.3%
+[2026-02-24 23:09:14.788] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)
+[2026-02-24 23:09:14.788] [INFO] [PLANT] Sunflower [PLANT-8] took 1.8 pest damage (resistance: 50%). Health: 95.5%
+[2026-02-24 23:09:14.788] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 3)
+[2026-02-24 23:09:15.299] [INFO] [HEATING] Heater ON: Current 60.4°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:15.301] [INFO] [PLANT] Rose [PLANT-4] took 1.6 pest damage (resistance: 20%). Health: 97.8%
+[2026-02-24 23:09:15.301] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 2)
+[2026-02-24 23:09:15.301] [INFO] [PLANT] Rose [PLANT-5] took 1.6 pest damage (resistance: 20%). Health: 96.0%
+[2026-02-24 23:09:15.301] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 4)
+[2026-02-24 23:09:15.301] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 88.3%
+[2026-02-24 23:09:15.301] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)
+[2026-02-24 23:09:15.301] [INFO] [PLANT] Sunflower [PLANT-8] took 1.8 pest damage (resistance: 50%). Health: 93.5%
+[2026-02-24 23:09:15.302] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 3)
+[2026-02-24 23:09:15.809] [INFO] [HEATING] Heater ON: Current 61.0°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:15.810] [INFO] [PLANT] Tomato [PLANT-1] took 1.4 pest damage (resistance: 30%). Health: 98.6%
+[2026-02-24 23:09:15.810] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 3)
+[2026-02-24 23:09:15.810] [INFO] [PLANT] Rose [PLANT-4] took 1.6 pest damage (resistance: 20%). Health: 97.2%
+[2026-02-24 23:09:15.812] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 2)
+[2026-02-24 23:09:15.812] [INFO] [PLANT] Rose [PLANT-5] took 1.6 pest damage (resistance: 20%). Health: 95.4%
+[2026-02-24 23:09:15.812] [INFO] [INSECT] Aphid [INSECT-4] attacked Rose at (5, 4)
+[2026-02-24 23:09:15.812] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 86.5%
+[2026-02-24 23:09:15.812] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)
+[2026-02-24 23:09:16.444] [INFO] [HEATING] Heater ON: Current 61.5°F → adjusting +0.5°F (target: 72.0°F)
+[2026-02-24 23:09:16.445] [INFO] [PLANT] Tomato [PLANT-1] took 1.4 pest damage (resistance: 30%). Health: 98.2%
+[2026-02-24 23:09:16.445] [INFO] [INSECT] Aphid [INSECT-4] attacked Tomato at (2, 3)
+[2026-02-24 23:09:16.445] [INFO] [PLANT] Sunflower [PLANT-7] took 1.8 pest damage (resistance: 50%). Health: 84.9%
+[2026-02-24 23:09:16.445] [INFO] [INSECT] Caterpillar [INSECT-5] attacked Sunflower at (8, 1)

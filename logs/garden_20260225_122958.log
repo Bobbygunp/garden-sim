@@ -1,0 +1,986 @@
+=== GARDEN SIMULATION LOG ===
+Started: 2026-02-25 12:29:58.788
+============================================================
+
+[2026-02-25 12:29:58.790] [INFO] [APPLICATION] Garden Simulation starting up...
+[2026-02-25 12:29:58.795] [INFO] [GARDEN] Garden 'My Automated Garden' created: 20x20 grid
+[2026-02-25 12:29:58.795] [INFO] [GARDEN] === Initializing Default Garden ===
+[2026-02-25 12:29:58.799] [INFO] [PLANT] Tomato [PLANT-1] (Solanum lycopersicum) planted at (2, 3)
+[2026-02-25 12:29:58.799] [INFO] [PLANT] Tomato [PLANT-2] (Solanum lycopersicum) planted at (2, 5)
+[2026-02-25 12:29:58.807] [INFO] [PLANT] Tomato [PLANT-3] (Solanum lycopersicum) planted at (2, 7)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Tomato [PLANT-4] (Solanum lycopersicum) planted at (3, 10)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Tomato [PLANT-5] (Solanum lycopersicum) planted at (1, 15)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Tomato [PLANT-6] (Solanum lycopersicum) planted at (1, 17)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Tomato [PLANT-7] (Solanum lycopersicum) planted at (4, 1)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Rose [PLANT-8] (Rosa) planted at (5, 2)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Rose [PLANT-9] (Rosa) planted at (5, 4)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Rose [PLANT-10] (Rosa) planted at (5, 6)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Rose [PLANT-11] (Rosa) planted at (6, 12)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Rose [PLANT-12] (Rosa) planted at (7, 14)
+[2026-02-25 12:29:58.808] [INFO] [PLANT] Rose [PLANT-13] (Rosa) planted at (7, 16)
+[2026-02-25 12:29:58.809] [INFO] [PLANT] Sunflower [PLANT-14] (Helianthus annuus) planted at (8, 1)
+[2026-02-25 12:29:58.809] [INFO] [PLANT] Sunflower [PLANT-15] (Helianthus annuus) planted at (8, 3)
+[2026-02-25 12:29:58.809] [INFO] [PLANT] Sunflower [PLANT-16] (Helianthus annuus) planted at (8, 5)
+[2026-02-25 12:29:58.809] [INFO] [PLANT] Sunflower [PLANT-17] (Helianthus annuus) planted at (9, 14)
+[2026-02-25 12:29:58.809] [INFO] [PLANT] Sunflower [PLANT-18] (Helianthus annuus) planted at (10, 17)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Sunflower [PLANT-19] (Helianthus annuus) planted at (10, 19)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-20] (Daucus carota) planted at (11, 2)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-21] (Daucus carota) planted at (11, 4)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-22] (Daucus carota) planted at (11, 6)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-23] (Daucus carota) planted at (11, 8)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-24] (Daucus carota) planted at (15, 12)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-25] (Daucus carota) planted at (13, 10)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Carrot [PLANT-26] (Daucus carota) planted at (13, 15)
+[2026-02-25 12:29:58.810] [INFO] [PLANT] Lettuce [PLANT-27] (Lactuca sativa) planted at (14, 1)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Lettuce [PLANT-28] (Lactuca sativa) planted at (14, 3)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Lettuce [PLANT-29] (Lactuca sativa) planted at (14, 5)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Lettuce [PLANT-30] (Lactuca sativa) planted at (12, 16)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Lettuce [PLANT-31] (Lactuca sativa) planted at (16, 4)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Lettuce [PLANT-32] (Lactuca sativa) planted at (16, 8)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Cactus [PLANT-33] (Cactaceae) planted at (17, 8)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Cactus [PLANT-34] (Cactaceae) planted at (17, 10)
+[2026-02-25 12:29:58.812] [INFO] [PLANT] Cactus [PLANT-35] (Cactaceae) planted at (18, 14)
+[2026-02-25 12:29:58.813] [INFO] [PLANT] Cactus [PLANT-36] (Cactaceae) planted at (19, 1)
+[2026-02-25 12:29:58.815] [INFO] [SENSOR] Temperature Sensor [SENSOR-1] installed at (0, 0) (range: 40.0-95.0 °F)
+[2026-02-25 12:29:58.815] [INFO] [SENSOR] Temperature Sensor [SENSOR-2] installed at (10, 10) (range: 40.0-95.0 °F)
+[2026-02-25 12:29:58.815] [INFO] [SENSOR] Temperature Sensor [SENSOR-3] installed at (19, 19) (range: 40.0-95.0 °F)
+[2026-02-25 12:29:58.815] [INFO] [SENSOR] Temperature Sensor [SENSOR-4] installed at (0, 19) (range: 40.0-95.0 °F)
+[2026-02-25 12:29:58.815] [INFO] [SENSOR] Moisture Sensor [SENSOR-5] installed at (3, 3) (range: 20.0-80.0 %)
+[2026-02-25 12:29:58.816] [INFO] [SENSOR] Moisture Sensor [SENSOR-6] installed at (10, 5) (range: 20.0-80.0 %)
+[2026-02-25 12:29:58.816] [INFO] [SENSOR] Moisture Sensor [SENSOR-7] installed at (15, 15) (range: 20.0-80.0 %)
+[2026-02-25 12:29:58.816] [INFO] [SENSOR] Moisture Sensor [SENSOR-8] installed at (7, 8) (range: 20.0-80.0 %)
+[2026-02-25 12:29:58.817] [INFO] [SENSOR] Light Sensor [SENSOR-9] installed at (5, 10) (range: 20.0-90.0 lux)
+[2026-02-25 12:29:58.817] [INFO] [SENSOR] Light Sensor [SENSOR-10] installed at (15, 5) (range: 20.0-90.0 lux)
+[2026-02-25 12:29:58.817] [INFO] [SENSOR] Light Sensor [SENSOR-11] installed at (0, 10) (range: 20.0-90.0 lux)
+[2026-02-25 12:29:58.817] [INFO] [INSECT] Bee [INSECT-1] (POLLINATOR) appeared at (4, 4)
+[2026-02-25 12:29:58.818] [INFO] [INSECT] Bee [INSECT-2] (POLLINATOR) appeared at (8, 8)
+[2026-02-25 12:29:58.818] [INFO] [INSECT] Bee [INSECT-3] (POLLINATOR) appeared at (6, 16)
+[2026-02-25 12:29:58.818] [INFO] [INSECT] Ladybug [INSECT-4] (NEUTRAL) appeared at (6, 6)
+[2026-02-25 12:29:58.818] [INFO] [INSECT] Aphid [INSECT-5] (PEST) appeared at (3, 5)
+[2026-02-25 12:29:58.818] [INFO] [INSECT] Caterpillar [INSECT-6] (PEST) appeared at (11, 3)
+[2026-02-25 12:29:58.819] [INFO] [WATERING] Watering System initialized.
+[2026-02-25 12:29:58.820] [INFO] [WATERING] Sprinkler SPR-1 added at (3, 4) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.820] [INFO] [WATERING] Sprinkler SPR-2 added at (2, 16) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.820] [INFO] [WATERING] Sprinkler SPR-3 added at (8, 4) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-4 added at (8, 15) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-5 added at (13, 4) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-6 added at (17, 9) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-7 added at (6, 12) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-8 added at (12, 14) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-9 added at (16, 17) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.821] [INFO] [WATERING] Sprinkler SPR-10 added at (19, 3) (radius: 5.5, flow: 8.0)
+[2026-02-25 12:29:58.823] [INFO] [HEATING] Heating System initialized. Target: 72.0°F, Mode: AUTO
+[2026-02-25 12:29:58.823] [INFO] [HEATING] Target temperature set to 65.0°F
+[2026-02-25 12:29:58.823] [INFO] [HEATING] Temperature adjust rate set to 2.0°F/tick
+[2026-02-25 12:29:58.824] [INFO] [PEST_CONTROL] Pest Control initialized. Method: TARGETED, Threshold: 3 pests
+[2026-02-25 12:29:58.825] [INFO] [LIGHTING] Lighting System initialized. Target light level: 60
+[2026-02-25 12:29:58.825] [INFO] [GARDEN] Garden initialized: 36 plants, 6 insects, 11 sensors, 4 modules
+[2026-02-25 12:29:58.825] [INFO] [GARDEN] === Garden Ready ===
+[2026-02-25 12:29:58.829] [INFO] [APPLICATION] Simulation Engine initialized.
+[2026-02-25 12:30:01.540] [INFO] [APPLICATION] Simulation STARTED.
+[2026-02-25 12:30:01.540] [INFO] [APPLICATION] Garden Simulation started successfully.
+[2026-02-25 12:30:03.038] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-9] at (5, 10) reading 5.1 lux (threshold: 20.0-90.0)
+[2026-02-25 12:30:03.038] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-10] at (15, 5) reading 3.7 lux (threshold: 20.0-90.0)
+[2026-02-25 12:30:03.039] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-11] at (0, 10) reading 5.0 lux (threshold: 20.0-90.0)
+[2026-02-25 12:30:03.040] [INFO] [HEATING] Heater ON: Current 57.7°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:03.041] [INFO] [LIGHTING] Grow lights ON: Natural light 5 below target 60
+[2026-02-25 12:30:03.041] [INFO] [PLANT] Tomato [PLANT-1] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:03.042] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 3)
+[2026-02-25 12:30:03.043] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:03.043] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:03.043] [INFO] [PLANT] Rose [PLANT-9] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:03.044] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 4)
+[2026-02-25 12:30:03.044] [INFO] [PLANT] Carrot [PLANT-20] took 0.9 pest damage (resistance: 40%). Health: 99.1%
+[2026-02-25 12:30:03.044] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Carrot at (11, 2)
+[2026-02-25 12:30:03.545] [INFO] [HEATING] Heater ON: Current 57.5°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:03.545] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:03.546] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:03.546] [INFO] [PLANT] Carrot [PLANT-20] took 0.9 pest damage (resistance: 40%). Health: 99.1%
+[2026-02-25 12:30:03.546] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Carrot at (11, 2)
+[2026-02-25 12:30:04.057] [INFO] [HEATING] Heater ON: Current 59.1°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:04.057] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:04.057] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:04.057] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:04.057] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:04.058] [INFO] [PLANT] Rose [PLANT-10] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:04.058] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 6)
+[2026-02-25 12:30:04.058] [INFO] [PLANT] Sunflower [PLANT-14] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:04.058] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 1)
+[2026-02-25 12:30:04.058] [INFO] [PLANT] Sunflower [PLANT-15] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:04.058] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 3)
+[2026-02-25 12:30:04.058] [INFO] [PLANT] Carrot [PLANT-20] took 0.9 pest damage (resistance: 40%). Health: 99.1%
+[2026-02-25 12:30:04.058] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Carrot at (11, 2)
+[2026-02-25 12:30:04.569] [INFO] [HEATING] Heater ON: Current 57.9°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:04.570] [INFO] [PLANT] Tomato [PLANT-1] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:04.570] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 3)
+[2026-02-25 12:30:04.570] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:04.570] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:04.570] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:04.570] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:04.570] [INFO] [PLANT] Sunflower [PLANT-14] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:04.570] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 1)
+[2026-02-25 12:30:04.570] [INFO] [PLANT] Sunflower [PLANT-15] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:04.570] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 3)
+[2026-02-25 12:30:05.081] [INFO] [HEATING] Heater ON: Current 58.9°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:05.081] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:05.081] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:05.081] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:05.081] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:05.082] [INFO] [PLANT] Rose [PLANT-10] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:05.082] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 6)
+[2026-02-25 12:30:05.082] [INFO] [PLANT] Sunflower [PLANT-14] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:05.082] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 1)
+[2026-02-25 12:30:05.594] [INFO] [HEATING] Heater ON: Current 57.6°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:05.594] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:05.594] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:05.594] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:05.594] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:05.594] [INFO] [PLANT] Rose [PLANT-10] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:05.594] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 6)
+[2026-02-25 12:30:05.594] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:05.594] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:05.594] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:05.594] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:05.594] [INFO] [PLANT] Sunflower [PLANT-14] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:05.595] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 1)
+[2026-02-25 12:30:06.104] [INFO] [HEATING] Heater ON: Current 57.3°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:06.104] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:06.104] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:06.104] [INFO] [PLANT] Rose [PLANT-9] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:06.104] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 4)
+[2026-02-25 12:30:06.104] [INFO] [PLANT] Rose [PLANT-10] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:06.104] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 6)
+[2026-02-25 12:30:06.104] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 98.7%
+[2026-02-25 12:30:06.104] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:06.104] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:06.104] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:06.104] [INFO] [PLANT] Sunflower [PLANT-14] took 0.8 pest damage (resistance: 50%). Health: 99.3%
+[2026-02-25 12:30:06.104] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Sunflower at (8, 1)
+[2026-02-25 12:30:06.616] [INFO] [HEATING] Heater ON: Current 57.5°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:06.617] [INFO] [PLANT] Rose [PLANT-10] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:06.617] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 6)
+[2026-02-25 12:30:07.128] [INFO] [HEATING] Heater ON: Current 58.5°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:07.129] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:07.129] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:07.640] [INFO] [HEATING] Heater ON: Current 58.1°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:07.642] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:07.642] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:07.642] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:07.642] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:08.153] [INFO] [HEATING] Heater ON: Current 58.6°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:08.154] [INFO] [PLANT] Tomato [PLANT-2] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:08.154] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 5)
+[2026-02-25 12:30:08.154] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:08.154] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:08.664] [INFO] [HEATING] Heater ON: Current 58.9°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:08.665] [INFO] [PLANT] Tomato [PLANT-3] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:08.665] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (2, 7)
+[2026-02-25 12:30:08.665] [INFO] [PLANT] Tomato [PLANT-4] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:08.665] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (3, 10)
+[2026-02-25 12:30:09.177] [INFO] [HEATING] Heater ON: Current 58.7°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:09.177] [INFO] [PLANT] Tomato [PLANT-4] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:09.177] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (3, 10)
+[2026-02-25 12:30:09.689] [INFO] [HEATING] Heater ON: Current 58.8°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:10.200] [INFO] [HEATING] Heater ON: Current 59.5°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:10.200] [INFO] [PLANT] Tomato [PLANT-4] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:10.201] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (3, 10)
+[2026-02-25 12:30:10.713] [INFO] [HEATING] Heater ON: Current 58.5°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:11.225] [INFO] [HEATING] Heater ON: Current 58.7°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:11.736] [INFO] [HEATING] Heater ON: Current 59.2°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:11.737] [INFO] [PLANT] Rose [PLANT-10] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:11.737] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (5, 6)
+[2026-02-25 12:30:11.737] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:11.737] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:11.737] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:11.737] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:12.249] [INFO] [HEATING] Heater ON: Current 59.5°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:12.250] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:12.250] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:12.250] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:12.250] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:12.760] [INFO] [HEATING] Heater ON: Current 58.1°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:12.761] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:12.761] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:12.761] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:12.761] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:13.273] [INFO] [HEATING] Climate control OFF: 60.2°F is within target range
+[2026-02-25 12:30:13.273] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:13.273] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:13.274] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:13.274] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:13.784] [INFO] [WATERING] Sprinkler SPR-1 activated at (3, 4)
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Tomato [PLANT-1] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Tomato [PLANT-2] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Tomato [PLANT-3] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Tomato [PLANT-7] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Rose [PLANT-8] watered: 29.0 -> 37.0
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Rose [PLANT-9] watered: 29.0 -> 37.0
+[2026-02-25 12:30:13.784] [INFO] [PLANT] Rose [PLANT-10] watered: 29.0 -> 37.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-15] watered: 18.5 -> 26.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-16] watered: 18.5 -> 26.5
+[2026-02-25 12:30:13.785] [INFO] [WATERING] Sprinkler SPR-2 activated at (2, 16)
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Tomato [PLANT-5] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Tomato [PLANT-6] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-12] watered: 29.0 -> 37.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-13] watered: 29.0 -> 37.0
+[2026-02-25 12:30:13.785] [INFO] [WATERING] Sprinkler SPR-3 activated at (8, 4)
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Tomato [PLANT-7] watered: 32.8 -> 40.8
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-8] watered: 37.0 -> 45.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-9] watered: 37.0 -> 45.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-10] watered: 37.0 -> 45.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-14] watered: 18.5 -> 26.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-15] watered: 26.5 -> 34.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-16] watered: 26.5 -> 34.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Carrot [PLANT-20] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Carrot [PLANT-21] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Carrot [PLANT-22] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Carrot [PLANT-23] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.785] [INFO] [WATERING] Sprinkler SPR-4 activated at (8, 15)
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-11] watered: 29.0 -> 37.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-12] watered: 37.0 -> 45.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Rose [PLANT-13] watered: 37.0 -> 45.0
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-17] watered: 18.5 -> 26.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-18] watered: 18.5 -> 26.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Sunflower [PLANT-19] watered: 18.5 -> 26.5
+[2026-02-25 12:30:13.785] [INFO] [PLANT] Carrot [PLANT-26] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-30] watered: 26.9 -> 34.9
+[2026-02-25 12:30:13.786] [INFO] [WATERING] Sprinkler SPR-5 activated at (13, 4)
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Sunflower [PLANT-15] watered: 34.5 -> 42.5
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Sunflower [PLANT-16] watered: 34.5 -> 42.5
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Carrot [PLANT-20] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Carrot [PLANT-21] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Carrot [PLANT-22] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Carrot [PLANT-23] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-27] watered: 26.9 -> 34.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-28] watered: 26.9 -> 34.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-29] watered: 26.9 -> 34.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-31] watered: 26.9 -> 34.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-32] watered: 26.9 -> 34.9
+[2026-02-25 12:30:13.786] [INFO] [WATERING] Sprinkler SPR-6 activated at (17, 9)
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Carrot [PLANT-24] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Carrot [PLANT-25] watered: 33.2 -> 41.2
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-29] watered: 34.9 -> 42.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-31] watered: 34.9 -> 42.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Lettuce [PLANT-32] watered: 34.9 -> 42.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Cactus [PLANT-33] watered: 46.9 -> 54.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Cactus [PLANT-34] watered: 46.9 -> 54.9
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Cactus [PLANT-35] watered: 46.9 -> 54.9
+[2026-02-25 12:30:13.786] [INFO] [WATERING] Sprinkler SPR-7 activated at (6, 12)
+[2026-02-25 12:30:13.786] [INFO] [PLANT] Tomato [PLANT-4] watered: 24.8 -> 32.8
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Rose [PLANT-11] watered: 37.0 -> 45.0
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Rose [PLANT-12] watered: 45.0 -> 53.0
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Rose [PLANT-13] watered: 45.0 -> 53.0
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Sunflower [PLANT-17] watered: 26.5 -> 34.5
+[2026-02-25 12:30:13.787] [INFO] [WATERING] Sprinkler SPR-8 activated at (12, 14)
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Rose [PLANT-12] watered: 53.0 -> 61.0
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Rose [PLANT-13] watered: 53.0 -> 61.0
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Sunflower [PLANT-17] watered: 34.5 -> 42.5
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Sunflower [PLANT-18] watered: 26.5 -> 34.5
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Sunflower [PLANT-19] watered: 26.5 -> 34.5
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Carrot [PLANT-24] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Carrot [PLANT-25] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Carrot [PLANT-26] watered: 41.2 -> 49.2
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Lettuce [PLANT-30] watered: 34.9 -> 42.9
+[2026-02-25 12:30:13.787] [INFO] [WATERING] Sprinkler SPR-9 activated at (16, 17)
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Carrot [PLANT-24] watered: 49.2 -> 57.2
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Carrot [PLANT-26] watered: 49.2 -> 57.2
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Lettuce [PLANT-30] watered: 42.9 -> 50.9
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Cactus [PLANT-35] watered: 54.9 -> 62.9
+[2026-02-25 12:30:13.787] [INFO] [WATERING] Sprinkler SPR-10 activated at (19, 3)
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Lettuce [PLANT-27] watered: 34.9 -> 42.9
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Lettuce [PLANT-28] watered: 34.9 -> 42.9
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Lettuce [PLANT-29] watered: 42.9 -> 50.9
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Lettuce [PLANT-31] watered: 42.9 -> 50.9
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Cactus [PLANT-33] watered: 54.9 -> 62.9
+[2026-02-25 12:30:13.787] [INFO] [PLANT] Cactus [PLANT-36] watered: 46.9 -> 54.9
+[2026-02-25 12:30:13.788] [INFO] [HEATING] Heater ON: Current 59.0°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:13.788] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:13.788] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:13.788] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:13.788] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:14.297] [INFO] [WATERING] Sprinkler SPR-1 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-2 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-3 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-4 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-5 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-6 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-7 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-8 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-9 deactivated
+[2026-02-25 12:30:14.298] [INFO] [WATERING] Sprinkler SPR-10 deactivated
+[2026-02-25 12:30:14.298] [INFO] [HEATING] Heater ON: Current 59.8°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:14.298] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:14.298] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:14.298] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:14.299] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:14.809] [INFO] [HEATING] Heater ON: Current 59.1°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:14.809] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:14.809] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:14.809] [INFO] [PLANT] Rose [PLANT-8] took 1.2 pest damage (resistance: 20%). Health: 98.8%
+[2026-02-25 12:30:14.809] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Rose at (5, 2)
+[2026-02-25 12:30:15.321] [INFO] [HEATING] Heater ON: Current 59.8°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:15.322] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:15.322] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:15.832] [INFO] [SENSOR] Light Sensor [SENSOR-9] returned to normal: 20.6 lux
+[2026-02-25 12:30:15.832] [INFO] [SENSOR] Light Sensor [SENSOR-11] returned to normal: 20.0 lux
+[2026-02-25 12:30:15.832] [INFO] [HEATING] Heater ON: Current 59.7°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:15.833] [INFO] [PLANT] Tomato [PLANT-7] took 1.0 pest damage (resistance: 30%). Health: 99.0%
+[2026-02-25 12:30:15.833] [INFO] [INSECT] Caterpillar [INSECT-6] attacked Tomato at (4, 1)
+[2026-02-25 12:30:16.345] [INFO] [SENSOR] Light Sensor [SENSOR-10] returned to normal: 21.2 lux
+[2026-02-25 12:30:16.345] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-11] at (0, 10) reading 18.8 lux (threshold: 20.0-90.0)
+[2026-02-25 12:30:16.345] [INFO] [HEATING] Climate control OFF: 60.4°F is within target range
+[2026-02-25 12:30:16.856] [INFO] [SENSOR] Light Sensor [SENSOR-11] returned to normal: 21.9 lux
+[2026-02-25 12:30:16.856] [INFO] [HEATING] Heater ON: Current 59.9°F → adjusting +2.0°F (target: 65.0°F)
+[2026-02-25 12:30:16.857] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:16.857] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:17.368] [INFO] [HEATING] Climate control OFF: 60.2°F is within target range
+[2026-02-25 12:30:18.393] [INFO] [PLANT] Rose [PLANT-11] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:18.393] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (6, 12)
+[2026-02-25 12:30:18.904] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:18.904] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:19.416] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:19.416] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:19.929] [INFO] [WATERING] Sprinkler SPR-1 activated at (3, 4)
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Tomato [PLANT-1] watered: 18.4 -> 26.4
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Tomato [PLANT-2] watered: 18.4 -> 26.4
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Tomato [PLANT-3] watered: 18.4 -> 26.4
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Tomato [PLANT-7] watered: 26.4 -> 34.4
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Rose [PLANT-8] watered: 33.0 -> 41.0
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Rose [PLANT-9] watered: 33.0 -> 41.0
+[2026-02-25 12:30:19.929] [INFO] [PLANT] Rose [PLANT-10] watered: 33.0 -> 41.0
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Sunflower [PLANT-15] watered: 24.5 -> 32.5
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Sunflower [PLANT-16] watered: 24.5 -> 32.5
+[2026-02-25 12:30:19.930] [INFO] [WATERING] Sprinkler SPR-2 activated at (2, 16)
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Tomato [PLANT-5] watered: 18.4 -> 26.4
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Tomato [PLANT-6] watered: 18.4 -> 26.4
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-12] watered: 49.0 -> 57.0
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-13] watered: 49.0 -> 57.0
+[2026-02-25 12:30:19.930] [INFO] [WATERING] Sprinkler SPR-3 activated at (8, 4)
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Tomato [PLANT-7] watered: 34.4 -> 42.4
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-8] watered: 41.0 -> 49.0
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-9] watered: 41.0 -> 49.0
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-10] watered: 41.0 -> 49.0
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Sunflower [PLANT-14] watered: 8.5 -> 16.5
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Sunflower [PLANT-15] watered: 32.5 -> 40.5
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Sunflower [PLANT-16] watered: 32.5 -> 40.5
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Carrot [PLANT-20] watered: 39.6 -> 47.6
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Carrot [PLANT-21] watered: 39.6 -> 47.6
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Carrot [PLANT-22] watered: 39.6 -> 47.6
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Carrot [PLANT-23] watered: 39.6 -> 47.6
+[2026-02-25 12:30:19.930] [INFO] [WATERING] Sprinkler SPR-4 activated at (8, 15)
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-11] watered: 33.0 -> 41.0
+[2026-02-25 12:30:19.930] [INFO] [PLANT] Rose [PLANT-12] watered: 57.0 -> 65.0
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Rose [PLANT-13] watered: 57.0 -> 65.0
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Sunflower [PLANT-17] watered: 24.5 -> 32.5
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Sunflower [PLANT-18] watered: 16.5 -> 24.5
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Sunflower [PLANT-19] watered: 16.5 -> 24.5
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Carrot [PLANT-26] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Lettuce [PLANT-30] watered: 37.7 -> 45.7
+[2026-02-25 12:30:19.931] [INFO] [WATERING] Sprinkler SPR-5 activated at (13, 4)
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Sunflower [PLANT-15] watered: 40.5 -> 48.5
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Sunflower [PLANT-16] watered: 40.5 -> 48.5
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Carrot [PLANT-20] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Carrot [PLANT-21] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.931] [INFO] [PLANT] Carrot [PLANT-22] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Carrot [PLANT-23] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-27] watered: 29.7 -> 37.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-28] watered: 29.7 -> 37.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-29] watered: 37.7 -> 45.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-31] watered: 37.7 -> 45.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-32] watered: 29.7 -> 37.7
+[2026-02-25 12:30:19.932] [INFO] [WATERING] Sprinkler SPR-6 activated at (17, 9)
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Carrot [PLANT-24] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Carrot [PLANT-25] watered: 39.6 -> 47.6
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-29] watered: 45.7 -> 53.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-31] watered: 45.7 -> 53.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Lettuce [PLANT-32] watered: 37.7 -> 45.7
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Cactus [PLANT-33] watered: 61.1 -> 69.1
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Cactus [PLANT-34] watered: 53.1 -> 61.1
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Cactus [PLANT-35] watered: 61.1 -> 69.1
+[2026-02-25 12:30:19.932] [INFO] [WATERING] Sprinkler SPR-7 activated at (6, 12)
+[2026-02-25 12:30:19.932] [INFO] [PLANT] Tomato [PLANT-4] watered: 18.4 -> 26.4
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Rose [PLANT-11] watered: 41.0 -> 49.0
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Rose [PLANT-12] watered: 65.0 -> 73.0
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Rose [PLANT-13] watered: 65.0 -> 73.0
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Sunflower [PLANT-17] watered: 32.5 -> 40.5
+[2026-02-25 12:30:19.933] [INFO] [WATERING] Sprinkler SPR-8 activated at (12, 14)
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Rose [PLANT-12] watered: 73.0 -> 81.0
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Rose [PLANT-13] watered: 73.0 -> 81.0
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Sunflower [PLANT-17] watered: 40.5 -> 48.5
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Sunflower [PLANT-18] watered: 24.5 -> 32.5
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Sunflower [PLANT-19] watered: 24.5 -> 32.5
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Carrot [PLANT-24] watered: 55.6 -> 63.6
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Carrot [PLANT-25] watered: 47.6 -> 55.6
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Carrot [PLANT-26] watered: 55.6 -> 63.6
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Lettuce [PLANT-30] watered: 45.7 -> 53.7
+[2026-02-25 12:30:19.933] [INFO] [WATERING] Sprinkler SPR-9 activated at (16, 17)
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Carrot [PLANT-24] watered: 63.6 -> 71.6
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Carrot [PLANT-26] watered: 63.6 -> 71.6
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Lettuce [PLANT-30] watered: 53.7 -> 61.7
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Cactus [PLANT-35] watered: 69.1 -> 77.1
+[2026-02-25 12:30:19.933] [INFO] [WATERING] Sprinkler SPR-10 activated at (19, 3)
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Lettuce [PLANT-27] watered: 37.7 -> 45.7
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Lettuce [PLANT-28] watered: 37.7 -> 45.7
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Lettuce [PLANT-29] watered: 53.7 -> 61.7
+[2026-02-25 12:30:19.933] [INFO] [PLANT] Lettuce [PLANT-31] watered: 53.7 -> 61.7
+[2026-02-25 12:30:19.934] [INFO] [PLANT] Cactus [PLANT-33] watered: 69.1 -> 77.1
+[2026-02-25 12:30:19.934] [INFO] [PLANT] Cactus [PLANT-36] watered: 53.1 -> 61.1
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-1 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-2 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-3 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-4 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-5 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-6 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-7 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-8 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-9 deactivated
+[2026-02-25 12:30:20.440] [INFO] [WATERING] Sprinkler SPR-10 deactivated
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Lettuce [PLANT-27] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Lettuce [PLANT-28] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Lettuce [PLANT-29] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Lettuce [PLANT-30] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Lettuce [PLANT-31] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Lettuce [PLANT-32] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:20.441] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:20.441] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:20.952] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:20.953] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:20.953] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:20.953] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:21.465] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:21.465] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:21.465] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:21.465] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:21.977] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:21.977] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:21.978] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:21.978] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:22.488] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:22.488] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:22.488] [INFO] [PLANT] Rose [PLANT-13] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:22.488] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 16)
+[2026-02-25 12:30:22.488] [INFO] [PLANT] Sunflower [PLANT-17] took 0.4 pest damage (resistance: 50%). Health: 99.6%
+[2026-02-25 12:30:22.488] [INFO] [INSECT] Aphid [INSECT-5] attacked Sunflower at (9, 14)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Sunflower [PLANT-14] grew from SEED to SPROUT (health: 94.6%)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Sunflower [PLANT-15] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Sunflower [PLANT-16] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Sunflower [PLANT-17] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Sunflower [PLANT-18] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Sunflower [PLANT-19] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:23.000] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:23.000] [INFO] [PLANT] Rose [PLANT-13] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:23.000] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 16)
+[2026-02-25 12:30:23.512] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:23.512] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:23.512] [INFO] [PLANT] Rose [PLANT-13] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:23.512] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 16)
+[2026-02-25 12:30:24.024] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:24.024] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:24.024] [INFO] [PLANT] Rose [PLANT-13] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:24.024] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 16)
+[2026-02-25 12:30:24.537] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:24.537] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:25.048] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:25.048] [INFO] [PLANT] Rose [PLANT-11] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:25.048] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (6, 12)
+[2026-02-25 12:30:25.048] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:25.048] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:25.560] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:25.560] [INFO] [PLANT] Rose [PLANT-12] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:25.560] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 14)
+[2026-02-25 12:30:25.560] [INFO] [PLANT] Rose [PLANT-13] took 0.6 pest damage (resistance: 20%). Health: 99.4%
+[2026-02-25 12:30:25.560] [INFO] [INSECT] Aphid [INSECT-5] attacked Rose at (7, 16)
+[2026-02-25 12:30:26.073] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:26.585] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:27.097] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:27.097] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 95.8%
+[2026-02-25 12:30:27.097] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:27.609] [INFO] [WATERING] Sprinkler SPR-1 activated at (3, 4)
+[2026-02-25 12:30:27.609] [INFO] [PLANT] Tomato [PLANT-1] watered: 8.4 -> 16.4
+[2026-02-25 12:30:27.609] [INFO] [PLANT] Tomato [PLANT-2] watered: 8.4 -> 16.4
+[2026-02-25 12:30:27.609] [INFO] [PLANT] Tomato [PLANT-3] watered: 8.4 -> 16.4
+[2026-02-25 12:30:27.609] [INFO] [PLANT] Tomato [PLANT-7] watered: 24.4 -> 32.4
+[2026-02-25 12:30:27.609] [INFO] [PLANT] Rose [PLANT-8] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.609] [INFO] [PLANT] Rose [PLANT-9] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-10] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-15] watered: 26.0 -> 34.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-16] watered: 26.0 -> 34.0
+[2026-02-25 12:30:27.610] [INFO] [WATERING] Sprinkler SPR-2 activated at (2, 16)
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Tomato [PLANT-5] watered: 8.4 -> 16.4
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Tomato [PLANT-6] watered: 8.4 -> 16.4
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-12] watered: 66.0 -> 74.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-13] watered: 66.0 -> 74.0
+[2026-02-25 12:30:27.610] [INFO] [WATERING] Sprinkler SPR-3 activated at (8, 4)
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Tomato [PLANT-7] watered: 32.4 -> 40.4
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-8] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-9] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-10] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-14] watered: 0.0 -> 8.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-15] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-16] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-20] watered: 43.6 -> 51.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-21] watered: 43.6 -> 51.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-22] watered: 43.6 -> 51.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-23] watered: 43.6 -> 51.6
+[2026-02-25 12:30:27.610] [INFO] [WATERING] Sprinkler SPR-4 activated at (8, 15)
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-11] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-12] watered: 74.0 -> 82.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Rose [PLANT-13] watered: 74.0 -> 82.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-17] watered: 26.0 -> 34.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-18] watered: 10.0 -> 18.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-19] watered: 10.0 -> 18.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-26] watered: 59.6 -> 67.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Lettuce [PLANT-30] watered: 45.2 -> 53.2
+[2026-02-25 12:30:27.610] [INFO] [WATERING] Sprinkler SPR-5 activated at (13, 4)
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-15] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Sunflower [PLANT-16] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-20] watered: 51.6 -> 59.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-21] watered: 51.6 -> 59.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-22] watered: 51.6 -> 59.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Carrot [PLANT-23] watered: 51.6 -> 59.6
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Lettuce [PLANT-27] watered: 29.2 -> 37.2
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Lettuce [PLANT-28] watered: 29.2 -> 37.2
+[2026-02-25 12:30:27.610] [INFO] [PLANT] Lettuce [PLANT-29] watered: 45.2 -> 53.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-31] watered: 45.2 -> 53.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-32] watered: 29.2 -> 37.2
+[2026-02-25 12:30:27.611] [INFO] [WATERING] Sprinkler SPR-6 activated at (17, 9)
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-24] watered: 59.6 -> 67.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-25] watered: 43.6 -> 51.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-29] watered: 53.2 -> 61.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-31] watered: 53.2 -> 61.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-32] watered: 37.2 -> 45.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Cactus [PLANT-33] watered: 74.8 -> 82.8
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Cactus [PLANT-34] watered: 58.8 -> 66.8
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Cactus [PLANT-35] watered: 74.8 -> 82.8
+[2026-02-25 12:30:27.611] [INFO] [WATERING] Sprinkler SPR-7 activated at (6, 12)
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Tomato [PLANT-4] watered: 8.4 -> 16.4
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Rose [PLANT-11] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Rose [PLANT-12] watered: 82.0 -> 90.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Rose [PLANT-13] watered: 82.0 -> 90.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Sunflower [PLANT-17] watered: 34.0 -> 42.0
+[2026-02-25 12:30:27.611] [INFO] [WATERING] Sprinkler SPR-8 activated at (12, 14)
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Rose [PLANT-12] watered: 90.0 -> 98.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Rose [PLANT-13] watered: 90.0 -> 98.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Sunflower [PLANT-17] watered: 42.0 -> 50.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Sunflower [PLANT-18] watered: 18.0 -> 26.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Sunflower [PLANT-19] watered: 18.0 -> 26.0
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-24] watered: 67.6 -> 75.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-25] watered: 51.6 -> 59.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-26] watered: 67.6 -> 75.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-30] watered: 53.2 -> 61.2
+[2026-02-25 12:30:27.611] [INFO] [WATERING] Sprinkler SPR-9 activated at (16, 17)
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-24] watered: 75.6 -> 83.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Carrot [PLANT-26] watered: 75.6 -> 83.6
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-30] watered: 61.2 -> 69.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Cactus [PLANT-35] watered: 82.8 -> 90.8
+[2026-02-25 12:30:27.611] [INFO] [WATERING] Sprinkler SPR-10 activated at (19, 3)
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-27] watered: 37.2 -> 45.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-28] watered: 37.2 -> 45.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-29] watered: 61.2 -> 69.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Lettuce [PLANT-31] watered: 61.2 -> 69.2
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Cactus [PLANT-33] watered: 82.8 -> 90.8
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Cactus [PLANT-36] watered: 58.8 -> 66.8
+[2026-02-25 12:30:27.611] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 96.7%
+[2026-02-25 12:30:27.612] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-1 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-2 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-3 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-4 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-5 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-6 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-7 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-8 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-9 deactivated
+[2026-02-25 12:30:28.120] [INFO] [WATERING] Sprinkler SPR-10 deactivated
+[2026-02-25 12:30:28.120] [INFO] [LIGHTING] Grow lights OFF: Natural light 50 sufficient
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-1] grew from SEED to SPROUT (health: 99.2%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-2] grew from SEED to SPROUT (health: 99.2%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-3] grew from SEED to SPROUT (health: 99.2%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-4] grew from SEED to SPROUT (health: 99.2%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-5] grew from SEED to SPROUT (health: 98.1%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-6] grew from SEED to SPROUT (health: 99.2%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-7] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 97.5%
+[2026-02-25 12:30:28.121] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:28.121] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 98.6%
+[2026-02-25 12:30:28.121] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:28.122] [INFO] [GARDEN] --- TICK 50 STATUS | Temp: 64.8°F | Light: 50 | Humidity: 58% | Plants: 36/36 alive | Insects: 6 (2 pests) ---
+[2026-02-25 12:30:28.633] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 98.4%
+[2026-02-25 12:30:28.633] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:28.633] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:28.633] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:29.145] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 99.2%
+[2026-02-25 12:30:29.145] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:29.145] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:29.145] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:29.656] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 99.4%
+[2026-02-25 12:30:29.656] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:30.169] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:30.169] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 97.1%
+[2026-02-25 12:30:30.169] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:30.169] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 97.6%
+[2026-02-25 12:30:30.169] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:30.680] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-20] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-21] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-22] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-23] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-24] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-25] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Carrot [PLANT-26] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:30.681] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 94.7%
+[2026-02-25 12:30:30.681] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:31.192] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:31.704] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:31.704] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 91.7%
+[2026-02-25 12:30:31.705] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:32.216] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:32.728] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:32.728] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 87.5%
+[2026-02-25 12:30:32.728] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:33.241] [INFO] [PLANT] Rose [PLANT-8] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:33.241] [INFO] [PLANT] Rose [PLANT-9] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:33.241] [INFO] [PLANT] Rose [PLANT-10] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:33.241] [INFO] [PLANT] Rose [PLANT-11] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:33.241] [INFO] [PLANT] Rose [PLANT-12] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:33.241] [INFO] [PLANT] Rose [PLANT-13] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:33.242] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:33.242] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 85.2%
+[2026-02-25 12:30:33.242] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:33.752] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:33.752] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 82.8%
+[2026-02-25 12:30:33.752] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:34.265] [INFO] [WATERING] Sprinkler SPR-1 activated at (3, 4)
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-1] watered: 0.8 -> 8.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-2] watered: 0.8 -> 8.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-3] watered: 0.8 -> 8.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-7] watered: 24.8 -> 32.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-8] watered: 37.0 -> 45.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-9] watered: 37.0 -> 45.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-10] watered: 37.0 -> 45.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Sunflower [PLANT-15] watered: 30.5 -> 38.5
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Sunflower [PLANT-16] watered: 30.5 -> 38.5
+[2026-02-25 12:30:34.265] [INFO] [WATERING] Sprinkler SPR-2 activated at (2, 16)
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-5] watered: 0.8 -> 8.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-6] watered: 0.8 -> 8.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-12] watered: 85.0 -> 93.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-13] watered: 85.0 -> 93.0
+[2026-02-25 12:30:34.265] [INFO] [WATERING] Sprinkler SPR-3 activated at (8, 4)
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Tomato [PLANT-7] watered: 32.8 -> 40.8
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-8] watered: 45.0 -> 53.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-9] watered: 45.0 -> 53.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Rose [PLANT-10] watered: 45.0 -> 53.0
+[2026-02-25 12:30:34.265] [INFO] [PLANT] Sunflower [PLANT-14] watered: 0.0 -> 8.0
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-15] watered: 38.5 -> 46.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-16] watered: 38.5 -> 46.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-20] watered: 49.2 -> 57.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-21] watered: 49.2 -> 57.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-22] watered: 49.2 -> 57.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-23] watered: 49.2 -> 57.2
+[2026-02-25 12:30:34.266] [INFO] [WATERING] Sprinkler SPR-4 activated at (8, 15)
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Rose [PLANT-11] watered: 37.0 -> 45.0
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Rose [PLANT-12] watered: 93.0 -> 100.0
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Rose [PLANT-13] watered: 93.0 -> 100.0
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-17] watered: 30.5 -> 38.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-18] watered: 6.5 -> 14.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-19] watered: 6.5 -> 14.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-26] watered: 73.2 -> 81.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Lettuce [PLANT-30] watered: 54.9 -> 62.9
+[2026-02-25 12:30:34.266] [INFO] [WATERING] Sprinkler SPR-5 activated at (13, 4)
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-15] watered: 46.5 -> 54.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Sunflower [PLANT-16] watered: 46.5 -> 54.5
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-20] watered: 57.2 -> 65.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-21] watered: 57.2 -> 65.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-22] watered: 57.2 -> 65.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Carrot [PLANT-23] watered: 57.2 -> 65.2
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Lettuce [PLANT-27] watered: 30.9 -> 38.9
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Lettuce [PLANT-28] watered: 30.9 -> 38.9
+[2026-02-25 12:30:34.266] [INFO] [PLANT] Lettuce [PLANT-29] watered: 54.9 -> 62.9
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Lettuce [PLANT-31] watered: 54.9 -> 62.9
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Lettuce [PLANT-32] watered: 30.9 -> 38.9
+[2026-02-25 12:30:34.267] [INFO] [WATERING] Sprinkler SPR-6 activated at (17, 9)
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Carrot [PLANT-24] watered: 73.2 -> 81.2
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Carrot [PLANT-25] watered: 49.2 -> 57.2
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Lettuce [PLANT-29] watered: 62.9 -> 70.9
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Lettuce [PLANT-31] watered: 62.9 -> 70.9
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Lettuce [PLANT-32] watered: 38.9 -> 46.9
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Cactus [PLANT-33] watered: 88.8 -> 96.8
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Cactus [PLANT-34] watered: 64.9 -> 72.9
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Cactus [PLANT-35] watered: 88.8 -> 96.8
+[2026-02-25 12:30:34.267] [INFO] [WATERING] Sprinkler SPR-7 activated at (6, 12)
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Tomato [PLANT-4] watered: 0.8 -> 8.8
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Rose [PLANT-11] watered: 45.0 -> 53.0
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Rose [PLANT-12] watered: 100.0 -> 100.0
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Rose [PLANT-13] watered: 100.0 -> 100.0
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Sunflower [PLANT-17] watered: 38.5 -> 46.5
+[2026-02-25 12:30:34.267] [INFO] [WATERING] Sprinkler SPR-8 activated at (12, 14)
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Rose [PLANT-12] watered: 100.0 -> 100.0
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Rose [PLANT-13] watered: 100.0 -> 100.0
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Sunflower [PLANT-17] watered: 46.5 -> 54.5
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Sunflower [PLANT-18] watered: 14.5 -> 22.5
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Sunflower [PLANT-19] watered: 14.5 -> 22.5
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Carrot [PLANT-24] watered: 81.2 -> 89.2
+[2026-02-25 12:30:34.267] [INFO] [PLANT] Carrot [PLANT-25] watered: 57.2 -> 65.2
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Carrot [PLANT-26] watered: 81.2 -> 89.2
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Lettuce [PLANT-30] watered: 62.9 -> 70.9
+[2026-02-25 12:30:34.268] [INFO] [WATERING] Sprinkler SPR-9 activated at (16, 17)
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Carrot [PLANT-24] watered: 89.2 -> 97.2
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Carrot [PLANT-26] watered: 89.2 -> 97.2
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Lettuce [PLANT-30] watered: 70.9 -> 78.9
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Cactus [PLANT-35] watered: 96.8 -> 100.0
+[2026-02-25 12:30:34.268] [INFO] [WATERING] Sprinkler SPR-10 activated at (19, 3)
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Lettuce [PLANT-27] watered: 38.9 -> 46.9
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Lettuce [PLANT-28] watered: 38.9 -> 46.9
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Lettuce [PLANT-29] watered: 70.9 -> 78.9
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Lettuce [PLANT-31] watered: 70.9 -> 78.9
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Cactus [PLANT-33] watered: 96.8 -> 100.0
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Cactus [PLANT-36] watered: 64.9 -> 72.9
+[2026-02-25 12:30:34.268] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 80.4%
+[2026-02-25 12:30:34.268] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-1 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-2 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-3 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-4 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-5 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-6 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-7 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-8 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-9 deactivated
+[2026-02-25 12:30:34.776] [INFO] [WATERING] Sprinkler SPR-10 deactivated
+[2026-02-25 12:30:35.289] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 76.3%
+[2026-02-25 12:30:35.289] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:35.800] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 73.9%
+[2026-02-25 12:30:35.800] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:36.312] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 71.6%
+[2026-02-25 12:30:36.312] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:36.824] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:36.825] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 72.6%
+[2026-02-25 12:30:36.825] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:36.825] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 69.2%
+[2026-02-25 12:30:36.825] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:37.336] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:37.336] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 70.2%
+[2026-02-25 12:30:37.336] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:37.336] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 66.8%
+[2026-02-25 12:30:37.337] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:37.849] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:37.849] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 67.8%
+[2026-02-25 12:30:37.849] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:37.849] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 64.5%
+[2026-02-25 12:30:37.849] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:38.361] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Lettuce [PLANT-27] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Lettuce [PLANT-28] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Lettuce [PLANT-29] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Lettuce [PLANT-30] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Lettuce [PLANT-31] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Lettuce [PLANT-32] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:38.361] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 62.1%
+[2026-02-25 12:30:38.361] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:38.872] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:38.872] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 59.8%
+[2026-02-25 12:30:38.872] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:39.385] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:39.385] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 57.4%
+[2026-02-25 12:30:39.385] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:39.896] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:39.896] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 55.0%
+[2026-02-25 12:30:39.896] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:40.408] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:40.920] [INFO] [HEATING] Cooler ON: Current 70.1°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:40.921] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:41.433] [INFO] [WATERING] Sprinkler SPR-1 activated at (3, 4)
+[2026-02-25 12:30:41.433] [INFO] [PLANT] Tomato [PLANT-1] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Tomato [PLANT-2] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Tomato [PLANT-3] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Tomato [PLANT-7] watered: 24.0 -> 32.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-8] watered: 39.0 -> 47.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-9] watered: 39.0 -> 47.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-10] watered: 39.0 -> 47.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Sunflower [PLANT-15] watered: 33.5 -> 41.5
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Sunflower [PLANT-16] watered: 33.5 -> 41.5
+[2026-02-25 12:30:41.434] [INFO] [WATERING] Sprinkler SPR-2 activated at (2, 16)
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Tomato [PLANT-5] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Tomato [PLANT-6] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-12] watered: 86.0 -> 94.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-13] watered: 86.0 -> 94.0
+[2026-02-25 12:30:41.434] [INFO] [WATERING] Sprinkler SPR-3 activated at (8, 4)
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Tomato [PLANT-7] watered: 32.0 -> 40.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-8] watered: 47.0 -> 55.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-9] watered: 47.0 -> 55.0
+[2026-02-25 12:30:41.434] [INFO] [PLANT] Rose [PLANT-10] watered: 47.0 -> 55.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-14] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-15] watered: 41.5 -> 49.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-16] watered: 41.5 -> 49.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-20] watered: 54.0 -> 62.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-21] watered: 54.0 -> 62.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-22] watered: 54.0 -> 62.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-23] watered: 54.0 -> 62.0
+[2026-02-25 12:30:41.435] [INFO] [WATERING] Sprinkler SPR-4 activated at (8, 15)
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Rose [PLANT-11] watered: 39.0 -> 47.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Rose [PLANT-12] watered: 94.0 -> 100.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Rose [PLANT-13] watered: 94.0 -> 100.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-17] watered: 33.5 -> 41.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-18] watered: 1.5 -> 9.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-19] watered: 1.5 -> 9.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-26] watered: 86.0 -> 94.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Lettuce [PLANT-30] watered: 63.5 -> 71.5
+[2026-02-25 12:30:41.435] [INFO] [WATERING] Sprinkler SPR-5 activated at (13, 4)
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-15] watered: 49.5 -> 57.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Sunflower [PLANT-16] watered: 49.5 -> 57.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-20] watered: 62.0 -> 70.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-21] watered: 62.0 -> 70.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-22] watered: 62.0 -> 70.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Carrot [PLANT-23] watered: 62.0 -> 70.0
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Lettuce [PLANT-27] watered: 31.5 -> 39.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Lettuce [PLANT-28] watered: 31.5 -> 39.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Lettuce [PLANT-29] watered: 63.5 -> 71.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Lettuce [PLANT-31] watered: 63.5 -> 71.5
+[2026-02-25 12:30:41.435] [INFO] [PLANT] Lettuce [PLANT-32] watered: 31.5 -> 39.5
+[2026-02-25 12:30:41.436] [INFO] [WATERING] Sprinkler SPR-6 activated at (17, 9)
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-24] watered: 86.0 -> 94.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-25] watered: 54.0 -> 62.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-29] watered: 71.5 -> 79.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-31] watered: 71.5 -> 79.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-32] watered: 39.5 -> 47.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Cactus [PLANT-33] watered: 97.9 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Cactus [PLANT-34] watered: 70.7 -> 78.7
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Cactus [PLANT-35] watered: 97.9 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [WATERING] Sprinkler SPR-7 activated at (6, 12)
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Tomato [PLANT-4] watered: 0.0 -> 8.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Rose [PLANT-11] watered: 47.0 -> 55.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Rose [PLANT-12] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Rose [PLANT-13] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Sunflower [PLANT-17] watered: 41.5 -> 49.5
+[2026-02-25 12:30:41.436] [INFO] [WATERING] Sprinkler SPR-8 activated at (12, 14)
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Rose [PLANT-12] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Rose [PLANT-13] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Sunflower [PLANT-17] watered: 49.5 -> 57.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Sunflower [PLANT-18] watered: 9.5 -> 17.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Sunflower [PLANT-19] watered: 9.5 -> 17.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-24] watered: 94.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-25] watered: 62.0 -> 70.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-26] watered: 94.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-30] watered: 71.5 -> 79.5
+[2026-02-25 12:30:41.436] [INFO] [WATERING] Sprinkler SPR-9 activated at (16, 17)
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-24] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Carrot [PLANT-26] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-30] watered: 79.5 -> 87.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Cactus [PLANT-35] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [WATERING] Sprinkler SPR-10 activated at (19, 3)
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-27] watered: 39.5 -> 47.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-28] watered: 39.5 -> 47.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-29] watered: 79.5 -> 87.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Lettuce [PLANT-31] watered: 79.5 -> 87.5
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Cactus [PLANT-33] watered: 100.0 -> 100.0
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Cactus [PLANT-36] watered: 70.7 -> 78.7
+[2026-02-25 12:30:41.436] [INFO] [HEATING] Cooler ON: Current 70.3°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:41.436] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 49.1%
+[2026-02-25 12:30:41.436] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-1 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-2 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-3 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-4 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-5 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-6 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-7 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-8 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-9 deactivated
+[2026-02-25 12:30:41.944] [INFO] [WATERING] Sprinkler SPR-10 deactivated
+[2026-02-25 12:30:41.944] [INFO] [HEATING] Cooler ON: Current 70.1°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:41.944] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 46.7%
+[2026-02-25 12:30:41.944] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:42.456] [INFO] [HEATING] Cooler ON: Current 70.6°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:42.456] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 44.4%
+[2026-02-25 12:30:42.456] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:42.968] [INFO] [HEATING] Cooler ON: Current 70.3°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:42.969] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 49.3%
+[2026-02-25 12:30:42.969] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:42.969] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 42.0%
+[2026-02-25 12:30:42.969] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:43.481] [INFO] [HEATING] Cooler ON: Current 70.1°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Sunflower [PLANT-15] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Sunflower [PLANT-16] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Sunflower [PLANT-17] grew from SPROUT to VEGETATIVE (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Sunflower [PLANT-18] grew from SPROUT to VEGETATIVE (health: 96.2%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Sunflower [PLANT-19] grew from SPROUT to VEGETATIVE (health: 96.2%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Cactus [PLANT-33] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Cactus [PLANT-34] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Cactus [PLANT-35] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Cactus [PLANT-36] grew from SEED to SPROUT (health: 100.0%)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 46.9%
+[2026-02-25 12:30:43.481] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:43.481] [INFO] [PLANT] Tomato [PLANT-6] took 0.6 pest damage (resistance: 30%). Health: 39.6%
+[2026-02-25 12:30:43.481] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 17)
+[2026-02-25 12:30:43.992] [INFO] [HEATING] Cooler ON: Current 70.2°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:43.992] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:43.992] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 44.6%
+[2026-02-25 12:30:43.993] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:44.505] [INFO] [HEATING] Cooler ON: Current 70.1°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:44.505] [WARN] [PLANT] Sunflower [PLANT-14] is wilting! Health: 19.0%
+[2026-02-25 12:30:44.505] [INFO] [PLANT] Tomato [PLANT-5] took 0.6 pest damage (resistance: 30%). Health: 42.2%
+[2026-02-25 12:30:44.505] [INFO] [INSECT] Aphid [INSECT-5] attacked Tomato at (1, 15)
+[2026-02-25 12:30:45.016] [WARN] [SENSOR] ALERT: Light Sensor [SENSOR-11] at (0, 10) reading 90.0 lux (threshold: 20.0-90.0)
+[2026-02-25 12:30:45.016] [INFO] [HEATING] Cooler ON: Current 70.6°F → adjusting -2.0°F (target: 65.0°F)
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Tomato [PLANT-1] is critically dehydrated!
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Tomato [PLANT-2] is critically dehydrated!
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Tomato [PLANT-3] is critically dehydrated!
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Tomato [PLANT-4] is critically dehydrated!
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Tomato [PLANT-5] is critically dehydrated!
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Tomato [PLANT-6] is critically dehydrated!
+[2026-02-25 12:30:45.016] [WARN] [PLANT] Sunflower [PLANT-14] is critically dehydrated!
+[2026-02-25 12:30:45.466] [INFO] [APPLICATION] Simulation STOPPED.
+[2026-02-25 12:30:45.466] [INFO] [APPLICATION] Garden Simulation shutting down gracefully.
+
+============================================================
+Log closed: 2026-02-25 12:30:45.466

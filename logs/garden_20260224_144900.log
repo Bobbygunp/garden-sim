@@ -1,0 +1,58 @@
+=== GARDEN SIMULATION LOG ===
+Started: 2026-02-24 14:49:00.968
+============================================================
+
+[2026-02-24 14:49:00.968] [INFO] [APPLICATION] Garden Simulation starting up...
+[2026-02-24 14:49:00.974] [INFO] [GARDEN] Garden 'My Automated Garden' created: 20x20 grid
+[2026-02-24 14:49:00.974] [INFO] [GARDEN] === Initializing Default Garden ===
+[2026-02-24 14:49:00.978] [INFO] [PLANT] Tomato [PLANT-1] (Solanum lycopersicum) planted at (2, 3)
+[2026-02-24 14:49:00.978] [INFO] [PLANT] Tomato [PLANT-2] (Solanum lycopersicum) planted at (2, 5)
+[2026-02-24 14:49:00.987] [INFO] [PLANT] Tomato [PLANT-3] (Solanum lycopersicum) planted at (2, 7)
+[2026-02-24 14:49:00.988] [INFO] [PLANT] Rose [PLANT-4] (Rosa) planted at (5, 2)
+[2026-02-24 14:49:00.988] [INFO] [PLANT] Rose [PLANT-5] (Rosa) planted at (5, 4)
+[2026-02-24 14:49:00.988] [INFO] [PLANT] Rose [PLANT-6] (Rosa) planted at (5, 6)
+[2026-02-24 14:49:00.988] [INFO] [PLANT] Sunflower [PLANT-7] (Helianthus annuus) planted at (8, 1)
+[2026-02-24 14:49:00.989] [INFO] [PLANT] Sunflower [PLANT-8] (Helianthus annuus) planted at (8, 3)
+[2026-02-24 14:49:00.989] [INFO] [PLANT] Sunflower [PLANT-9] (Helianthus annuus) planted at (8, 5)
+[2026-02-24 14:49:00.989] [INFO] [PLANT] Carrot [PLANT-10] (Daucus carota) planted at (11, 2)
+[2026-02-24 14:49:00.990] [INFO] [PLANT] Carrot [PLANT-11] (Daucus carota) planted at (11, 4)
+[2026-02-24 14:49:00.990] [INFO] [PLANT] Carrot [PLANT-12] (Daucus carota) planted at (11, 6)
+[2026-02-24 14:49:00.990] [INFO] [PLANT] Carrot [PLANT-13] (Daucus carota) planted at (11, 8)
+[2026-02-24 14:49:00.990] [INFO] [PLANT] Lettuce [PLANT-14] (Lactuca sativa) planted at (14, 1)
+[2026-02-24 14:49:00.991] [INFO] [PLANT] Lettuce [PLANT-15] (Lactuca sativa) planted at (14, 3)
+[2026-02-24 14:49:00.991] [INFO] [PLANT] Lettuce [PLANT-16] (Lactuca sativa) planted at (14, 5)
+[2026-02-24 14:49:00.991] [INFO] [PLANT] Cactus [PLANT-17] (Cactaceae) planted at (17, 8)
+[2026-02-24 14:49:00.991] [INFO] [PLANT] Cactus [PLANT-18] (Cactaceae) planted at (17, 10)
+[2026-02-24 14:49:00.992] [INFO] [PLANT] Tomato [PLANT-19] (Solanum lycopersicum) planted at (3, 10)
+[2026-02-24 14:49:00.992] [INFO] [PLANT] Rose [PLANT-20] (Rosa) planted at (6, 12)
+[2026-02-24 14:49:00.992] [INFO] [PLANT] Sunflower [PLANT-21] (Helianthus annuus) planted at (9, 14)
+[2026-02-24 14:49:00.992] [INFO] [PLANT] Lettuce [PLANT-22] (Lactuca sativa) planted at (12, 16)
+[2026-02-24 14:49:00.992] [INFO] [PLANT] Carrot [PLANT-23] (Daucus carota) planted at (15, 12)
+[2026-02-24 14:49:00.992] [INFO] [PLANT] Cactus [PLANT-24] (Cactaceae) planted at (18, 14)
+[2026-02-24 14:49:00.994] [INFO] [SENSOR] Temperature Sensor [SENSOR-1] installed at (0, 0) (range: 40.0-95.0 °F)
+[2026-02-24 14:49:00.996] [INFO] [SENSOR] Temperature Sensor [SENSOR-2] installed at (10, 10) (range: 40.0-95.0 °F)
+[2026-02-24 14:49:00.996] [INFO] [SENSOR] Temperature Sensor [SENSOR-3] installed at (19, 19) (range: 40.0-95.0 °F)
+[2026-02-24 14:49:00.996] [INFO] [SENSOR] Moisture Sensor [SENSOR-4] installed at (3, 3) (range: 20.0-80.0 %)
+[2026-02-24 14:49:00.996] [INFO] [SENSOR] Moisture Sensor [SENSOR-5] installed at (10, 5) (range: 20.0-80.0 %)
+[2026-02-24 14:49:00.997] [INFO] [SENSOR] Moisture Sensor [SENSOR-6] installed at (15, 15) (range: 20.0-80.0 %)
+[2026-02-24 14:49:00.997] [INFO] [SENSOR] Light Sensor [SENSOR-7] installed at (5, 10) (range: 20.0-90.0 lux)
+[2026-02-24 14:49:00.997] [INFO] [SENSOR] Light Sensor [SENSOR-8] installed at (15, 5) (range: 20.0-90.0 lux)
+[2026-02-24 14:49:00.998] [INFO] [INSECT] Bee [INSECT-1] (POLLINATOR) appeared at (4, 4)
+[2026-02-24 14:49:00.998] [INFO] [INSECT] Bee [INSECT-2] (POLLINATOR) appeared at (8, 8)
+[2026-02-24 14:49:00.999] [INFO] [INSECT] Ladybug [INSECT-3] (NEUTRAL) appeared at (6, 6)
+[2026-02-24 14:49:00.999] [INFO] [INSECT] Aphid [INSECT-4] (PEST) appeared at (3, 5)
+[2026-02-24 14:49:00.999] [INFO] [INSECT] Caterpillar [INSECT-5] (PEST) appeared at (11, 3)
+[2026-02-24 14:49:00.999] [INFO] [WATERING] Watering System initialized.
+[2026-02-24 14:49:01.001] [INFO] [WATERING] Sprinkler SPR-1 added at (3, 4) (radius: 4.0, flow: 5.0)
+[2026-02-24 14:49:01.001] [INFO] [WATERING] Sprinkler SPR-2 added at (8, 4) (radius: 4.0, flow: 5.0)
+[2026-02-24 14:49:01.001] [INFO] [WATERING] Sprinkler SPR-3 added at (13, 4) (radius: 4.0, flow: 5.0)
+[2026-02-24 14:49:01.001] [INFO] [WATERING] Sprinkler SPR-4 added at (17, 9) (radius: 4.0, flow: 5.0)
+[2026-02-24 14:49:01.002] [INFO] [WATERING] Sprinkler SPR-5 added at (6, 12) (radius: 4.0, flow: 5.0)
+[2026-02-24 14:49:01.002] [INFO] [WATERING] Sprinkler SPR-6 added at (12, 14) (radius: 4.0, flow: 5.0)
+[2026-02-24 14:49:01.003] [INFO] [HEATING] Heating System initialized. Target: 72.0°F, Mode: AUTO
+[2026-02-24 14:49:01.005] [INFO] [PEST_CONTROL] Pest Control initialized. Method: TARGETED, Threshold: 3 pests
+[2026-02-24 14:49:01.006] [INFO] [LIGHTING] Lighting System initialized. Target light level: 60
+[2026-02-24 14:49:01.006] [INFO] [GARDEN] Garden initialized: 24 plants, 5 insects, 8 sensors, 4 modules
+[2026-02-24 14:49:01.006] [INFO] [GARDEN] === Garden Ready ===
+[2026-02-24 14:49:01.012] [INFO] [APPLICATION] Simulation Engine initialized.
+[2026-02-24 14:49:01.022] [ERROR] [APPLICATION] Failed to start application | Exception: IllegalStateException - Location is not set.

@@ -1,0 +1,94 @@
+.root {
+    -fx-background-color: #1a1a1a;
+    -fx-font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+}
+
+.top-bar {
+    -fx-background-color: linear-gradient(to bottom, #4d3319, #261a0d);
+    -fx-padding: 10 20;
+    -fx-border-color: #734d26;
+    -fx-border-width: 0 0 4 0;
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: #99ff33;
+    -fx-effect: dropshadow(three-pass-box, #000000, 5, 0, 0, 0);
+}
+
+/* Seed Packet Style Buttons */
+.action-btn {
+    -fx-background-color: #d9b38c;
+    -fx-background-radius: 4;
+    -fx-border-color: #4d3319;
+    -fx-border-width: 2;
+    -fx-text-fill: #261a0d;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 10;
+    -fx-cursor: hand;
+    -fx-min-width: 90;
+}
+.action-btn:hover {
+    -fx-background-color: #e6ccb3;
+}
+.action-btn:pressed {
+    -fx-background-color: #bf8040;
+}
+
+.btn-primary { -fx-border-color: #2ea043; -fx-background-color: #a3cfbb; }
+.btn-danger { -fx-border-color: #f85149; -fx-background-color: #f8d7da; }
+.btn-info { -fx-border-color: #388bfd; -fx-background-color: #cfe2ff; }
+
+.split-pane {
+    -fx-background-color: #000000;
+}
+
+.canvas-pane {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #4d3319;
+    -fx-border-width: 8;
+    -fx-border-radius: 4;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #4d3319;
+    -fx-background-radius: 10 10 0 0;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: #734d26;
+    -fx-border-color: #99ff33;
+    -fx-border-width: 3 0 0 0;
+}
+
+.card {
+    -fx-background-color: linear-gradient(to bottom, rgba(77, 51, 25, 0.85), rgba(38, 26, 13, 0.9));
+    -fx-background-radius: 8;
+    -fx-border-color: #4d3319;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-padding: 10 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 4, 0, 0, 2);
+}
+
+.text-area {
+    -fx-control-inner-background: #000000;
+    -fx-text-fill: #99ff33;
+    -fx-font-family: 'Consolas', monospace;
+}
+
+/* Rounded, polished stat bars */
+.progress-bar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 5;
+}
+.progress-bar .track {
+    -fx-background-color: rgba(33, 38, 45, 0.6);
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+}
+.progress-bar .bar {
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="garden.ui.GardenController"
+            stylesheets="@style.css" styleClass="root">
+
+    <!-- ===== TOP: Control Bar ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="top-bar">
+
+            <Label text="Garden Simulator" styleClass="title-label"/>
+
+            <Separator orientation="VERTICAL"/>
+
+            <!-- Simulation Controls -->
+            <Button fx:id="pauseButton" text="Pause" onAction="#handlePause" styleClass="action-btn"/>
+
+            <VBox alignment="CENTER_LEFT" spacing="2">
+                <Label text="Simulation Speed" style="-fx-text-fill: #8b949e; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+                <Slider fx:id="speedSlider" min="0.1" max="5.0" value="1.0" showTickLabels="false" prefWidth="140"/>
+            </VBox>
+
+            <Separator orientation="VERTICAL"/>
+
+            <!-- Manual Action Buttons -->
+            <Button text="Water Now" onAction="#handleManualWater" styleClass="action-btn, btn-info"/>
+            <Button text="Pest Control" onAction="#handlePestControl" styleClass="action-btn, btn-danger"/>
+            <Button text="Fertilize All" onAction="#handleFertilize" styleClass="action-btn, btn-primary"/>
+
+            <Separator orientation="VERTICAL"/>
+
+            <!-- Zoom Controls -->
+            <HBox alignment="CENTER" spacing="5">
+                <Button fx:id="zoomOutButton" text="−" onAction="#handleZoomOut" styleClass="action-btn"/>
+                <Label fx:id="zoomLabel" text="Fit" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced; -fx-min-width: 45; -fx-alignment: CENTER;"/>
+                <Button fx:id="zoomInButton" text="+" onAction="#handleZoomIn" styleClass="action-btn"/>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Tick + Day Counter -->
+            <VBox alignment="CENTER_RIGHT" spacing="2">
+                <Label fx:id="tickLabel" text="Tick: 0" style="-fx-text-fill: #3fb950; -fx-font-family: Monospaced; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <Label fx:id="dayLabel" text="Day 1 - Daytime" style="-fx-text-fill: #8b949e; -fx-font-family: Monospaced; -fx-font-size: 12px;"/>
+            </VBox>
+
+        </HBox>
+    </top>
+
+    <!-- ===== CENTER: Garden Canvas (left) + Info Tabs (right) ===== -->
+    <center>
+        <SplitPane dividerPositions="0.7" styleClass="split-pane">
+
+            <!-- LEFT: Garden Canvas -->
+            <ScrollPane fx:id="canvasScrollPane" pannable="true" fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
+                <StackPane fx:id="canvasContainer" alignment="CENTER" styleClass="canvas-pane">
+                    <Canvas fx:id="gardenCanvas" width="400" height="400"/>
+                </StackPane>
+            </ScrollPane>
+
+            <!-- RIGHT: Info Tabs -->
+            <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+
+                <!-- Tab 1: Environment -->
+                <Tab text="Environment">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="15" style="-fx-padding: 15;">
+
+                            <!-- Temperature Card -->
+                            <VBox spacing="8" styleClass="card">
+                                <Label text="TEMPERATURE" styleClass="card-title" style="-fx-text-fill: #ff7b72;"/>
+                                <Label fx:id="tempLabel" text="-- F" styleClass="card-value" style="-fx-text-fill: #ff7b72;"/>
+                                <ProgressBar fx:id="tempProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.5" style="-fx-accent: #ff7b72; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                            </VBox>
+
+                            <!-- Light Level Card -->
+                            <VBox spacing="8" styleClass="card">
+                                <Label text="LIGHT LEVEL" styleClass="card-title" style="-fx-text-fill: #d2a8ff;"/>
+                                <Label fx:id="lightLabel" text="-- / 100" styleClass="card-value" style="-fx-text-fill: #d2a8ff;"/>
+                                <ProgressBar fx:id="lightProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.6" style="-fx-accent: #d2a8ff; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                            </VBox>
+
+                            <!-- Humidity Card -->
+                            <VBox spacing="8" styleClass="card">
+                                <Label text="HUMIDITY" styleClass="card-title" style="-fx-text-fill: #79c0ff;"/>
+                                <Label fx:id="humidityLabel" text="-- %" styleClass="card-value" style="-fx-text-fill: #79c0ff;"/>
+                                <ProgressBar fx:id="humidityProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.5" style="-fx-accent: #79c0ff; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                            </VBox>
+
+                            <!-- Garden Stats Card -->
+                            <VBox spacing="8" styleClass="card">
+                                <Label text="GARDEN STATS" styleClass="card-title" style="-fx-text-fill: #3fb950;"/>
+                                <Label fx:id="plantsAliveLabel" text="Plants: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                <Label fx:id="insectsLabel" text="Insects: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                <Label fx:id="sprinklerLabel" text="Sprinklers: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                <Label fx:id="dayPhaseLabel" text="Phase: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                            </VBox>
+
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <!-- Tab 2: Modules -->
+                <Tab text="Modules">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox fx:id="moduleStatusList" spacing="15" style="-fx-padding: 15;"/>
+                    </ScrollPane>
+                </Tab>
+
+                <!-- Tab 3: Plants -->
+                <Tab text="Plants">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox fx:id="plantStatusList" spacing="10" style="-fx-padding: 15;"/>
+                    </ScrollPane>
+                </Tab>
+
+                <!-- Tab 4: Insects -->
+                <Tab text="Insects">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox fx:id="insectStatusList" spacing="10" style="-fx-padding: 15;"/>
+                    </ScrollPane>
+                </Tab>
+
+            </TabPane>
+
+        </SplitPane>
+    </center>
+
+    <!-- ===== BOTTOM: Log Viewer ===== -->
+    <bottom>
+        <VBox spacing="10" styleClass="log-pane">
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <Label text="SYSTEM LOG" style="-fx-font-size: 12px; -fx-font-weight: 900; -fx-text-fill: #8b949e;"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="Filter:" style="-fx-text-fill: #8b949e; -fx-font-size: 12px;"/>
+                <ComboBox fx:id="logFilterCombo" onAction="#handleLogFilter" prefWidth="150" style="-fx-background-color: #21262d; -fx-text-fill: white; -fx-border-color: #30363d; -fx-border-radius: 4; -fx-background-radius: 4;"/>
+            </HBox>
+            <TextArea fx:id="logArea" editable="false" prefRowCount="5" styleClass="text-area"/>
+        </VBox>
+    </bottom>
+
+</BorderPane>
