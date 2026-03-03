@@ -80,6 +80,10 @@ public abstract class Plant {
                     name, id, currentTemperature, currentLight, currentHumidity, waterLevel, nutrientLevel));
             
             // Consume water and nutrients
+            // NOTE: Each tick, the plant loses water and nutrients according to its needs.
+            // If there isn’t enough replenishment (via rain, watering, or fertigation), 
+            // the waterLevel can drop below the critical threshold (<10). When this happens, 
+            // the plant suffers a 2.5 HP/tick penalty, which over time drives its health to zero.
             waterLevel = Math.max(0, waterLevel - waterNeedPerTick);
             nutrientLevel = Math.max(0, nutrientLevel - nutrientNeedPerTick);
 
