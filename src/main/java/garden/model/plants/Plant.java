@@ -75,7 +75,10 @@ public abstract class Plant {
 
         try {
             ageTicks++;
-
+            GardenLogger.getInstance().log("DEBUG", 
+                String.format("%s [%s] update start: temp=%.1f, light=%.1f, humidity=%.1f, water=%.1f, nutrients=%.1f", 
+                    name, id, currentTemperature, currentLight, currentHumidity, waterLevel, nutrientLevel));
+            
             // Consume water and nutrients
             waterLevel = Math.max(0, waterLevel - waterNeedPerTick);
             nutrientLevel = Math.max(0, nutrientLevel - nutrientNeedPerTick);
@@ -178,7 +181,9 @@ public abstract class Plant {
 
             // Apply health change
             health = Math.max(0, Math.min(100, health + healthDelta));
-
+            GardenLogger.getInstance().log("DEBUG", 
+                String.format("%s [%s] update: healthDelta=%.2f, new health=%.1f", name, id, healthDelta, health));
+            
             // Check for death
             if (health <= 0) {
                 die("Health reached zero");
