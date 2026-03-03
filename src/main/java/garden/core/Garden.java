@@ -15,6 +15,8 @@ import java.util.*;
  */
 public class Garden {
 
+    public enum Season { SPRING, SUMMER, AUTUMN, WINTER }
+
     private final String name;
     private final int rows;
     private final int cols;
@@ -25,12 +27,21 @@ public class Garden {
     private final List<Sensor> sensors;
     private final List<GardenModule> modules;
 
+    // Efficient Spatial Map: Quick O(1) lookup for occupied grid cells
+    private final boolean[][] occupancyGrid;
+
     // Environmental state
     private double currentTemperature;  // °F
     private double currentLightLevel;   // 0-100
     private double currentHumidity;     // 0-100%
     private int currentTick;
     private int dayNightCycle;          // ticks per full day
+    
+    // Season & Weather State
+    private Season currentSeason = Season.SPRING;
+    private boolean isRaining = false;
+    private double rainIntensity = 0.0; // 0.0 to 5.0 water per tick
+    private final int ticksPerSeason = 1000; // 5 days per season (200 * 5)
 
     // Modules (typed references for direct access)
     private WateringSystem wateringSystem;
@@ -48,6 +59,7 @@ public class Garden {
         this.insects = Collections.synchronizedList(new ArrayList<>());
         this.sensors = Collections.synchronizedList(new ArrayList<>());
         this.modules = Collections.synchronizedList(new ArrayList<>());
+        this.occupancyGrid = new boolean[rows][cols];
         this.currentTemperature = 72.0;
         this.currentLightLevel = 60.0;
         this.currentHumidity = 50.0;
@@ -67,68 +79,117 @@ public class Garden {
         GardenLogger.getInstance().log("GARDEN", "=== Initializing Professional Garden Layout ===");
 
         // 1. INFRASTRUCTURE LAYER (Sprinklers & Sensors)
-        // Placed in 'Lanes' at intervals to allow maintenance access and clear coverage
         wateringSystem = new WateringSystem();
         
-        // 3 Irrigation Lanes (Columns 4, 10, 16)
-        int[] lanes = {4, 10, 16};
-        for (int col : lanes) {
-            for (int row = 3; row < rows; row += 6) {
-                Position sprPos = new Position(row, col);
-                wateringSystem.addSprinkler(sprPos, 7.5, 8.0);
-                
-                // Place a moisture sensor adjacent to each sprinkler for localized feedback
-                addSensor(new MoistureSensor(new Position(row + 1, col)));
-            }
-        }
+        // --- Zone 1: Tomatoes (High Moisture) ---
+        // Thresholds: 40% to 80%
+        // Hardware moved to Row 3 (Plants are in Rows 1-2)
+        Position spr1 = new Position(3, 4);
+        Position spr2 = new Position(3, 10);
+        Position spr3 = new Position(3, 16);
+        wateringSystem.addSprinkler(spr1, 8.0, 8.0, 40.0, 80.0);
+        wateringSystem.addSprinkler(spr2, 8.0, 8.0, 40.0, 80.0);
+        wateringSystem.addSprinkler(spr3, 8.0, 8.0, 40.0, 80.0);
+        markOccupied(spr1); markOccupied(spr2); markOccupied(spr3);
+        
+        // Single powerful sensor covering exactly the Tomato Zone (Rows 1-2)
+        MoistureSensor ms1 = new MoistureSensor(new Position(3, 7));
+        ms1.setSensingRange(1, 2, 0, cols - 1);
+        addSensor(ms1);
+
+        // --- Zone 2: Roses (Very High Moisture) ---
+        // Thresholds: 50% to 90%
+        // Hardware moved to Row 7 (Plants are in Rows 5-6)
+        Position spr4 = new Position(7, 4);
+        Position spr5 = new Position(7, 12);
+        wateringSystem.addSprinkler(spr4, 8.0, 8.0, 50.0, 90.0);
+        wateringSystem.addSprinkler(spr5, 8.0, 8.0, 50.0, 90.0);
+        markOccupied(spr4); markOccupied(spr5);
+        MoistureSensor ms2 = new MoistureSensor(new Position(7, 8));
+        ms2.setSensingRange(5, 6, 0, cols - 1);
+        addSensor(ms2);
+
+        // --- Zone 3: Sunflowers (Moderate Moisture) ---
+        // Thresholds: 30% to 70%
+        // Hardware moved to Row 10 (Plants are in Row 9)
+        Position spr6 = new Position(10, 7);
+        Position spr7 = new Position(10, 14);
+        wateringSystem.addSprinkler(spr6, 8.0, 8.0, 30.0, 70.0);
+        wateringSystem.addSprinkler(spr7, 8.0, 8.0, 30.0, 70.0);
+        markOccupied(spr6); markOccupied(spr7);
+        MoistureSensor ms3 = new MoistureSensor(new Position(10, 11));
+        ms3.setSensingRange(9, 9, 0, cols - 1);
+        addSensor(ms3);
+
+        // --- Zone 4: Carrots & Lettuce (Consistent Moisture) ---
+        // Thresholds: 45% to 75%
+        // Hardware moved to Row 15 (Plants are in Rows 13-14)
+        Position spr8 = new Position(15, 4);
+        Position spr9 = new Position(15, 10);
+        Position spr10 = new Position(15, 16);
+        wateringSystem.addSprinkler(spr8, 8.0, 8.0, 45.0, 75.0);
+        wateringSystem.addSprinkler(spr9, 8.0, 8.0, 45.0, 75.0);
+        wateringSystem.addSprinkler(spr10, 8.0, 8.0, 45.0, 75.0);
+        markOccupied(spr8); markOccupied(spr9); markOccupied(spr10);
+        MoistureSensor ms4 = new MoistureSensor(new Position(15, 7));
+        ms4.setSensingRange(13, 14, 0, cols - 1);
+        addSensor(ms4);
+
+        // --- Zone 5: Cacti (Arid/Dry Zone) ---
+        // Thresholds: 5% to 15% (Extremely low to prevent overwatering)
+        // Hardware moved to Row 19 (Plants are in Row 18)
+        Position spr11 = new Position(19, 10);
+        wateringSystem.addSprinkler(spr11, 8.0, 2.0, 5.0, 15.0);
+        markOccupied(spr11);
+        MoistureSensor ms5 = new MoistureSensor(new Position(19, 13));
+        ms5.setSensingRange(18, 18, 0, cols - 1);
+        addSensor(ms5);
+
         modules.add(wateringSystem);
 
-        // Environmental Monitoring (Corners and Center)
+        // Environmental Monitoring (Empty Rows 0 and 19)
         addSensor(new TemperatureSensor(new Position(0, 0)));
+        addSensor(new TemperatureSensor(new Position(0, cols - 1)));
+        addSensor(new TemperatureSensor(new Position(rows - 1, 0)));
         addSensor(new TemperatureSensor(new Position(rows - 1, cols - 1)));
         addSensor(new TemperatureSensor(new Position(rows / 2, cols / 2)));
+        
+        addSensor(new LightSensor(new Position(0, 5)));
         addSensor(new LightSensor(new Position(0, cols / 2)));
-        addSensor(new LightSensor(new Position(rows - 1, 0)));
+        addSensor(new LightSensor(new Position(0, cols - 6)));
+        addSensor(new LightSensor(new Position(rows - 1, 5)));
+        addSensor(new LightSensor(new Position(rows - 1, cols / 2)));
+        addSensor(new LightSensor(new Position(rows - 1, cols - 6)));
+        addSensor(new LightSensor(new Position(rows / 2, 13)));
 
         // 2. PLANTING LAYER (Structured Crop Rows)
-        // Plants are organized by species into dedicated 'Beds'
         
         // Bed 1: Tomatoes (Rows 1-2)
         for (int c = 1; c < cols - 1; c += 3) {
-            if (c != 4 && c != 10 && c != 16) { // Skip irrigation lanes
-                addPlant(new Tomato(new Position(1, c)));
-                addPlant(new Tomato(new Position(2, c)));
-            }
+            addPlant(new Tomato(new Position(1, c)));
+            addPlant(new Tomato(new Position(2, c)));
         }
 
         // Bed 2: Roses (Rows 5-6)
         for (int c = 1; c < cols - 1; c += 3) {
-            if (c != 4 && c != 10 && c != 16) {
-                addPlant(new Rose(new Position(5, c)));
-                addPlant(new Rose(new Position(6, c)));
-            }
+            addPlant(new Rose(new Position(5, c)));
+            addPlant(new Rose(new Position(6, c)));
         }
 
         // Bed 3: Sunflowers (Rows 8-10)
         for (int c = 2; c < cols - 1; c += 4) {
-            if (c != 4 && c != 10 && c != 16) {
-                addPlant(new Sunflower(new Position(9, c)));
-            }
+            addPlant(new Sunflower(new Position(9, c)));
         }
 
         // Bed 4: Carrots & Lettuce (Rows 12-15)
         for (int c = 1; c < cols - 1; c += 2) {
-            if (c != 4 && c != 10 && c != 16) {
-                addPlant(new Carrot(new Position(13, c)));
-                addPlant(new Lettuce(new Position(14, c)));
-            }
+            addPlant(new Carrot(new Position(13, c)));
+            addPlant(new Lettuce(new Position(14, c)));
         }
 
         // Bed 5: Cacti (The 'Dry Row' at the edge)
         for (int c = 1; c < cols; c += 5) {
-            if (c != 4 && c != 10 && c != 16) {
-                addPlant(new Cactus(new Position(18, c)));
-            }
+            addPlant(new Cactus(new Position(18, c)));
         }
 
         // --- Add Insects ---
@@ -151,10 +212,30 @@ public class Garden {
         lightingSystem = new LightingSystem();
         modules.add(lightingSystem);
 
+        FertigationSystem fertigationSystem = new FertigationSystem();
+        modules.add(fertigationSystem);
+
         GardenLogger.getInstance().log("GARDEN",
                 String.format("Garden initialized: %d plants, %d insects, %d sensors, %d modules",
                         plants.size(), insects.size(), sensors.size(), modules.size()));
         GardenLogger.getInstance().log("GARDEN", "=== Garden Ready ===");
+    }
+
+    /**
+     * Checks if a specific grid cell is already occupied by infrastructure 
+     * or other plants to prevent overlapping.
+     */
+    public boolean isPositionOccupied(Position pos) {
+        if (pos.getRow() < 0 || pos.getRow() >= rows || pos.getCol() < 0 || pos.getCol() >= cols) {
+            return true;
+        }
+        return occupancyGrid[pos.getRow()][pos.getCol()];
+    }
+
+    private void markOccupied(Position pos) {
+        if (pos.getRow() >= 0 && pos.getRow() < rows && pos.getCol() >= 0 && pos.getCol() < cols) {
+            occupancyGrid[pos.getRow()][pos.getCol()] = true;
+        }
     }
 
     /**
@@ -165,18 +246,28 @@ public class Garden {
         try {
             currentTick++;
 
-            // 1. Update environment (day/night cycle, weather variations)
+            // 1. Update environment (Seasons & Weather)
             updateEnvironment();
+
+            // 1b. Apply Rain Effect: Rain increases water level for all plants
+            if (isRaining) {
+                for (Plant plant : plants) {
+                    if (plant.isAlive()) {
+                        // Rain intensity is 0.0 to 5.0; we apply a portion each tick
+                        plant.water(rainIntensity * 0.5, false);
+                    }
+                }
+            }
 
             // 2. Update all sensors
             List<Plant> alivePlants = plants.stream().filter(Plant::isAlive).toList();
             for (Sensor sensor : sensors) {
                 if (sensor instanceof TemperatureSensor) {
-                    sensor.update(currentTemperature);
+                    sensor.update(currentTemperature, currentTick);
                 } else if (sensor instanceof MoistureSensor ms) {
-                    ms.update(alivePlants); // Realistic local measurement
+                    ms.update(alivePlants, currentTick); // Realistic local measurement
                 } else if (sensor instanceof LightSensor) {
-                    sensor.update(currentLightLevel);
+                    sensor.update(currentLightLevel, currentTick);
                 }
             }
 
@@ -229,42 +320,68 @@ public class Garden {
         }
     }
 
-    // Slow-moving weather pattern that shifts over multiple days.
-    // Creates realistic multi-day wet/dry and cloudy/clear spells.
-    private double weatherHumidityBias = 0;  // -15 (dry spell) to +15 (wet spell)
-    private double weatherCloudCover = 0;    // 0 (clear) to 0.5 (overcast)
-
     private void updateEnvironment() {
-        double dayProgress = (currentTick % dayNightCycle) / (double) dayNightCycle;
+        // --- 1. Season Transition Logic ---
+        Season oldSeason = currentSeason;
+        int seasonIndex = (currentTick / ticksPerSeason) % 4;
+        currentSeason = Season.values()[seasonIndex];
 
-        // --- Slowly-drifting weather patterns (change over ~5 days / 1000 ticks) ---
-        if (currentTick % 50 == 0) {
-            weatherHumidityBias += (random.nextGaussian() * 1.5);
-            weatherHumidityBias = Math.max(-15, Math.min(15, weatherHumidityBias));
-            weatherCloudCover += (random.nextGaussian() * 0.04);
-            weatherCloudCover = Math.max(0, Math.min(0.5, weatherCloudCover));
+        if (currentSeason != oldSeason) {
+            GardenLogger.getInstance().log("GARDEN", "=== SEASON CHANGE: Welcome to " + currentSeason + " ===");
         }
 
-        // --- Light: day/night cycle, reduced by cloud cover ---
-        double naturalLight = 50 + 45 * Math.sin(dayProgress * 2 * Math.PI - Math.PI / 2);
-        naturalLight *= (1.0 - weatherCloudCover); // clouds reduce light
-        currentLightLevel = Math.max(0, Math.min(100, naturalLight));
+        // --- 2. Rain/Weather Engine ---
+        // Rain probability varies by season: Spring(0.3%), Summer(0.05%), Autumn(0.2%), Winter(0.15%)
+        double rainChance = switch (currentSeason) {
+            case SPRING -> 0.003; 
+            case SUMMER -> 0.0005;
+            case AUTUMN -> 0.002;
+            case WINTER -> 0.0015;
+        };
 
-        // --- Temperature: day/night cycle with small random drift ---
-        double tempVariation = 7 * Math.sin(dayProgress * 2 * Math.PI - Math.PI / 2);
-        double baseTemp = 65 + (random.nextGaussian() * 0.5);
-        currentTemperature = baseTemp + tempVariation;
+        if (!isRaining && random.nextDouble() < rainChance) {
+            isRaining = true;
+            rainIntensity = 1.0 + random.nextDouble() * 4.0;
+            GardenLogger.getInstance().log("WEATHER", String.format("It started raining! Intensity: %.1f", rainIntensity));
+        } else if (isRaining && random.nextDouble() < 0.02) { // 2% chance per tick to stop
+            isRaining = false;
+            GardenLogger.getInstance().log("WEATHER", "The rain has stopped.");
+        }
 
-        // --- Humidity: realistic day/night swing + weather patterns ---
-        // Real gardens: nighttime humidity rises sharply (dew/fog can reach 90-95%),
-        // daytime drops as temperature rises (can hit 25-35% on hot dry days).
-        // The day/night swing is large (~30 percentage points) and is further
-        // shifted by the multi-day weather bias.
-        double dayNightHumiditySwing = 18 * Math.sin(dayProgress * 2 * Math.PI + Math.PI / 2);
-        // Positive at night (high humidity), negative during day (low humidity)
-        double baseHumidity = 58 + dayNightHumiditySwing + weatherHumidityBias;
-        currentHumidity = Math.max(15, Math.min(98,
-                baseHumidity + random.nextGaussian() * 3));
+        // --- 3. Light & Temperature Calculations ---
+        double dayProgress = (currentTick % dayNightCycle) / (double) dayNightCycle;
+
+        // Seasonal Baselines
+        double baseTemp = switch (currentSeason) {
+            case SPRING -> 65.0;
+            case SUMMER -> 85.0;
+            case AUTUMN -> 55.0;
+            case WINTER -> 35.0;
+        };
+
+        double maxLight = switch (currentSeason) {
+            case SPRING -> 90.0;
+            case SUMMER -> 100.0;
+            case AUTUMN -> 70.0;
+            case WINTER -> 40.0;
+        };
+
+        // Day/Night Variation (Sine wave)
+        double sunEffect = Math.sin(dayProgress * 2 * Math.PI - Math.PI / 2);
+        
+        // Light: Daytime peak, nighttime zero. Reduced by 50% if raining.
+        double naturalLight = Math.max(0, maxLight * sunEffect);
+        if (isRaining) naturalLight *= 0.5;
+        currentLightLevel = naturalLight;
+
+        // Temperature: Seasonal base + day/night swing + random drift
+        double tempSwing = 10.0 * sunEffect;
+        currentTemperature = baseTemp + tempSwing + (random.nextGaussian() * 2.0);
+
+        // Humidity: Higher at night, higher when raining
+        double baseHumidity = isRaining ? 85.0 : 40.0;
+        double humidSwing = 20.0 * (-sunEffect); // Humidity rises at night
+        currentHumidity = Math.max(20, Math.min(100, baseHumidity + humidSwing + (random.nextGaussian() * 5.0)));
     }
 
     /**
@@ -344,7 +461,13 @@ public class Garden {
 
     // --- Entity Management ---
     public void addPlant(Plant plant) {
-        plants.add(plant);
+        if (!isPositionOccupied(plant.getPosition())) {
+            plants.add(plant);
+            markOccupied(plant.getPosition());
+        } else {
+            GardenLogger.getInstance().logWarning("GARDEN", 
+                "Failed to add plant at " + plant.getPosition() + " - Position already occupied.");
+        }
     }
 
     public void addInsect(Insect insect) {
@@ -352,7 +475,13 @@ public class Garden {
     }
 
     public void addSensor(Sensor sensor) {
-        sensors.add(sensor);
+        if (!isPositionOccupied(sensor.getPosition())) {
+            sensors.add(sensor);
+            markOccupied(sensor.getPosition());
+        } else {
+            GardenLogger.getInstance().logWarning("GARDEN", 
+                "Failed to add sensor at " + sensor.getPosition() + " - Position already occupied.");
+        }
     }
 
     // --- Environmental Adjustments (used by modules) ---
