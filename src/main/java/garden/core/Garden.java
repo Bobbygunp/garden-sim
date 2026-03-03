@@ -312,6 +312,10 @@ public class Garden {
             if (currentTick % 50 == 0) {
                 logPeriodicStatus();
             }
+            if (currentTick >= 2000) {
+                GardenLogger.getInstance().log("GARDEN", "Simulation complete at 2000 ticks. Exiting simulation.");
+                System.exit(0);
+            }
 
         } catch (Exception e) {
             GardenLogger.getInstance().logError("GARDEN",
