@@ -42,6 +42,7 @@ public abstract class Plant {
     protected double lightNeedHours;        // ideal light hours per day
     protected int ticksToNextStage;         // ticks needed to advance growth stage
     protected double pestResistance;        // 0.0 - 1.0
+    protected double waterTolerance;        // 0.0 - 1.0 (1.0 = highly resistant to overwatering)
 
     private static int idCounter = 0;
 
@@ -56,6 +57,7 @@ public abstract class Plant {
         this.growthStage = GrowthStage.SEED;
         this.ageTicks = 0;
         this.alive = true;
+        this.waterTolerance = 0.5; // Default tolerance
 
         GardenLogger.getInstance().log("PLANT",
                 String.format("%s [%s] (%s) planted at %s", name, id, species, position));
@@ -89,7 +91,11 @@ public abstract class Plant {
                             String.format("%s [%s] is critically dehydrated!", name, id));
                 }
             } else if (waterLevel > 90) {
-                healthDelta -= 0.5; // overwatering
+                // Overwatering penalty: Scaled by species-specific waterTolerance
+                // Low tolerance (e.g., 0.1 for Cactus) = -1.8 HP/tick
+                // High tolerance (e.g., 0.8 for Rose) = -0.4 HP/tick
+                double overwaterPenalty = 2.0 * (1.0 - waterTolerance);
+                healthDelta -= Math.max(0.1, overwaterPenalty); 
             } else if (waterLevel > 40 && waterLevel < 70) {
                 healthDelta += 1.2; // IDEAL RANGE: Improved healing
             } else {
