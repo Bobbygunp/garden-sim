@@ -1,10 +1,14 @@
 garden\ui\GardenController.class
+garden\CactusDiagnosticTest.class
+garden\modules\HeatingSystem$HeatingZone.class
 garden\modules\WateringSystem.class
+garden\SystemTest.class
 garden\model\plants\Plant$1.class
 garden\modules\GardenModule.class
 garden\model\plants\Cactus.class
 garden\ui\ImageManager.class
 garden\model\plants\Tomato.class
+garden\api\GardenSimulationAPI.class
 garden\model\plants\Rose.class
 garden\model\insects\Insect$InsectType.class
 garden\modules\HeatingSystem$Mode.class
@@ -14,8 +18,11 @@ garden\core\SimulationEngine$1.class
 garden\model\plants\Carrot.class
 garden\core\SimulationEngine.class
 garden\model\plants\Sunflower.class
+garden\modules\FertigationSystem.class
 garden\modules\WateringSystem$Sprinkler.class
 garden\model\plants\Lettuce.class
+garden\MegaSurvivalTest.class
+garden\LongTermSurvivalTest.class
 garden\model\sensors\LightSensor.class
 garden\modules\PestControl.class
 garden\Launcher.class
@@ -24,8 +31,11 @@ garden\util\Position.class
 garden\model\insects\Insect.class
 garden\modules\PestControl$1.class
 garden\logging\GardenLogger$LogEntry.class
+garden\api\GardenSimulator.class
 garden\model\plants\Plant$GrowthStage.class
 garden\model\plants\Plant.class
+garden\modules\FertigationSystem$FertigationZone.class
+garden\core\Garden$1.class
 garden\model\insects\Ladybug.class
 garden\core\Garden.class
 garden\model\insects\Aphid.class
@@ -36,5 +46,6 @@ garden\model\insects\Caterpillar.class
 garden\modules\PestControl$PestControlMethod.class
 garden\model\sensors\Sensor.class
 garden\model\sensors\TemperatureSensor.class
+garden\core\Garden$Season.class
 garden\modules\LightingSystem.class
 garden\model\insects\Bee.class

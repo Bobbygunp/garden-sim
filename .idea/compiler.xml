@@ -9,5 +9,8 @@
         <module name="garden-sim" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="garden-sim" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

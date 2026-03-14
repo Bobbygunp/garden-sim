@@ -13,5 +13,7 @@ public class Tomato extends Plant {
         this.lightNeedHours = 8;
         this.ticksToNextStage = 50;
         this.pestResistance = 0.3;
+        this.waterTolerance = 0.7;
+        this.temperatureSensitivity = 0.55; // Tropical — rapid damage from cold or heat
     }
 }

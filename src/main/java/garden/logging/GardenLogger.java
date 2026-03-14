@@ -68,7 +68,7 @@ public class GardenLogger {
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
                 + ".log";
         try {
-            fileWriter = new PrintWriter(new BufferedWriter(new FileWriter(logFileName, true)), true);
+            fileWriter = new PrintWriter(new BufferedWriter(new FileWriter(logFileName, true)), false);
             fileWriter.println("=== GARDEN SIMULATION LOG ===");
             fileWriter.println("Started: " + LocalDateTime.now().format(TIMESTAMP_FMT));
             fileWriter.println("=".repeat(60));
@@ -128,14 +128,13 @@ public class GardenLogger {
             allEntries.subList(0, excess).clear();
         }
 
-        // Write to file
+        // Write to file — flush every 50 entries to avoid per-entry disk I/O
         if (fileWriter != null) {
             fileWriter.println(entry.toString());
-            fileWriter.flush();
+            if (allEntries.size() % 50 == 0) {
+                fileWriter.flush();
+            }
         }
-
-        // Also print to console for debugging
-        System.out.println(entry);
     }
 
     /** Get recent log entries (up to last 500). */

@@ -17,6 +17,7 @@ public abstract class Sensor {
     private double minThreshold;
     private double maxThreshold;
     private boolean alertTriggered;
+    private int updateInterval = 1;
 
     private static int idCounter = 0;
 
@@ -40,7 +41,9 @@ public abstract class Sensor {
     public abstract double measure(double environmentalValue);
 
     /** Update the sensor with a new measurement. */
-    public void update(double environmentalValue) {
+    public void update(double environmentalValue, int currentTick) {
+        if (currentTick % updateInterval != 0) return;
+
         try {
             currentReading = measure(environmentalValue);
 
@@ -71,8 +74,10 @@ public abstract class Sensor {
     public String getMeasurementUnit() { return measurementUnit; }
     public double getMinThreshold() { return minThreshold; }
     public double getMaxThreshold() { return maxThreshold; }
+    public int getUpdateInterval() { return updateInterval; }
 
     // --- Setters for thresholds ---
     public void setMinThreshold(double min) { this.minThreshold = min; }
     public void setMaxThreshold(double max) { this.maxThreshold = max; }
+    public void setUpdateInterval(int interval) { this.updateInterval = Math.max(1, interval); }
 }

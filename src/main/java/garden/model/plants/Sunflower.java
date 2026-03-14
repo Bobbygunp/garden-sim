@@ -13,5 +13,7 @@ public class Sunflower extends Plant {
         this.lightNeedHours = 10;
         this.ticksToNextStage = 40;
         this.pestResistance = 0.5;
+        this.waterTolerance = 0.7;
+        this.temperatureSensitivity = 0.20; // Robust — wide natural range, slow to stress
     }
 }

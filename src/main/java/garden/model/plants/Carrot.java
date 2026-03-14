@@ -13,5 +13,7 @@ public class Carrot extends Plant {
         this.lightNeedHours = 6;
         this.ticksToNextStage = 55;
         this.pestResistance = 0.4;
+        this.waterTolerance = 0.5;
+        this.temperatureSensitivity = 0.25; // Hardy root veg — handles temperature swings well
     }
 }

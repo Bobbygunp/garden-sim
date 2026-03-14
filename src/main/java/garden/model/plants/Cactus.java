@@ -13,5 +13,7 @@ public class Cactus extends Plant {
         this.lightNeedHours = 10;
         this.ticksToNextStage = 80;
         this.pestResistance = 0.8;
+        this.waterTolerance = 0.4;
+        this.temperatureSensitivity = 0.10; // Extremely resilient — barely reacts to temp extremes
     }
 }

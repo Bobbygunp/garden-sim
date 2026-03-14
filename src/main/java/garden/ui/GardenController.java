@@ -9,6 +9,10 @@ import garden.model.sensors.Sensor;
 import garden.modules.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import garden.util.Position;
+import javafx.scene.Cursor;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -93,6 +97,24 @@ public class GardenController implements Initializable {
 
     private AnimationTimer renderTimer;
 
+    // --- Seed Tray (PvZ-style placement) ---
+    @FXML private Button seedTomato;
+    @FXML private Button seedRose;
+    @FXML private Button seedSunflower;
+    @FXML private Button seedCarrot;
+    @FXML private Button seedLettuce;
+    @FXML private Button seedCactus;
+    @FXML private Label  placingLabel;
+
+    /** Plant type currently selected from the seed tray, or null if none. */
+    private String placingPlantType = null;
+
+    // --- Drag & Drop State (move existing plants) ---
+    private Plant draggingPlant = null;
+    private double dragCanvasX = 0, dragCanvasY = 0;
+    private Position dragHoverCell = null;
+    private Position dragOriginalPos = null;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logFilterCombo.getItems().addAll(
@@ -122,6 +144,22 @@ public class GardenController implements Initializable {
         // Bind speed slider to simulation engine
         speedSlider.valueProperty().addListener((obs, oldVal, newVal) ->
                 engine.setSimulationSpeed(newVal.doubleValue()));
+
+        // Canvas mouse handlers — shared by placement mode and drag-to-move mode
+        gardenCanvas.setOnMouseMoved(this::onMouseMoved);
+        gardenCanvas.setOnMousePressed(this::onCanvasPressed);
+        gardenCanvas.setOnMouseDragged(this::onCanvasDragged);
+        gardenCanvas.setOnMouseReleased(this::onCanvasReleased);
+
+        // ESC cancels placement mode
+        Platform.runLater(() -> {
+            if (gardenCanvas.getScene() != null) {
+                gardenCanvas.getScene().addEventFilter(
+                    javafx.scene.input.KeyEvent.KEY_PRESSED,
+                    ke -> { if (ke.getCode() == KeyCode.ESCAPE) cancelPlacement(); }
+                );
+            }
+        });
 
         // Register tick callback for logic-based UI refresh (text labels, tabs)
         engine.setOnTickCallback(() -> Platform.runLater(this::updateLabelsAndTabs));
@@ -163,7 +201,7 @@ public class GardenController implements Initializable {
             gardenCanvas.setWidth(garden.getCols() * cellW);
             gardenCanvas.setHeight(garden.getRows() * cellH);
             imageManager = new ImageManager((int) Math.round(Math.min(cellW, cellH)));
-            renderGarden(0.0);
+            // No explicit redraw needed — the AnimationTimer redraws at 60fps
         }
     }
 
@@ -530,6 +568,266 @@ public class GardenController implements Initializable {
     }
 
     // =========================================================================
+    // SEED TRAY — PvZ-style plant placement
+    // =========================================================================
+
+    @FXML private void handleSeedTomato()    { startPlacing("tomato");    }
+    @FXML private void handleSeedRose()      { startPlacing("rose");      }
+    @FXML private void handleSeedSunflower() { startPlacing("sunflower"); }
+    @FXML private void handleSeedCarrot()    { startPlacing("carrot");    }
+    @FXML private void handleSeedLettuce()   { startPlacing("lettuce");   }
+    @FXML private void handleSeedCactus()    { startPlacing("cactus");    }
+
+    private void startPlacing(String plantType) {
+        placingPlantType = plantType;
+        gardenCanvas.setCursor(Cursor.CROSSHAIR);
+        highlightActiveSeedCard();
+        String zone = switch (plantType.toLowerCase()) {
+            case "tomato"    -> "Rows 1-2";
+            case "rose"      -> "Rows 5-6";
+            case "sunflower" -> "Row 9";
+            case "carrot"    -> "Row 13";
+            case "lettuce"   -> "Row 14";
+            case "cactus"    -> "Row 18";
+            default          -> "?";
+        };
+        if (placingLabel != null) {
+            placingLabel.setText("Placing: " + capitalize(plantType)
+                + "  (Zone: " + zone + ")  —  click the garden to plant  |  ESC or right-click to cancel");
+            placingLabel.setStyle("-fx-text-fill: #3fb950; -fx-font-size: 11px; -fx-font-weight: bold;");
+        }
+        GardenLogger.getInstance().log("USER_ACTION", "Seed selected: " + plantType);
+    }
+
+    private void cancelPlacement() {
+        placingPlantType = null;
+        dragHoverCell    = null;
+        gardenCanvas.setCursor(Cursor.DEFAULT);
+        highlightActiveSeedCard();
+        if (placingLabel != null) {
+            placingLabel.setText("Select a seed card above, then click the correct zone on the garden to plant it");
+            placingLabel.setStyle("-fx-text-fill: #8b949e; -fx-font-size: 11px; -fx-font-style: italic;");
+        }
+    }
+
+    /** Scales up the active seed card and resets the rest. */
+    private void highlightActiveSeedCard() {
+        Button[] cards = {seedTomato, seedRose, seedSunflower, seedCarrot, seedLettuce, seedCactus};
+        String[] types = {"tomato", "rose", "sunflower", "carrot", "lettuce", "cactus"};
+        for (int i = 0; i < cards.length; i++) {
+            if (cards[i] == null) continue;
+            boolean active = types[i].equals(placingPlantType);
+            cards[i].setScaleX(active ? 1.15 : 1.0);
+            cards[i].setScaleY(active ? 1.15 : 1.0);
+            cards[i].setOpacity(active ? 1.0 : (placingPlantType != null ? 0.55 : 1.0));
+        }
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.isEmpty()) return s;
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    // =========================================================================
+    // CANVAS MOUSE HANDLERS — placement mode + drag-to-move mode
+    // =========================================================================
+
+    /** Updates cursor and hover cell — fires while mouse moves WITHOUT button held. */
+    private void onMouseMoved(MouseEvent e) {
+        if (garden == null) return;
+        dragCanvasX = e.getX();
+        dragCanvasY = e.getY();
+        int row = Math.max(0, Math.min(garden.getRows() - 1, (int)(e.getY() / cellH)));
+        int col = Math.max(0, Math.min(garden.getCols() - 1, (int)(e.getX() / cellW)));
+        dragHoverCell = new Position(row, col);
+
+        if (placingPlantType != null) {
+            gardenCanvas.setCursor(Cursor.CROSSHAIR);
+            return;
+        }
+        Plant p = getPlantAt(row, col);
+        gardenCanvas.setCursor(p != null && p.isAlive() ? Cursor.OPEN_HAND : Cursor.DEFAULT);
+    }
+
+    /** Handles both placement clicks and drag-to-move press. */
+    private void onCanvasPressed(MouseEvent e) {
+        if (garden == null) return;
+        int row = Math.max(0, Math.min(garden.getRows() - 1, (int)(e.getY() / cellH)));
+        int col = Math.max(0, Math.min(garden.getCols() - 1, (int)(e.getX() / cellW)));
+
+        // --- PLACEMENT MODE ---
+        if (placingPlantType != null) {
+            if (e.isSecondaryButtonDown()) { cancelPlacement(); return; }
+            if (!e.isPrimaryButtonDown()) return;
+            Position pos = new Position(row, col);
+            if (isInCorrectZoneForType(placingPlantType, pos) && !garden.isPositionOccupied(pos)) {
+                Plant newPlant = garden.createPlant(placingPlantType, pos);
+                if (newPlant != null) {
+                    garden.addPlant(newPlant);
+                    GardenLogger.getInstance().log("USER_ACTION",
+                        capitalize(placingPlantType) + " planted at " + pos);
+                }
+            }
+            // Stay in placement mode — user can keep clicking to fill the row.
+            // Right-click or ESC exits.
+            e.consume();
+            return;
+        }
+
+        // --- DRAG-TO-MOVE MODE (pick up an existing alive plant) ---
+        if (!e.isPrimaryButtonDown()) return;
+        Plant p = getPlantAt(row, col);
+        if (p != null && p.isAlive()) {
+            draggingPlant   = p;
+            dragOriginalPos = p.getPosition();
+            dragCanvasX     = e.getX();
+            dragCanvasY     = e.getY();
+            dragHoverCell   = new Position(row, col);
+            gardenCanvas.setCursor(Cursor.CLOSED_HAND);
+            e.consume();
+        }
+    }
+
+    /** Tracks cursor while mouse button is held (drag-to-move or drag-to-preview). */
+    private void onCanvasDragged(MouseEvent e) {
+        dragCanvasX = e.getX();
+        dragCanvasY = e.getY();
+        int row = Math.max(0, Math.min(garden.getRows() - 1, (int)(e.getY() / cellH)));
+        int col = Math.max(0, Math.min(garden.getCols() - 1, (int)(e.getX() / cellW)));
+        dragHoverCell = new Position(row, col);
+        if (draggingPlant != null || placingPlantType != null) e.consume();
+    }
+
+    /** Completes a drag-to-move. */
+    private void onCanvasReleased(MouseEvent e) {
+        if (draggingPlant == null) return;
+        int row = Math.max(0, Math.min(garden.getRows() - 1, (int)(e.getY() / cellH)));
+        int col = Math.max(0, Math.min(garden.getCols() - 1, (int)(e.getX() / cellW)));
+        Position target = new Position(row, col);
+        if (!target.equals(dragOriginalPos) && isValidDropTarget(draggingPlant, target)) {
+            garden.movePlant(draggingPlant, target);
+        }
+        draggingPlant   = null;
+        dragHoverCell   = null;
+        dragOriginalPos = null;
+        gardenCanvas.setCursor(Cursor.DEFAULT);
+        e.consume();
+    }
+
+    // =========================================================================
+    // HELPERS
+    // =========================================================================
+
+    /** Returns the plant occupying the given grid cell, or null. */
+    private Plant getPlantAt(int row, int col) {
+        Position pos = new Position(row, col);
+        for (Plant p : garden.getPlants()) {
+            if (p.getPosition().equals(pos)) return p;
+        }
+        return null;
+    }
+
+    /** True if pos is a valid, unoccupied cell inside the plant's zone. */
+    private boolean isValidDropTarget(Plant plant, Position pos) {
+        if (pos.getRow() < 0 || pos.getRow() >= garden.getRows()) return false;
+        if (pos.getCol() < 0 || pos.getCol() >= garden.getCols()) return false;
+        if (pos.equals(plant.getPosition())) return true;
+        if (garden.isPositionOccupied(pos)) return false;
+        return isInCorrectZoneForType(plant.getName(), pos);
+    }
+
+    /** Zone check by type name string (used for both placement and drag-to-move). */
+    private boolean isInCorrectZoneForType(String type, Position pos) {
+        int row = pos.getRow();
+        return switch (type.toLowerCase()) {
+            case "tomato"    -> row == 1 || row == 2;
+            case "rose"      -> row == 5 || row == 6;
+            case "sunflower" -> row == 9;
+            case "carrot"    -> row == 13;
+            case "lettuce"   -> row == 14;
+            case "cactus"    -> row == 18;
+            default          -> false;
+        };
+    }
+
+    // =========================================================================
+    // OVERLAY RENDERING (placement + drag-to-move)
+    // =========================================================================
+
+    /**
+     * Draws zone highlights and the floating plant preview.
+     * Called from renderGarden() whenever placement or drag-to-move is active.
+     */
+    private void drawDragOverlay(GraphicsContext gc) {
+        // Determine active type (placement takes priority over drag-to-move)
+        String activeType = (placingPlantType != null) ? placingPlantType
+                          : (draggingPlant   != null)  ? draggingPlant.getName()
+                          : null;
+        if (activeType == null) return;
+
+        // 1. Shade every cell in the zone: green = valid & empty, red = blocked
+        for (int r = 0; r < garden.getRows(); r++) {
+            for (int c = 0; c < garden.getCols(); c++) {
+                Position pos = new Position(r, c);
+                if (!isInCorrectZoneForType(activeType, pos)) continue;
+                boolean blocked = garden.isPositionOccupied(pos)
+                        && (draggingPlant == null || !pos.equals(draggingPlant.getPosition()));
+                gc.setFill(blocked ? Color.rgb(255, 50, 50, 0.20) : Color.rgb(0, 255, 100, 0.28));
+                gc.fillRect(c * cellW, r * cellH, cellW, cellH);
+            }
+        }
+
+        // 2. Thick border on hover cell — green = valid drop, red = invalid
+        if (dragHoverCell != null) {
+            int r = dragHoverCell.getRow(), c = dragHoverCell.getCol();
+            boolean valid;
+            if (placingPlantType != null) {
+                valid = isInCorrectZoneForType(placingPlantType, dragHoverCell)
+                     && !garden.isPositionOccupied(dragHoverCell);
+            } else {
+                valid = isValidDropTarget(draggingPlant, dragHoverCell)
+                     && !dragHoverCell.equals(draggingPlant.getPosition());
+            }
+            gc.setStroke(valid ? Color.LIMEGREEN : Color.RED);
+            gc.setLineWidth(3.5);
+            gc.strokeRect(c * cellW + 2, r * cellH + 2, cellW - 4, cellH - 4);
+        }
+
+        // 3. Floating plant image following the cursor
+        double cellMin = Math.min(cellW, cellH);
+        String stageName = (draggingPlant != null) ? draggingPlant.getGrowthStage().name() : "MATURE";
+        String imgKey    = imageManager.getPlantImageKey(activeType, stageName, true);
+        Image  plantImg  = (imgKey != null) ? imageManager.getImage(imgKey) : null;
+
+        gc.setGlobalAlpha(0.92);
+        gc.save();
+        gc.translate(dragCanvasX, dragCanvasY);
+        if (plantImg != null) {
+            double sz = cellMin * 0.95;
+            gc.drawImage(plantImg, -sz / 2, -sz / 2, sz, sz);
+        } else {
+            gc.setFill(getSpeciesColorFx(activeType));
+            double sz = cellMin * 0.65;
+            gc.fillOval(-sz / 2, -sz / 2, sz, sz);
+        }
+        gc.restore();
+        gc.setGlobalAlpha(1.0);
+    }
+
+    /** Returns a JavaFX Color for a species name — used as fallback in the overlay. */
+    private Color getSpeciesColorFx(String type) {
+        return switch (type.toLowerCase()) {
+            case "tomato"    -> Color.web("#e74c3c");
+            case "rose"      -> Color.web("#e91e8c");
+            case "sunflower" -> Color.web("#f1c40f");
+            case "carrot"    -> Color.web("#e67e22");
+            case "lettuce"   -> Color.web("#2ecc71");
+            case "cactus"    -> Color.web("#1abc9c");
+            default          -> Color.LIGHTGRAY;
+        };
+    }
+
+    // =========================================================================
     // GARDEN CANVAS RENDERING
     // =========================================================================
 
@@ -594,6 +892,9 @@ public class GardenController implements Initializable {
         // ---- NEW: SYSTEM VISUAL EFFECTS ----
         drawSystemEffects(gc);
 
+        // ---- Rain ----
+        if (garden.isRaining()) drawRain(gc, w, h);
+
         // ---- Day/Night overlay (PvZ Night Style - Intense) ----
         double lightLevel = garden.getCurrentLightLevel();
         if (lightLevel < 65) { 
@@ -612,6 +913,9 @@ public class GardenController implements Initializable {
                 gc.strokeRect(0, 0, w, h);
             }
         }
+
+        // ---- Placement / drag-to-move overlay (always on top of night darkness) ----
+        if (draggingPlant != null || placingPlantType != null) drawDragOverlay(gc);
 
         // ---- Garden border (Wooden frame) ----
         gc.setStroke(Color.web("#4d3319"));
@@ -678,6 +982,49 @@ public class GardenController implements Initializable {
                 
                 gc.setGlobalAlpha(1.0);
             }
+        }
+    }
+
+    private void drawRain(GraphicsContext gc, double w, double h) {
+        long time = System.currentTimeMillis();
+        double intensity = garden.getRainIntensity(); // 1.0 – 5.0
+
+        // Number of drops scales with intensity (20 light → 80 heavy)
+        int dropCount = (int)(intensity * 16);
+
+        // Slight blue-grey tint to show overcast sky
+        double tintAlpha = 0.04 + (intensity / 5.0) * 0.10;
+        gc.setFill(Color.rgb(100, 120, 160, tintAlpha));
+        gc.fillRect(0, 0, w, h);
+
+        // Drop appearance: thin diagonal streaks
+        double dropLen   = 10 + intensity * 4;   // longer drops = heavier rain
+        double dropAngle = Math.toRadians(15);    // slight diagonal lean
+        double dx = Math.sin(dropAngle) * dropLen;
+        double dy = Math.cos(dropAngle) * dropLen;
+        double speed = 300 + intensity * 80;      // px/sec
+
+        gc.setStroke(Color.rgb(180, 210, 255, 0.55 + intensity * 0.07));
+        gc.setLineWidth(1.0);
+
+        // Deterministic drop positions driven by time so they animate smoothly
+        for (int i = 0; i < dropCount; i++) {
+            // Each drop has a unique horizontal lane and phase offset
+            double phase  = (i * 0.618033) % 1.0;          // golden-ratio spread
+            double xBase  = (phase * (w + 100)) - 50;
+            double yBase  = ((time * speed / 1000.0 + phase * h) % (h + dropLen)) - dropLen;
+
+            gc.strokeLine(xBase, yBase, xBase + dx, yBase + dy);
+        }
+
+        // Splash dots on the ground row (bottom 8px)
+        gc.setFill(Color.rgb(180, 210, 255, 0.35));
+        for (int i = 0; i < dropCount / 2; i++) {
+            double phase = ((i * 0.618033) % 1.0);
+            double xSplash = (phase * w + (time * 0.05) % w) % w;
+            double splashFrame = (time / 150 + i) % 4; // 4-frame splash cycle
+            double splashR = splashFrame * 1.5;
+            gc.fillOval(xSplash - splashR, h - 6 - splashR, splashR * 2, splashR * 2);
         }
     }
 
@@ -814,6 +1161,9 @@ public class GardenController implements Initializable {
                     plant.getName(), plant.getGrowthStage().name(), plant.isAlive());
             Image plantImg = (imgKey != null) ? imageManager.getImage(imgKey) : null;
 
+            // Ghost the plant being dragged (shows its original slot at 30% opacity)
+            if (plant == draggingPlant) gc.setGlobalAlpha(0.30);
+
             gc.save(); // Save state for transformation
             gc.translate(cx, cy + bob); // Move to center of plant (with bobbing)
             gc.rotate(tilt); // Apply rhythmic tilt
@@ -821,36 +1171,53 @@ public class GardenController implements Initializable {
             if (plantImg != null) {
                 double baseScale = switch (plant.getGrowthStage()) {
                     case SEED       -> 0.30;
-                    case SPROUT     -> 0.50;
+                    case SPROUT     -> 0.55;
                     case VEGETATIVE -> 0.70;
                     case FLOWERING  -> 0.85;
                     case FRUITING   -> 0.92;
                     case MATURE     -> 1.00;
-                    case WILTING    -> 0.60;
-                    case DEAD       -> 0.45;
+                    case WILTING    -> 0.65;
+                    case DEAD       -> 0.50;
                 };
 
                 double imgW = cellW * baseScale * squashX;
                 double imgH = cellH * baseScale * stretchY;
 
-                // Draw centered
                 gc.drawImage(plantImg, -imgW / 2.0, -imgH / 2.0, imgW, imgH);
+
+                // Wilting: yellow-brown tint overlay to show stress
+                if (plant.getGrowthStage() == Plant.GrowthStage.WILTING) {
+                    gc.setFill(Color.rgb(160, 90, 0, 0.40));
+                    gc.fillRect(-imgW / 2.0, -imgH / 2.0, imgW, imgH);
+                }
             } else {
-                // Fallback Shape
-                if (!plant.isAlive()) {
-                    gc.setFill(Color.web("#261a0d"));
-                    gc.fillOval(-8, cellH/2 - 12, 16, 8);
+                // SEED stage: draw a species-colored seed shape (no image file needed)
+                if (plant.getGrowthStage() == Plant.GrowthStage.SEED) {
+                    Color seedColor = getSpeciesColorFx(plant.getName());
+                    double sw = cellMin * 0.32;
+                    double sh = cellMin * 0.22;
+                    gc.setFill(seedColor.darker().darker());
+                    gc.fillOval(-sw / 2, -sh / 2, sw, sh);
+                    gc.setStroke(seedColor);
+                    gc.setLineWidth(1.2);
+                    gc.strokeOval(-sw / 2, -sh / 2, sw, sh);
+                    gc.strokeLine(0, -sh / 2 + 2, 0, sh / 2 - 2); // seed crack
+                } else if (!plant.isAlive()) {
+                    // Generic dead fallback (shouldn't normally be reached with per-species dead images)
+                    gc.setFill(Color.web("#3a2a1a"));
+                    gc.fillOval(-cellMin * 0.2, cellH / 2 - 10, cellMin * 0.4, 8);
                 } else {
+                    // Generic alive fallback
                     double hp = plant.getHealth() / 100.0;
                     gc.setFill(Color.color(0.1, 0.8 * hp, 0.1));
                     double size = cellMin * 0.6;
-                    gc.fillOval(-size/2 * squashX, -size/2 * stretchY, size * squashX, size * stretchY);
+                    gc.fillOval(-size / 2 * squashX, -size / 2 * stretchY, size * squashX, size * stretchY);
                 }
             }
             gc.restore(); // Restore state
 
             // Health bar stays fixed at the bottom
-            if (plant.isAlive()) {
+            if (plant.isAlive() && plant != draggingPlant) {
                 double barW = cellW * 0.7;
                 double barX = x + (cellW - barW)/2;
                 double barY = y + cellH - 6;
@@ -859,6 +1226,9 @@ public class GardenController implements Initializable {
                 gc.setFill(plant.getHealth() > 50 ? Color.web("#99ff33") : Color.web("#ff3300"));
                 gc.fillRect(barX, barY, barW * (plant.getHealth()/100.0), 4);
             }
+
+            // Restore full opacity after ghosted plant
+            if (plant == draggingPlant) gc.setGlobalAlpha(1.0);
         }
     }
 

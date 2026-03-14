@@ -17,7 +17,7 @@ public abstract class Plant {
     private final String id;
     private final String name;
     private final String species;
-    private Position position;
+    private Position position; // mutable to allow drag-and-drop repositioning
 
     // Health & Status
     private double health;          // 0.0 - 100.0
@@ -37,6 +37,7 @@ public abstract class Plant {
     // Environmental preferences (subclasses set these)
     protected double idealTemperatureMin;
     protected double idealTemperatureMax;
+    protected double temperatureSensitivity = 0.35; // HP lost per degree outside ideal range
     protected double waterNeedPerTick;      // how much water consumed per tick
     protected double nutrientNeedPerTick;   // how many nutrients consumed per tick
     protected double lightNeedHours;        // ideal light hours per day
@@ -75,9 +76,6 @@ public abstract class Plant {
 
         try {
             ageTicks++;
-            GardenLogger.getInstance().log("DEBUG", 
-                String.format("%s [%s] update start: temp=%.1f, light=%.1f, humidity=%.1f, water=%.1f, nutrients=%.1f", 
-                    name, id, currentTemperature, currentLight, currentHumidity, waterLevel, nutrientLevel));
             
             // Consume water and nutrients
             // NOTE: Each tick, the plant loses water and nutrients according to its needs.
@@ -99,10 +97,13 @@ public abstract class Plant {
                 }
             } else if (waterLevel > 90) {
                 // Overwatering penalty: Scaled by species-specific waterTolerance
-                // Low tolerance (e.g., 0.1 for Cactus) = -1.8 HP/tick
-                // High tolerance (e.g., 0.8 for Rose) = -0.4 HP/tick
-                double overwaterPenalty = 2.0 * (1.0 - waterTolerance);
-                healthDelta -= Math.max(0.1, overwaterPenalty); 
+                // Low tolerance (e.g., 0.1 for Cactus) = -2.7 HP/tick
+                // High tolerance (e.g., 0.8 for Lettuce) = -0.6 HP/tick
+                // Multiplier 3.0 ensures sustained overwatering causes net health
+                // decline for medium/low-tolerance species even when all other
+                // systems are healthy (realistic root rot / anaerobic soil effect).
+                double overwaterPenalty = 3.0 * (1.0 - waterTolerance);
+                healthDelta -= Math.max(0.1, overwaterPenalty);
             } else if (waterLevel > 40 && waterLevel < 70) {
                 healthDelta += 1.2; // IDEAL RANGE: Improved healing
             } else {
@@ -113,9 +114,9 @@ public abstract class Plant {
             if (currentTemperature < idealTemperatureMin || currentTemperature > idealTemperatureMax) {
                 double tempStress = 0;
                 if (currentTemperature < idealTemperatureMin) {
-                    tempStress = (idealTemperatureMin - currentTemperature) * 0.35;
+                    tempStress = (idealTemperatureMin - currentTemperature) * temperatureSensitivity;
                 } else {
-                    tempStress = (currentTemperature - idealTemperatureMax) * 0.35;
+                    tempStress = (currentTemperature - idealTemperatureMax) * temperatureSensitivity;
                 }
                 healthDelta -= tempStress;
             } else {
@@ -124,9 +125,12 @@ public abstract class Plant {
 
             // Nutrient stress
             if (nutrientLevel < 10) {
-                healthDelta -= 1.5;
+                healthDelta -= 1.5;                      // Critical deficiency
+            } else if (nutrientLevel > 85) {
+                // Nutrient burn: excess salts in soil damage roots (leaf scorch in real life)
+                healthDelta -= (nutrientLevel - 85) * 0.04; // up to -0.6 HP/tick at 100%
             } else if (nutrientLevel > 40) {
-                healthDelta += 0.5; // Nutrient boost
+                healthDelta += 0.5;                      // Ideal range bonus
             }
 
             // ---- DAILY LIGHT INTEGRAL (DLI) ----
@@ -185,8 +189,6 @@ public abstract class Plant {
 
             // Apply health change
             health = Math.max(0, Math.min(100, health + healthDelta));
-            GardenLogger.getInstance().log("DEBUG", 
-                String.format("%s [%s] update: healthDelta=%.2f, new health=%.1f", name, id, healthDelta, health));
             
             // Check for death
             if (health <= 0) {
@@ -285,6 +287,7 @@ public abstract class Plant {
     }
 
     // --- Getters ---
+    public void setPosition(Position pos) { this.position = pos; }
     public String getId() { return id; }
     public String getName() { return name; }
     public String getSpecies() { return species; }
@@ -296,6 +299,7 @@ public abstract class Plant {
     public int getAgeTicks() { return ageTicks; }
     public boolean isAlive() { return alive; }
     public double getPestResistance() { return pestResistance; }
+    public double getWaterNeedPerTick() { return waterNeedPerTick; }
 
     /** Returns a display-friendly status summary. */
     public String getStatusSummary() {

@@ -13,5 +13,7 @@ public class Rose extends Plant {
         this.lightNeedHours = 6;
         this.ticksToNextStage = 60;
         this.pestResistance = 0.2;
+        this.waterTolerance = 0.6;
+        this.temperatureSensitivity = 0.30; // Moderate — resilient but not rugged
     }
 }

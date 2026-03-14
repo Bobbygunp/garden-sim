@@ -8,6 +8,7 @@ import garden.model.sensors.Sensor;
 import garden.util.Position;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,9 @@ public class WateringSystem implements GardenModule {
         private final double radius;    // coverage radius in grid units
         private final double flowRate;  // water amount per tick when active
         private boolean active;
+        private double thresholdLow;
+        private double thresholdHigh;
+        private MoistureSensor linkedSensor; // Dedicated zone sensor — set via linkSensor()
 
         private static int counter = 0;
 
@@ -37,12 +41,22 @@ public class WateringSystem implements GardenModule {
             this.active = false;
         }
 
+        public Sprinkler(Position position, double radius, double flowRate, double thresholdLow, double thresholdHigh) {
+            this(position, radius, flowRate);
+            this.thresholdLow = thresholdLow;
+            this.thresholdHigh = thresholdHigh;
+        }
+
         public String getId() { return id; }
         public Position getPosition() { return position; }
         public double getRadius() { return radius; }
         public boolean isActive() { return active; }
         public void setActive(boolean active) { this.active = active; }
         public double getFlowRate() { return flowRate; }
+        public double getThresholdLow() { return thresholdLow; }
+        public double getThresholdHigh() { return thresholdHigh; }
+        public void linkSensor(MoistureSensor sensor) { this.linkedSensor = sensor; }
+        public MoistureSensor getLinkedSensor() { return linkedSensor; }
     }
 
     private boolean enabled;
@@ -61,13 +75,27 @@ public class WateringSystem implements GardenModule {
         GardenLogger.getInstance().log("WATERING", "Watering System initialized.");
     }
 
-    /** Add a sprinkler to the system. */
-    public void addSprinkler(Position position, double radius, double flowRate) {
-        Sprinkler s = new Sprinkler(position, radius, flowRate);
+    public WateringSystem(double moistureThresholdLow, double moistureThresholdHigh) {
+        this.enabled = true;
+        this.sprinklers = new ArrayList<>();
+        this.moistureThresholdLow = moistureThresholdLow;
+        this.moistureThresholdHigh = moistureThresholdHigh;
+        this.totalWateringEvents = 0;
+    }
+
+    /** Add a sprinkler with default thresholds (25% to 65%). */
+    public Sprinkler addSprinkler(Position position, double radius, double flowRate) {
+        return addSprinkler(position, radius, flowRate, 25.0, 65.0);
+    }
+
+    /** Add a sprinkler with custom thresholds for specific plant needs. */
+    public Sprinkler addSprinkler(Position position, double radius, double flowRate, double thresholdLow, double thresholdHigh) {
+        Sprinkler s = new Sprinkler(position, radius, flowRate, thresholdLow, thresholdHigh);
         sprinklers.add(s);
         GardenLogger.getInstance().log("WATERING",
-                String.format("Sprinkler %s added at %s (radius: %.1f, flow: %.1f)",
-                        s.getId(), position, radius, flowRate));
+                String.format("Sprinkler %s added at %s (radius: %.1f, flow: %.1f, range: %.0f-%.0f%%)",
+                        s.getId(), position, radius, flowRate, thresholdLow, thresholdHigh));
+        return s;
     }
 
     @Override
@@ -81,37 +109,52 @@ public class WateringSystem implements GardenModule {
 
             // Realistic Zoned Control: Check each sprinkler zone independently
             for (Sprinkler sprinkler : sprinklers) {
-                // Use Hysteresis: If already active, check against HIGH threshold
-                double threshold = sprinkler.isActive() ? moistureThresholdHigh : moistureThresholdLow;
-                boolean zoneNeedsWater = false;
+                boolean zoneNeedsWater = sprinkler.isActive(); // Maintain current state by default
 
-                // 1. Check sensors in this specific zone
-                for (Sensor sensor : garden.getSensors()) {
-                    if (sensor instanceof MoistureSensor && 
-                        sensor.getPosition().distanceTo(sprinkler.getPosition()) <= sprinkler.getRadius() + 2) {
-                        if (sensor.getCurrentReading() < threshold) {
-                            zoneNeedsWater = true;
-                            break;
-                        }
+                // 1. Check this zone's dedicated sensor (explicit link prevents cross-zone interference)
+                MoistureSensor ms = sprinkler.getLinkedSensor();
+
+                // FALLBACK: If no sensor is linked, try to find the nearest one in the garden
+                if (ms == null) {
+                    ms = garden.getSensors().stream()
+                            .filter(s -> s instanceof MoistureSensor)
+                            .map(s -> (MoistureSensor) s)
+                            .min(Comparator.comparingDouble(s -> s.getPosition().distanceTo(sprinkler.getPosition())))
+                            .orElse(null);
+                    
+                    if (ms != null && ms.getPosition().distanceTo(sprinkler.getPosition()) <= 5.0) {
+                        sprinkler.linkSensor(ms);
+                        GardenLogger.getInstance().log("WATERING", 
+                            "Auto-linked Sprinkler " + sprinkler.getId() + " to nearest sensor at " + ms.getPosition());
+                    }
+                }
+
+                if (ms != null) {
+                    if (!sprinkler.isActive() && ms.getMinReading() < sprinkler.getThresholdLow()) {
+                        zoneNeedsWater = true;
+                    } else if (sprinkler.isActive() && ms.getAvgReading() >= sprinkler.getThresholdHigh()) {
+                        zoneNeedsWater = false;
                     }
                 }
 
                 // 2. Safety Net: Check individual plants in this zone
-                if (!zoneNeedsWater) {
-                    List<Plant> plantsInZone = alivePlants.stream()
-                            .filter(p -> p.getPosition().distanceTo(sprinkler.getPosition()) <= sprinkler.getRadius())
-                            .toList();
-                    
-                    if (!plantsInZone.isEmpty()) {
-                        // If active, stay on until ALL plants in zone are above 75%
-                        // If inactive, turn on if ANY plant is below low threshold
-                        if (sprinkler.isActive()) {
-                            zoneNeedsWater = plantsInZone.stream().anyMatch(p -> p.getWaterLevel() < 75.0);
-                        } else {
-                            zoneNeedsWater = plantsInZone.stream().anyMatch(p -> p.getWaterLevel() < moistureThresholdLow);
+                /* 
+                    if (!zoneNeedsWater) {
+                        List<Plant> plantsInZone = alivePlants.stream()
+                                .filter(p -> p.getPosition().distanceTo(sprinkler.getPosition()) <= sprinkler.getRadius())
+                                .toList();
+                        
+                        if (!plantsInZone.isEmpty()) {
+                            // If active, stay on until ALL plants in zone are above 75%
+                            // If inactive, turn on if ANY plant is below low threshold
+                            if (sprinkler.isActive()) {
+                                zoneNeedsWater = plantsInZone.stream().anyMatch(p -> p.getWaterLevel() < 75.0);
+                            } else {
+                                zoneNeedsWater = plantsInZone.stream().anyMatch(p -> p.getWaterLevel() < moistureThresholdLow);
+                            }
                         }
                     }
-                }
+                */
 
                 // 3. Actuate only this specific zone
                 if (zoneNeedsWater) {
@@ -121,11 +164,23 @@ public class WateringSystem implements GardenModule {
                         GardenLogger.getInstance().log("WATERING",
                             "Zone " + sprinkler.getId() + " activated at " + sprinkler.getPosition());
                     }
-                    // Apply water to plants in this zone
+                    // Apply water only to plants within this sprinkler's sensor zone.
+                    // Using zone bounds (not Euclidean radius) prevents cross-zone
+                    // interference where one zone's sprinklers keep another zone's
+                    // plants moist, causing sensors to give misleading readings.
                     for (Plant plant : alivePlants) {
-                        if (plant.getPosition().distanceTo(sprinkler.getPosition()) <= sprinkler.getRadius()) {
+                        boolean inZone;
+                        if (ms != null && ms.isZoned()) {
+                            Position p = plant.getPosition();
+                            inZone = p.getRow() >= ms.getZoneMinRow()
+                                  && p.getRow() <= ms.getZoneMaxRow()
+                                  && p.getCol() >= ms.getZoneMinCol()
+                                  && p.getCol() <= ms.getZoneMaxCol();
+                        } else {
+                            inZone = plant.getPosition().distanceTo(sprinkler.getPosition()) <= sprinkler.getRadius();
+                        }
+                        if (inZone) {
                             plant.water(sprinkler.getFlowRate(), true);
-                            plant.addNutrients(2.0);
                         }
                     }
                 } else {
@@ -154,7 +209,6 @@ public class WateringSystem implements GardenModule {
             for (Plant plant : alivePlants) {
                 if (plant.getPosition().distanceTo(s.getPosition()) <= s.getRadius()) {
                     plant.water(s.getFlowRate(), true);
-                    plant.addNutrients(2.0);
                 }
             }
         }

@@ -13,5 +13,7 @@ public class Lettuce extends Plant {
         this.lightNeedHours = 5;
         this.ticksToNextStage = 35;
         this.pestResistance = 0.15;
+        this.waterTolerance = 0.8;
+        this.temperatureSensitivity = 0.45; // Bolts quickly in heat, stunts in cold
     }
 }

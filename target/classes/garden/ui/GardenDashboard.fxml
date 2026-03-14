@@ -51,96 +51,185 @@
         </HBox>
     </top>
 
-    <!-- ===== CENTER: Garden Canvas (left) + Info Tabs (right) ===== -->
+    <!-- ===== CENTER: Vertical SplitPane (garden+tabs on top, log on bottom) ===== -->
     <center>
-        <SplitPane dividerPositions="0.7" styleClass="split-pane">
+        <SplitPane orientation="VERTICAL" dividerPositions="0.75" styleClass="split-pane">
 
-            <!-- LEFT: Garden Canvas -->
-            <ScrollPane fx:id="canvasScrollPane" pannable="true" fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
-                <StackPane fx:id="canvasContainer" alignment="CENTER" styleClass="canvas-pane">
-                    <Canvas fx:id="gardenCanvas" width="400" height="400"/>
-                </StackPane>
-            </ScrollPane>
+            <!-- TOP HALF: Garden Canvas (left) + Info Tabs (right) -->
+            <SplitPane dividerPositions="0.7" styleClass="split-pane">
 
-            <!-- RIGHT: Info Tabs -->
-            <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+                <!-- LEFT: Garden Canvas -->
+                <ScrollPane fx:id="canvasScrollPane" pannable="true" fitToWidth="true" fitToHeight="true" styleClass="scroll-pane">
+                    <StackPane fx:id="canvasContainer" alignment="CENTER" styleClass="canvas-pane">
+                        <Canvas fx:id="gardenCanvas" width="400" height="400"/>
+                    </StackPane>
+                </ScrollPane>
 
-                <!-- Tab 1: Environment -->
-                <Tab text="Environment">
-                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-                        <VBox spacing="15" style="-fx-padding: 15;">
+                <!-- RIGHT: Info Tabs -->
+                <TabPane tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
 
-                            <!-- Temperature Card -->
-                            <VBox spacing="8" styleClass="card">
-                                <Label text="TEMPERATURE" styleClass="card-title" style="-fx-text-fill: #ff7b72;"/>
-                                <Label fx:id="tempLabel" text="-- F" styleClass="card-value" style="-fx-text-fill: #ff7b72;"/>
-                                <ProgressBar fx:id="tempProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.5" style="-fx-accent: #ff7b72; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                    <!-- Tab 0: Seed Tray -->
+                    <Tab text="Seed Tray">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                            <VBox spacing="12" style="-fx-padding: 14;">
+
+                                <!-- Instructions label -->
+                                <Label fx:id="placingLabel"
+                                       text="Click a seed card to select it, then click the garden to plant"
+                                       wrapText="true"
+                                       style="-fx-text-fill: #8b949e; -fx-font-size: 11px; -fx-font-style: italic;"/>
+
+                                <Separator style="-fx-background-color: #30363d;"/>
+
+                                <!-- Tomato -->
+                                <Button fx:id="seedTomato" text="🍅  Tomato  —  Rows 1 &amp; 2"
+                                        onAction="#handleSeedTomato" maxWidth="Infinity"
+                                        style="-fx-background-color: #3a0f0f; -fx-text-fill: #ff7b72;
+                                               -fx-border-color: #ff7b72; -fx-border-width: 2;
+                                               -fx-border-radius: 8; -fx-background-radius: 8;
+                                               -fx-font-size: 13px; -fx-font-weight: bold;
+                                               -fx-pref-height: 48; -fx-cursor: hand;
+                                               -fx-alignment: CENTER_LEFT; -fx-padding: 0 16;"/>
+
+                                <!-- Rose -->
+                                <Button fx:id="seedRose" text="🌹  Rose  —  Rows 5 &amp; 6"
+                                        onAction="#handleSeedRose" maxWidth="Infinity"
+                                        style="-fx-background-color: #2a0f2a; -fx-text-fill: #d2a8ff;
+                                               -fx-border-color: #d2a8ff; -fx-border-width: 2;
+                                               -fx-border-radius: 8; -fx-background-radius: 8;
+                                               -fx-font-size: 13px; -fx-font-weight: bold;
+                                               -fx-pref-height: 48; -fx-cursor: hand;
+                                               -fx-alignment: CENTER_LEFT; -fx-padding: 0 16;"/>
+
+                                <!-- Sunflower -->
+                                <Button fx:id="seedSunflower" text="🌻  Sunflower  —  Row 9"
+                                        onAction="#handleSeedSunflower" maxWidth="Infinity"
+                                        style="-fx-background-color: #2a2200; -fx-text-fill: #e3b341;
+                                               -fx-border-color: #e3b341; -fx-border-width: 2;
+                                               -fx-border-radius: 8; -fx-background-radius: 8;
+                                               -fx-font-size: 13px; -fx-font-weight: bold;
+                                               -fx-pref-height: 48; -fx-cursor: hand;
+                                               -fx-alignment: CENTER_LEFT; -fx-padding: 0 16;"/>
+
+                                <!-- Carrot -->
+                                <Button fx:id="seedCarrot" text="🥕  Carrot  —  Row 13"
+                                        onAction="#handleSeedCarrot" maxWidth="Infinity"
+                                        style="-fx-background-color: #2a1500; -fx-text-fill: #f0883e;
+                                               -fx-border-color: #f0883e; -fx-border-width: 2;
+                                               -fx-border-radius: 8; -fx-background-radius: 8;
+                                               -fx-font-size: 13px; -fx-font-weight: bold;
+                                               -fx-pref-height: 48; -fx-cursor: hand;
+                                               -fx-alignment: CENTER_LEFT; -fx-padding: 0 16;"/>
+
+                                <!-- Lettuce -->
+                                <Button fx:id="seedLettuce" text="🌿  Lettuce  —  Row 14"
+                                        onAction="#handleSeedLettuce" maxWidth="Infinity"
+                                        style="-fx-background-color: #0a2010; -fx-text-fill: #56d364;
+                                               -fx-border-color: #56d364; -fx-border-width: 2;
+                                               -fx-border-radius: 8; -fx-background-radius: 8;
+                                               -fx-font-size: 13px; -fx-font-weight: bold;
+                                               -fx-pref-height: 48; -fx-cursor: hand;
+                                               -fx-alignment: CENTER_LEFT; -fx-padding: 0 16;"/>
+
+                                <!-- Cactus -->
+                                <Button fx:id="seedCactus" text="🌵  Cactus  —  Row 18"
+                                        onAction="#handleSeedCactus" maxWidth="Infinity"
+                                        style="-fx-background-color: #0a1f10; -fx-text-fill: #3fb950;
+                                               -fx-border-color: #3fb950; -fx-border-width: 2;
+                                               -fx-border-radius: 8; -fx-background-radius: 8;
+                                               -fx-font-size: 13px; -fx-font-weight: bold;
+                                               -fx-pref-height: 48; -fx-cursor: hand;
+                                               -fx-alignment: CENTER_LEFT; -fx-padding: 0 16;"/>
+
+                                <Separator style="-fx-background-color: #30363d;"/>
+
+                                <Label text="HOW TO PLANT" style="-fx-text-fill: #3fb950; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+                                <Label text="1. Click a seed card above" style="-fx-text-fill: #8b949e; -fx-font-size: 11px;"/>
+                                <Label text="2. Switch to the garden canvas" style="-fx-text-fill: #8b949e; -fx-font-size: 11px;"/>
+                                <Label text="3. Click any highlighted green cell" style="-fx-text-fill: #8b949e; -fx-font-size: 11px;"/>
+                                <Label text="4. Press ESC or right-click to cancel" style="-fx-text-fill: #8b949e; -fx-font-size: 11px;"/>
+
                             </VBox>
+                        </ScrollPane>
+                    </Tab>
 
-                            <!-- Light Level Card -->
-                            <VBox spacing="8" styleClass="card">
-                                <Label text="LIGHT LEVEL" styleClass="card-title" style="-fx-text-fill: #d2a8ff;"/>
-                                <Label fx:id="lightLabel" text="-- / 100" styleClass="card-value" style="-fx-text-fill: #d2a8ff;"/>
-                                <ProgressBar fx:id="lightProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.6" style="-fx-accent: #d2a8ff; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                    <!-- Tab 1: Environment -->
+                    <Tab text="Environment">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                            <VBox spacing="15" style="-fx-padding: 15;">
+
+                                <!-- Temperature Card -->
+                                <VBox spacing="8" styleClass="card">
+                                    <Label text="TEMPERATURE" styleClass="card-title" style="-fx-text-fill: #ff7b72;"/>
+                                    <Label fx:id="tempLabel" text="-- F" styleClass="card-value" style="-fx-text-fill: #ff7b72;"/>
+                                    <ProgressBar fx:id="tempProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.5" style="-fx-accent: #ff7b72; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                                </VBox>
+
+                                <!-- Light Level Card -->
+                                <VBox spacing="8" styleClass="card">
+                                    <Label text="LIGHT LEVEL" styleClass="card-title" style="-fx-text-fill: #d2a8ff;"/>
+                                    <Label fx:id="lightLabel" text="-- / 100" styleClass="card-value" style="-fx-text-fill: #d2a8ff;"/>
+                                    <ProgressBar fx:id="lightProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.6" style="-fx-accent: #d2a8ff; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                                </VBox>
+
+                                <!-- Humidity Card -->
+                                <VBox spacing="8" styleClass="card">
+                                    <Label text="HUMIDITY" styleClass="card-title" style="-fx-text-fill: #79c0ff;"/>
+                                    <Label fx:id="humidityLabel" text="-- %" styleClass="card-value" style="-fx-text-fill: #79c0ff;"/>
+                                    <ProgressBar fx:id="humidityProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.5" style="-fx-accent: #79c0ff; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
+                                </VBox>
+
+                                <!-- Garden Stats Card -->
+                                <VBox spacing="8" styleClass="card">
+                                    <Label text="GARDEN STATS" styleClass="card-title" style="-fx-text-fill: #3fb950;"/>
+                                    <Label fx:id="plantsAliveLabel" text="Plants: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                    <Label fx:id="insectsLabel" text="Insects: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                    <Label fx:id="sprinklerLabel" text="Sprinklers: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                    <Label fx:id="dayPhaseLabel" text="Phase: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
+                                </VBox>
+
                             </VBox>
+                        </ScrollPane>
+                    </Tab>
 
-                            <!-- Humidity Card -->
-                            <VBox spacing="8" styleClass="card">
-                                <Label text="HUMIDITY" styleClass="card-title" style="-fx-text-fill: #79c0ff;"/>
-                                <Label fx:id="humidityLabel" text="-- %" styleClass="card-value" style="-fx-text-fill: #79c0ff;"/>
-                                <ProgressBar fx:id="humidityProgressBar" maxWidth="Infinity" prefHeight="8" progress="0.5" style="-fx-accent: #79c0ff; -fx-control-inner-background: #21262d; -fx-background-color: transparent;"/>
-                            </VBox>
+                    <!-- Tab 2: Modules -->
+                    <Tab text="Modules">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                            <VBox fx:id="moduleStatusList" spacing="15" style="-fx-padding: 15;"/>
+                        </ScrollPane>
+                    </Tab>
 
-                            <!-- Garden Stats Card -->
-                            <VBox spacing="8" styleClass="card">
-                                <Label text="GARDEN STATS" styleClass="card-title" style="-fx-text-fill: #3fb950;"/>
-                                <Label fx:id="plantsAliveLabel" text="Plants: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
-                                <Label fx:id="insectsLabel" text="Insects: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
-                                <Label fx:id="sprinklerLabel" text="Sprinklers: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
-                                <Label fx:id="dayPhaseLabel" text="Phase: --" style="-fx-text-fill: #c9d1d9; -fx-font-family: Monospaced;"/>
-                            </VBox>
+                    <!-- Tab 3: Plants -->
+                    <Tab text="Plants">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                            <VBox fx:id="plantStatusList" spacing="10" style="-fx-padding: 15;"/>
+                        </ScrollPane>
+                    </Tab>
 
-                        </VBox>
-                    </ScrollPane>
-                </Tab>
+                    <!-- Tab 4: Insects -->
+                    <Tab text="Insects">
+                        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                            <VBox fx:id="insectStatusList" spacing="10" style="-fx-padding: 15;"/>
+                        </ScrollPane>
+                    </Tab>
 
-                <!-- Tab 2: Modules -->
-                <Tab text="Modules">
-                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-                        <VBox fx:id="moduleStatusList" spacing="15" style="-fx-padding: 15;"/>
-                    </ScrollPane>
-                </Tab>
+                </TabPane>
 
-                <!-- Tab 3: Plants -->
-                <Tab text="Plants">
-                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-                        <VBox fx:id="plantStatusList" spacing="10" style="-fx-padding: 15;"/>
-                    </ScrollPane>
-                </Tab>
+            </SplitPane>
 
-                <!-- Tab 4: Insects -->
-                <Tab text="Insects">
-                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
-                        <VBox fx:id="insectStatusList" spacing="10" style="-fx-padding: 15;"/>
-                    </ScrollPane>
-                </Tab>
-
-            </TabPane>
+            <!-- BOTTOM HALF: Log Viewer (draggable via divider above) -->
+            <VBox spacing="10" styleClass="log-pane">
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label text="SYSTEM LOG" style="-fx-font-size: 12px; -fx-font-weight: 900; -fx-text-fill: #8b949e;"/>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="Filter:" style="-fx-text-fill: #8b949e; -fx-font-size: 12px;"/>
+                    <ComboBox fx:id="logFilterCombo" onAction="#handleLogFilter" prefWidth="150" style="-fx-background-color: #21262d; -fx-text-fill: white; -fx-border-color: #30363d; -fx-border-radius: 4; -fx-background-radius: 4;"/>
+                </HBox>
+                <TextArea fx:id="logArea" editable="false" VBox.vgrow="ALWAYS" styleClass="text-area"/>
+            </VBox>
 
         </SplitPane>
     </center>
 
-    <!-- ===== BOTTOM: Log Viewer ===== -->
-    <bottom>
-        <VBox spacing="10" styleClass="log-pane">
-            <HBox alignment="CENTER_LEFT" spacing="15">
-                <Label text="SYSTEM LOG" style="-fx-font-size: 12px; -fx-font-weight: 900; -fx-text-fill: #8b949e;"/>
-                <Region HBox.hgrow="ALWAYS" />
-                <Label text="Filter:" style="-fx-text-fill: #8b949e; -fx-font-size: 12px;"/>
-                <ComboBox fx:id="logFilterCombo" onAction="#handleLogFilter" prefWidth="150" style="-fx-background-color: #21262d; -fx-text-fill: white; -fx-border-color: #30363d; -fx-border-radius: 4; -fx-background-radius: 4;"/>
-            </HBox>
-            <TextArea fx:id="logArea" editable="false" prefRowCount="5" styleClass="text-area"/>
-        </VBox>
-    </bottom>
 
 </BorderPane>

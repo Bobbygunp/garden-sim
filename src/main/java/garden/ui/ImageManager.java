@@ -27,15 +27,29 @@ public class ImageManager {
     }
 
     private void loadAllImages() {
-        // === PLANTS ===
+        // === PLANTS — adult images ===
         loadImage("tomato",     "/garden/images/plants/tomato.png");
         loadImage("rose",       "/garden/images/plants/rose.png");
         loadImage("sunflower",  "/garden/images/plants/sunflower.png");
         loadImage("carrot",     "/garden/images/plants/carrot.png");
         loadImage("lettuce",    "/garden/images/plants/lettuce.png");
         loadImage("cactus",     "/garden/images/plants/cactus.png");
-        loadImage("dead_plant", "/garden/images/plants/dead_plant.png");
-        loadImage("seed",       "/garden/images/plants/seed.png");
+
+        // === PLANTS — sprout (sapling) images ===
+        loadImage("sprout_tomato",    "/garden/images/plants/sprout_tomato.png");
+        loadImage("sprout_rose",      "/garden/images/plants/sprout_rose.png");
+        loadImage("sprout_sunflower", "/garden/images/plants/sprout_sunflower.png");
+        loadImage("sprout_carrot",    "/garden/images/plants/sprout_carrot.png");
+        loadImage("sprout_lettuce",   "/garden/images/plants/sprout_lettuce.png");
+        loadImage("sprout_cactus",    "/garden/images/plants/sprout_cactus.png");
+
+        // === PLANTS — dead images (per species) ===
+        loadImage("dead_tomato",    "/garden/images/plants/dead_tomato.png");
+        loadImage("dead_rose",      "/garden/images/plants/dead_rose.png");
+        loadImage("dead_sunflower", "/garden/images/plants/dead_sunflower.png");
+        loadImage("dead_carrot",    "/garden/images/plants/dead_carrot.png");
+        loadImage("dead_lettuce",   "/garden/images/plants/dead_lettuce.png");
+        loadImage("dead_cactus",    "/garden/images/plants/dead_cactus.png");
 
         // === INSECTS ===
         loadImage("bee",         "/garden/images/insects/bee.png");
@@ -88,18 +102,21 @@ public class ImageManager {
      * Maps the plant's getName() to the correct image key.
      */
     public String getPlantImageKey(String plantName, String growthStage, boolean alive) {
-        if (!alive) return "dead_plant";
-        if ("SEED".equals(growthStage)) return "seed";
+        String species = plantName.toLowerCase();
 
-        // Map plant name to image key
-        return switch (plantName.toLowerCase()) {
-            case "tomato" -> "tomato";
-            case "rose" -> "rose";
-            case "sunflower" -> "sunflower";
-            case "carrot" -> "carrot";
-            case "lettuce" -> "lettuce";
-            case "cactus" -> "cactus";
-            default -> null; // fallback to shapes
+        // Dead (or explicitly in DEAD stage) → per-species dead image
+        if (!alive || "DEAD".equals(growthStage)) return "dead_" + species;
+
+        // SEED stage → drawn in code as a colored seed shape (no image)
+        if ("SEED".equals(growthStage)) return null;
+
+        // SPROUT → per-species sapling image
+        if ("SPROUT".equals(growthStage)) return "sprout_" + species;
+
+        // VEGETATIVE, FLOWERING, FRUITING, MATURE, WILTING → adult image
+        return switch (species) {
+            case "tomato", "rose", "sunflower", "carrot", "lettuce", "cactus" -> species;
+            default -> null;
         };
     }
 
