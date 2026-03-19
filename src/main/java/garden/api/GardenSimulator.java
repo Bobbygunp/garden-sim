@@ -1,17 +1,36 @@
 package garden.api;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 /**
- * Test harness that mirrors the pseudo-code in "Gardening System APIs.pdf".
- * Runs a 24-day simulation with random rain/temperature/parasite events each day.
+ * Mirrors the TA's grading script from "Gardening System APIs.pdf".
+ *
+ * The garden runs continuously in a background thread (started by initializeGarden()).
+ * sleepOneHour() here is the TA's own local helper — it simply sleeps 1 real hour.
+ * The garden keeps ticking autonomously during that sleep.
+ *
+ * Run modes:
+ *   mvn exec:java                        — quick test (no real sleep, uses short sleep)
+ *   mvn exec:java -Dexec.args="--real-time" — full 24-hour TA simulation
  */
 public class GardenSimulator {
 
+    private static boolean              realTime  = false;
+    private static GardenSimulationAPI  gardenAPI = null;
+
     public static void main(String[] args) {
-        GardenSimulationAPI gardenAPI = new GardenSimulationAPI();
+        for (String arg : args) {
+            if (arg.equals("--real-time")) realTime = true;
+        }
+        if (realTime) {
+            System.out.println("[Simulator] REAL-TIME mode: 1 real hour per simulated day (24 hours total).");
+        } else {
+            System.out.println("[Simulator] QUICK mode: 10-second sleep per day (runs in ~4 minutes).");
+        }
+
+        gardenAPI = new GardenSimulationAPI();
+        if (!realTime) gardenAPI.setQuickMode(true); // 50ms/tick → ~10s per day
 
         // Beginning of the simulation
         gardenAPI.initializeGarden();
@@ -24,42 +43,43 @@ public class GardenSimulator {
 
         // Day 1 — rain only
         gardenAPI.rain(25);
-        sleepOneHour(gardenAPI);
+        sleepOneHour();
 
-        // Days 2–23 — random events each day
+        // Days 2–23 — random events each day (seeded for reproducibility)
         Random rng = new Random(42);
         String[] parasiteTypes = {"aphid", "caterpillar", "insects"};
-        int[] temps = {45, 60, 72, 85, 95, 110};
+        int[]    temps         = {45, 60, 72, 85, 95, 110};
 
         for (int day = 2; day <= 23; day++) {
-            int event = rng.nextInt(3);
-            switch (event) {
-                case 0 -> {
-                    int rainAmt = 5 + rng.nextInt(30);
-                    gardenAPI.rain(rainAmt);
-                }
-                case 1 -> {
-                    int temp = temps[rng.nextInt(temps.length)];
-                    gardenAPI.temperature(temp);
-                }
-                case 2 -> {
-                    String parasite = parasiteTypes[rng.nextInt(parasiteTypes.length)];
-                    gardenAPI.parasite(parasite);
-                }
+            switch (rng.nextInt(3)) {
+                case 0 -> gardenAPI.rain(5 + rng.nextInt(30));
+                case 1 -> gardenAPI.temperature(temps[rng.nextInt(temps.length)]);
+                case 2 -> gardenAPI.parasite(parasiteTypes[rng.nextInt(parasiteTypes.length)]);
             }
-            sleepOneHour(gardenAPI);
+            sleepOneHour();
         }
 
         // Day 24 — temperature + parasite (worst case)
         gardenAPI.temperature(60);
         gardenAPI.parasite("insects");
-        sleepOneHour(gardenAPI);
+        sleepOneHour();
 
         // After 24 days — assess performance
         gardenAPI.getState();
     }
 
-    private static void sleepOneHour(GardenSimulationAPI api) {
-        api.sleepOneHour();
+    /**
+     * The TA's local sleepOneHour() helper.
+     * Real-time mode : sleeps 1 real hour — garden runs autonomously in background.
+     * Quick mode     : waits until the background thread finishes the current day,
+     *                  so events are never injected before the previous day completes.
+     */
+    private static void sleepOneHour() {
+        if (realTime) {
+            try { Thread.sleep(3_600_000L); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        } else {
+            gardenAPI.awaitDayEnd();
+        }
     }
 }

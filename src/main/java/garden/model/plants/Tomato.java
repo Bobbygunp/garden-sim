@@ -14,6 +14,11 @@ public class Tomato extends Plant {
         this.ticksToNextStage = 50;
         this.pestResistance = 0.3;
         this.waterTolerance = 0.7;
+        this.droughtThreshold   = 15.0;
+        this.overwaterThreshold = 90.0;
+        this.idealWaterMin      = 45.0;
+        this.idealWaterMax      = 75.0;
+        this.drainageRate       = 1.0;  // Loamy soil — moderate drainage
         this.temperatureSensitivity = 0.55; // Tropical — rapid damage from cold or heat
     }
 }

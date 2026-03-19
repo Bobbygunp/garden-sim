@@ -45,6 +45,13 @@ public abstract class Plant {
     protected double pestResistance;        // 0.0 - 1.0
     protected double waterTolerance;        // 0.0 - 1.0 (1.0 = highly resistant to overwatering)
 
+    // Per-species water thresholds (subclasses override these)
+    protected double droughtThreshold   = 10.0;  // below this → drought stress
+    protected double overwaterThreshold = 90.0;  // above this → overwater damage
+    protected double idealWaterMin      = 40.0;  // ideal range lower bound
+    protected double idealWaterMax      = 70.0;  // ideal range upper bound
+    protected double drainageRate       = 0.8;   // water drained per tick when above idealWaterMax (soil drainage)
+
     private static int idCounter = 0;
 
     public Plant(String name, String species, Position position) {
@@ -83,28 +90,31 @@ public abstract class Plant {
             // the waterLevel can drop below the critical threshold (<10). When this happens, 
             // the plant suffers a 2.5 HP/tick penalty, which over time drives its health to zero.
             waterLevel = Math.max(0, waterLevel - waterNeedPerTick);
+            // Soil drainage: excess water above idealWaterMax drains passively each tick.
+            // Rate reflects soil type — sandy (cactus) drains fast, clay (lettuce) retains moisture.
+            if (waterLevel > idealWaterMax) {
+                waterLevel = Math.max(idealWaterMax, waterLevel - drainageRate);
+            }
             nutrientLevel = Math.max(0, nutrientLevel - nutrientNeedPerTick);
 
             // Calculate health effects
             double healthDelta = 0;
 
-            // Water stress
-            if (waterLevel < 10) {
+            // Water stress — thresholds are per-species (subclasses set droughtThreshold,
+            // overwaterThreshold, idealWaterMin, idealWaterMax).
+            if (waterLevel < droughtThreshold) {
                 healthDelta -= 2.5;
                 if (waterLevel <= 0) {
                     GardenLogger.getInstance().logWarning("PLANT",
                             String.format("%s [%s] is critically dehydrated!", name, id));
                 }
-            } else if (waterLevel > 90) {
-                // Overwatering penalty: Scaled by species-specific waterTolerance
-                // Low tolerance (e.g., 0.1 for Cactus) = -2.7 HP/tick
-                // High tolerance (e.g., 0.8 for Lettuce) = -0.6 HP/tick
-                // Multiplier 3.0 ensures sustained overwatering causes net health
-                // decline for medium/low-tolerance species even when all other
-                // systems are healthy (realistic root rot / anaerobic soil effect).
+            } else if (waterLevel > overwaterThreshold) {
+                // Overwatering penalty: scaled by species waterTolerance.
+                // Low tolerance (e.g. Cactus 0.4) = -1.8 HP/tick at threshold.
+                // High tolerance (e.g. Lettuce 0.8) = -0.6 HP/tick at threshold.
                 double overwaterPenalty = 3.0 * (1.0 - waterTolerance);
                 healthDelta -= Math.max(0.1, overwaterPenalty);
-            } else if (waterLevel > 40 && waterLevel < 70) {
+            } else if (waterLevel > idealWaterMin && waterLevel < idealWaterMax) {
                 healthDelta += 1.2; // IDEAL RANGE: Improved healing
             } else {
                 healthDelta += 0.5; // Acceptable range
@@ -300,6 +310,7 @@ public abstract class Plant {
     public boolean isAlive() { return alive; }
     public double getPestResistance() { return pestResistance; }
     public double getWaterNeedPerTick() { return waterNeedPerTick; }
+    public double getIdealWaterMax() { return idealWaterMax; }
 
     /** Returns a display-friendly status summary. */
     public String getStatusSummary() {

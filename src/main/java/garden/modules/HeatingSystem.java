@@ -55,6 +55,9 @@ public class HeatingSystem implements GardenModule {
         public int getCoolingActivations() { return coolingActivations; }
         public void incrementHeatingActivations() { heatingActivations++; }
         public void incrementCoolingActivations() { coolingActivations++; }
+        private double currentTemperature = 65.0;
+        public double getCurrentTemperature() { return currentTemperature; }
+        public void setCurrentTemperature(double t) { this.currentTemperature = t; }
         public void linkSensor(TemperatureSensor sensor) { this.linkedSensor = sensor; }
         public TemperatureSensor getLinkedSensor() { return linkedSensor; }
     }
@@ -94,23 +97,28 @@ public class HeatingSystem implements GardenModule {
         if (!enabled || mode == Mode.OFF) return;
 
         try {
+            double ambientTemp = garden.getCurrentTemperature();
             double netAdjustment = 0;
 
             for (HeatingZone zone : zones) {
-                // Read this zone's sensor; fall back to garden-wide temperature
-                TemperatureSensor ts = zone.getLinkedSensor();
-                double zoneTemp = (ts != null)
-                        ? ts.getCurrentReading()
-                        : garden.getCurrentTemperature();
+                // Drift this zone's temperature toward garden ambient (natural heat exchange)
+                double zoneTemp = zone.getCurrentTemperature();
+                if (zoneTemp < ambientTemp) {
+                    zoneTemp = Math.min(ambientTemp, zoneTemp + 0.2);
+                } else if (zoneTemp > ambientTemp) {
+                    zoneTemp = Math.max(ambientTemp, zoneTemp - 0.2);
+                }
+                zone.setCurrentTemperature(zoneTemp);
 
                 boolean wasHeating = zone.isHeatingActive();
                 boolean wasCooling = zone.isCoolingActive();
 
                 if ((mode == Mode.AUTO || mode == Mode.HEATING)
                         && zoneTemp < zone.getTargetTemperature() - 2.0) {
-                    // Zone too cold — activate heater
+                    // Zone too cold — heat this zone only
                     zone.setHeatingActive(true);
                     zone.setCoolingActive(false);
+                    zone.setCurrentTemperature(zoneTemp + temperatureAdjustRate);
                     if (!wasHeating) {
                         zone.incrementHeatingActivations();
                         heatingActivations++;
@@ -122,9 +130,10 @@ public class HeatingSystem implements GardenModule {
 
                 } else if ((mode == Mode.AUTO || mode == Mode.COOLING)
                         && zoneTemp > zone.getTargetTemperature() + 2.0) {
-                    // Zone too hot — activate cooler
+                    // Zone too hot — cool this zone only
                     zone.setCoolingActive(true);
                     zone.setHeatingActive(false);
+                    zone.setCurrentTemperature(zoneTemp - temperatureAdjustRate);
                     if (!wasCooling) {
                         zone.incrementCoolingActivations();
                         coolingActivations++;
@@ -146,15 +155,29 @@ public class HeatingSystem implements GardenModule {
                 }
             }
 
-            // Apply net adjustment once — avoids multiple adjustTemperature() calls
-            if (netAdjustment != 0) {
-                garden.adjustTemperature(netAdjustment);
-            }
             currentAdjustment = netAdjustment;
 
         } catch (Exception e) {
             GardenLogger.getInstance().logError("HEATING", "Error in zonal heating update", e);
         }
+    }
+
+    /**
+     * Returns the current temperature for the zone covering the given position.
+     * Uses the linked sensor's zone rectangle to match plant to zone.
+     * Falls back to the provided ambient temperature if no zone covers the position.
+     */
+    public double getZoneTemperatureAt(Position pos, double fallback) {
+        for (HeatingZone zone : zones) {
+            TemperatureSensor ts = zone.getLinkedSensor();
+            if (ts != null && ts.isZoned()) {
+                if (pos.getRow() >= ts.getZoneMinRow() && pos.getRow() <= ts.getZoneMaxRow()
+                        && pos.getCol() >= ts.getZoneMinCol() && pos.getCol() <= ts.getZoneMaxCol()) {
+                    return zone.getCurrentTemperature();
+                }
+            }
+        }
+        return fallback;
     }
 
     // --- Getters & Setters ---

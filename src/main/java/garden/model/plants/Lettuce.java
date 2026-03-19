@@ -14,6 +14,11 @@ public class Lettuce extends Plant {
         this.ticksToNextStage = 35;
         this.pestResistance = 0.15;
         this.waterTolerance = 0.8;
+        this.droughtThreshold   = 20.0;
+        this.overwaterThreshold = 95.0;
+        this.idealWaterMin      = 55.0;
+        this.idealWaterMax      = 80.0;
+        this.drainageRate       = 0.4;  // Clay-rich soil — retains moisture, drains slowly
         this.temperatureSensitivity = 0.45; // Bolts quickly in heat, stunts in cold
     }
 }

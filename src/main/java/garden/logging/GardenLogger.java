@@ -68,7 +68,7 @@ public class GardenLogger {
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
                 + ".log";
         try {
-            fileWriter = new PrintWriter(new BufferedWriter(new FileWriter(logFileName, true)), false);
+            fileWriter = new PrintWriter(new BufferedWriter(new FileWriter(logFileName, java.nio.charset.StandardCharsets.UTF_8, true)), false);
             fileWriter.println("=== GARDEN SIMULATION LOG ===");
             fileWriter.println("Started: " + LocalDateTime.now().format(TIMESTAMP_FMT));
             fileWriter.println("=".repeat(60));

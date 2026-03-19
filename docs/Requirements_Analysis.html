@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Requirements Analysis — Computerized Garden Simulation</title>
+  <style>
+    /* ── Page & Typography ── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 11.5pt;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 70px 80px 70px;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      text-align: center;
+      padding: 80px 0 60px 0;
+      border-bottom: 3px solid #2c5f2e;
+      margin-bottom: 50px;
+    }
+    .cover .course { font-size: 10.5pt; color: #555; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    .cover h1 { font-size: 26pt; color: #2c5f2e; margin: 14px 0 8px 0; line-height: 1.2; }
+    .cover h2 { font-size: 14pt; color: #444; font-weight: normal; margin-bottom: 30px; }
+    .cover .meta { font-size: 10.5pt; color: #666; line-height: 2; }
+    .cover .meta strong { color: #1a1a1a; }
+
+    /* ── Section headings ── */
+    h2.section-title {
+      font-size: 14pt;
+      color: #2c5f2e;
+      border-bottom: 2px solid #2c5f2e;
+      padding-bottom: 5px;
+      margin: 40px 0 16px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h3.subsection {
+      font-size: 11.5pt;
+      color: #1a1a1a;
+      margin: 28px 0 10px 0;
+      font-style: italic;
+    }
+
+    /* ── Use Case header ── */
+    .uc-header {
+      background: #2c5f2e;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 4px 4px 0 0;
+      margin-top: 36px;
+    }
+    .uc-header .uc-id   { font-size: 9pt;   letter-spacing: 1px; text-transform: uppercase; opacity: 0.85; }
+    .uc-header .uc-name { font-size: 12.5pt; font-weight: bold; margin-top: 2px; }
+
+    .uc-body {
+      border: 1px solid #b5d0b6;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      padding: 0;
+      margin-bottom: 6px;
+    }
+
+    /* ── Use Case rows ── */
+    .uc-row {
+      display: flex;
+      border-bottom: 1px solid #e0ece0;
+    }
+    .uc-row:last-child { border-bottom: none; }
+
+    .uc-label {
+      width: 150px;
+      min-width: 150px;
+      background: #f4faf4;
+      font-size: 9.5pt;
+      font-weight: bold;
+      color: #2c5f2e;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 10px 14px;
+      vertical-align: top;
+      border-right: 1px solid #c8dfc8;
+    }
+
+    .uc-content {
+      padding: 10px 16px;
+      flex: 1;
+      font-size: 10.5pt;
+    }
+
+    /* ── Story box ── */
+    .story-box {
+      background: #f0f7f0;
+      border-left: 4px solid #2c5f2e;
+      padding: 10px 14px;
+      font-style: italic;
+      color: #2a2a2a;
+      border-radius: 0 4px 4px 0;
+      margin: 2px 0;
+    }
+
+    /* ── Scenario / steps ── */
+    ol.scenario { padding-left: 22px; margin: 4px 0; }
+    ol.scenario li { margin-bottom: 5px; }
+
+    ul.plain { padding-left: 22px; margin: 4px 0; }
+    ul.plain li { margin-bottom: 4px; }
+
+    /* ── Alt flows ── */
+    .alt-flow {
+      background: #fff8e6;
+      border-left: 3px solid #c9962a;
+      padding: 8px 12px;
+      margin: 8px 0 2px 0;
+      border-radius: 0 3px 3px 0;
+    }
+    .alt-flow strong { color: #8a6500; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.4px; }
+
+    /* ── General tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5pt;
+      margin: 12px 0;
+    }
+    thead tr { background: #2c5f2e; color: #fff; }
+    thead th { padding: 9px 12px; text-align: left; font-size: 10pt; letter-spacing: 0.3px; }
+    tbody tr:nth-child(even) { background: #f4faf4; }
+    tbody tr:nth-child(odd)  { background: #ffffff; }
+    tbody td { padding: 8px 12px; border-bottom: 1px solid #dde; vertical-align: top; }
+
+    /* ── Feature list ── */
+    .feature-group { margin: 18px 0 6px 0; }
+    .feature-group h4 { font-size: 10.5pt; color: #2c5f2e; font-weight: bold; margin-bottom: 6px; border-bottom: 1px dotted #aaccaa; padding-bottom: 3px; }
+    ul.features { padding-left: 22px; }
+    ul.features li { margin-bottom: 4px; font-size: 10.5pt; }
+
+    /* ── Problem statement ── */
+    .problem { text-align: justify; }
+    .problem p { margin-bottom: 12px; }
+
+    /* ── Print ── */
+    @media print {
+      .page { padding: 30px 40px; }
+      .uc-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      thead tr  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .uc-label { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .story-box{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .uc-header { page-break-after: avoid; }
+      .uc-body   { page-break-inside: avoid; }
+      h2.section-title { page-break-after: avoid; }
+    }
+
+    /* ── NFR badges ── */
+    .badge {
+      display: inline-block;
+      background: #2c5f2e;
+      color: #fff;
+      font-size: 9pt;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-family: "Courier New", monospace;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .divider { border: none; border-top: 1px solid #ccc; margin: 40px 0; }
+
+    .toc { background: #f9fdf9; border: 1px solid #c8dfc8; padding: 20px 28px; border-radius: 4px; margin-bottom: 40px; }
+    .toc h3 { font-size: 11pt; color: #2c5f2e; margin-bottom: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .toc ol { padding-left: 22px; }
+    .toc li { margin-bottom: 4px; font-size: 10.5pt; }
+    .toc a  { color: #2c5f2e; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════════════════════
+       COVER
+  ══════════════════════════════════════════ -->
+  <div class="cover">
+    <div class="course">CSEN 275 · Object Oriented Analysis, Design, and Programming</div>
+    <h1>Computerized Garden Simulation</h1>
+    <h2>Requirements &amp; Object-Oriented Analysis Document</h2>
+    <div class="meta">
+      <strong>Document Type:</strong> Requirements Analysis (Problem Statement · Feature List · Use Cases)<br/>
+      <strong>Language:</strong> Java 18 · JavaFX 18.0.2<br/>
+      <strong>Team Size:</strong> 3
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TABLE OF CONTENTS
+  ══════════════════════════════════════════ -->
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#s1">Problem Statement</a></li>
+      <li><a href="#s2">Actors</a></li>
+      <li><a href="#s3">Assumptions &amp; Constraints</a></li>
+      <li><a href="#s4">Feature List</a></li>
+      <li><a href="#s5">Use Cases — User Stories &amp; Scenarios</a></li>
+      <li><a href="#s6">Non-Functional Requirements</a></li>
+    </ol>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 — PROBLEM STATEMENT
+  ══════════════════════════════════════════ -->
+  <h2 class="section-title" id="s1">1. Problem Statement</h2>
+  <div class="problem">
+    <p>
+      Manual gardening demands constant, uninterrupted human attention. A gardener must
+      monitor soil moisture across multiple plant zones, regulate ambient temperature,
+      apply fertilizer on schedule, manage pest outbreaks, and ensure adequate lighting —
+      tasks that cannot be neglected for even a few hours without plants beginning to
+      deteriorate. For a large garden containing many different species, each with its own
+      ideal environmental range, this level of continuous oversight is impractical for a
+      single person.
+    </p>
+    <p>
+      This project analyzes, designs, and implements a <strong>Computerized Automated
+      Gardening System</strong> that eliminates the need for constant human supervision.
+      The system simulates a 20×20 grid garden containing 36 plants across six species
+      (Tomato, Rose, Sunflower, Carrot, Lettuce, and Cactus), a self-sustaining insect
+      ecosystem, 24 environmental sensors, and 12 irrigation sprinklers. Five autonomous
+      modules — a Watering System, Heating &amp; Climate Control System, Pest Control
+      System, Lighting System, and Fertigation System — monitor environmental conditions
+      every simulation tick and respond automatically to keep every plant alive and healthy.
+    </p>
+    <p>
+      The system also provides a JavaFX graphical dashboard so that a human gardener can
+      observe the garden in real time, intervene manually when desired, place new plants
+      via a Seed Tray interface, and review a detailed audit log of every event. An
+      external monitoring API allows a grading system to inject environmental events
+      (rainfall, extreme temperatures, parasite outbreaks) and query the current state of
+      every plant at any moment.
+    </p>
+    <p>
+      The primary success criterion is that the garden survives autonomously for 24 or
+      more continuous hours, with all plants remaining alive throughout externally injected
+      stress conditions, without any hardcoded cheating in the health logic.
+    </p>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 — ACTORS
+  ══════════════════════════════════════════ -->
+  <h2 class="section-title" id="s2">2. Actors</h2>
+  <table>
+    <thead>
+      <tr><th>Actor</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Gardener</strong></td><td>Human (primary)</td><td>Uses the JavaFX dashboard to observe the garden, control the simulation, place plants, and trigger manual interventions.</td></tr>
+      <tr><td><strong>Monitoring System</strong></td><td>External system</td><td>A grading API (<code>GardenSimulationAPI</code>) that injects environmental events and queries the full garden state as JSON.</td></tr>
+      <tr><td><strong>Watering System</strong></td><td>Automated module</td><td>Monitors zone moisture sensors every tick and controls 12 sprinklers to irrigate plant zones automatically.</td></tr>
+      <tr><td><strong>Heating System</strong></td><td>Automated module</td><td>Monitors zone temperature sensors and applies heating or cooling to maintain per-species target temperatures.</td></tr>
+      <tr><td><strong>Pest Control System</strong></td><td>Automated module</td><td>Monitors the live insect population every 5 ticks and eliminates pest insects automatically.</td></tr>
+      <tr><td><strong>Lighting System</strong></td><td>Automated module</td><td>Monitors ambient light sensors and activates supplemental grow lights during low-light periods.</td></tr>
+      <tr><td><strong>Fertigation System</strong></td><td>Automated module</td><td>Monitors per-zone nutrient levels every 12 ticks and injects calibrated fertilizer to prevent deficiency and burn.</td></tr>
+    </tbody>
+  </table>
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3 — ASSUMPTIONS & CONSTRAINTS
+  ══════════════════════════════════════════ -->
+  <h2 class="section-title" id="s3">3. Assumptions &amp; Constraints</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Statement</th></tr></thead>
+    <tbody>
+      <tr><td>AC-01</td><td>The garden grid is fixed at 20×20 cells. Each cell holds at most one entity (plant, sprinkler, or sensor).</td></tr>
+      <tr><td>AC-02</td><td>Simulation time is discrete. One tick = 500 ms real time at 1.0× speed. One simulated day = 200 ticks.</td></tr>
+      <tr><td>AC-03</td><td>Plant health is a continuous value from 0 to 100. A plant dies the tick its health reaches 0 or below.</td></tr>
+      <tr><td>AC-04</td><td>All five modules execute every tick autonomously with no human trigger required.</td></tr>
+      <tr><td>AC-05</td><td>The simulation must never crash from an unhandled exception. All runtime errors are caught and logged.</td></tr>
+      <tr><td>AC-06</td><td>Plant health logic is realistic — plants die if their environmental needs are not met. No hardcoded immortality.</td></tr>
+      <tr><td>AC-07</td><td>Log files are written to disk in near real time. The grading system reads them after the run ends.</td></tr>
+      <tr><td>AC-08</td><td>The external monitoring API (<code>GardenSimulationAPI</code>) is the only programmatic interface for grading interactions.</td></tr>
+      <tr><td>AC-09</td><td>Temperature values are in degrees Fahrenheit throughout the system.</td></tr>
+    </tbody>
+  </table>
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 4 — FEATURE LIST
+  ══════════════════════════════════════════ -->
+  <h2 class="section-title" id="s4">4. Feature List</h2>
+
+  <div class="feature-group">
+    <h4>Garden World</h4>
+    <ul class="features">
+      <li>20×20 grid with an occupancy map — O(1) collision detection prevents two entities sharing a cell.</li>
+      <li>36 plants across 6 species organized into 5 irrigation zones by row.</li>
+      <li>Day/night light cycle repeating every 200 ticks; light rises and falls sinusoidally.</li>
+      <li>Four seasons (Spring, Summer, Autumn, Winter), each lasting 1,000 ticks (~5 simulated days), with different temperature baselines and rain probabilities.</li>
+      <li>Probabilistic rain events that deliver water to all plants at a per-tick rate.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Plant System</h4>
+    <ul class="features">
+      <li>Eight growth stages: SEED → SPROUT → VEGETATIVE → FLOWERING → FRUITING → MATURE → WILTING → DEAD.</li>
+      <li>Per-tick water and nutrient consumption rates set individually per species.</li>
+      <li>Health damage from: dehydration, overwatering, temperature stress, nutrient deficiency, nutrient burn, pest attacks, and insufficient light.</li>
+      <li>Health recovery of up to +2.8 HP/tick when all conditions (water, nutrients, temperature, light) are in their ideal ranges simultaneously.</li>
+      <li>Daily Light Integral (DLI) tracking — light accumulates over each 200-tick day and is evaluated once per cycle.</li>
+      <li>Species-specific pest resistance (15 %–60 %) and overwatering tolerance (40 %–80 %).</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Insect Ecosystem</h4>
+    <ul class="features">
+      <li>Four insect types: Aphid (pest), Caterpillar (pest), Bee (pollinator), Ladybug (beneficial predator).</li>
+      <li>Ecological respawning: new Aphids every 60 ticks, Caterpillars every 100 ticks, Bees every 150 ticks.</li>
+      <li>Ladybugs spawn conditionally when live pest count exceeds 2.</li>
+      <li>Natural lifespan per species; insects die of old age without pest control intervention.</li>
+      <li>Ladybugs actively hunt pests, providing biological control between automated pest control cycles.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Sensor Network (24 sensors)</h4>
+    <ul class="features">
+      <li>6 Moisture Sensors — zone-rectangular sensing, each linked to one watering zone.</li>
+      <li>11 Temperature Sensors — 5 at grid corners and center (global), 6 zone-specific (linked to heating zones).</li>
+      <li>7 Light Sensors — distributed across rows 0 and 19 plus center for full coverage.</li>
+      <li>All sensors trigger WARN-level log alerts when readings cross their configured thresholds.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Module 1 — Watering System</h4>
+    <ul class="features">
+      <li>12 sprinklers across 6 plant zones (SPR-1 through SPR-12).</li>
+      <li>Zone-aware: each sprinkler waters only plants within its linked zone rectangle — no cross-zone interference.</li>
+      <li>Threshold-based: activates below low threshold, deactivates above high threshold (values tuned per species).</li>
+      <li>Fertigation integrated: every watering cycle also delivers nutrients to each watered plant.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Module 2 — Heating &amp; Climate Control System</h4>
+    <ul class="features">
+      <li>6 heating zones, each with a target temperature tuned to the resident species' ideal range.</li>
+      <li>Heating activates when zone temperature falls below target; cooling activates when above target.</li>
+      <li>Each active zone contributes 0.15 °F/tick of adjustment to ambient temperature.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Module 3 — Pest Control System</h4>
+    <ul class="features">
+      <li>Checks pest population every 5 ticks; activates when ≥1 pest is detected.</li>
+      <li>Three control methods: TARGETED (pests only, default), ORGANIC (slower, safe), CHEMICAL (kills all insects).</li>
+      <li>TARGETED method leaves Bees and Ladybugs unharmed.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Module 4 — Lighting System</h4>
+    <ul class="features">
+      <li>Activates supplemental grow lights when ambient light drops below 50 (target threshold 60).</li>
+      <li>Responds automatically to day/night cycle, overcast rain events, and seasonal variation in day length.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Module 5 — Fertigation System</h4>
+    <ul class="features">
+      <li>Zone-aware nutrient injection every 12 ticks.</li>
+      <li>Per-zone injection rates calibrated to each species' nutrient consumption rate.</li>
+      <li>Hard cap per species prevents nutrient levels from exceeding the burn threshold (85 % for most species).</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>JavaFX Dashboard</h4>
+    <ul class="features">
+      <li>Live 20×20 grid canvas with per-cell icons for plants, sprinklers, sensors, and insects.</li>
+      <li>Canvas auto-scales with window resize; zoom in/out/fit controls and keyboard shortcuts.</li>
+      <li>Control bar: Pause/Resume, Speed Slider (0.1×–5.0×), Manual Water, Pest Control, Fertilize All.</li>
+      <li>Keyboard shortcuts: SPACE (pause), ↑ / ↓ (speed ±10 %), HOME (reset zoom).</li>
+      <li>Seed Tray tab: select a species, click any empty cell to plant; drag existing plants to relocate them.</li>
+      <li>Plants, Sensors, and Modules tabs provide live-updating data tables.</li>
+      <li>Log Viewer: scrollable live feed of the last 500 log entries, filterable by category.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>Logging System</h4>
+    <ul class="features">
+      <li>Every event logged with timestamp, severity level (INFO / WARN / ERROR), and category tag.</li>
+      <li>13 categories: APPLICATION, GARDEN, PLANT, INSECT, SENSOR, WATERING, HEATING, PEST_CONTROL, LIGHTING, FERTIGATION, WEATHER, USER_ACTION, API.</li>
+      <li>Full log written to a timestamped file in <code>logs/</code>; last 500 entries retained in memory for the UI.</li>
+    </ul>
+  </div>
+
+  <div class="feature-group">
+    <h4>External Monitoring API</h4>
+    <ul class="features">
+      <li><code>initializeGarden()</code> — creates garden from config file, plants all species.</li>
+      <li><code>rain(double mm)</code> — injects a rainfall event for the current simulated day.</li>
+      <li><code>temperature(double F)</code> — overrides ambient temperature for the current simulated day.</li>
+      <li><code>parasite(String name)</code> — spawns a pest insect immediately at a random grid position.</li>
+      <li><code>sleepOneHour()</code> — advances the simulation by one simulated hour and returns full state JSON.</li>
+      <li><code>getState()</code> — returns a JSON snapshot of all plants, insects, sensors, and modules.</li>
+    </ul>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 5 — USE CASES
+  ══════════════════════════════════════════ -->
+  <h2 class="section-title" id="s5">5. Use Cases — User Stories &amp; Scenarios</h2>
+
+
+  <!-- ─── UC-01 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-01 · Actor: Gardener</div>
+    <div class="uc-name">Start the Garden Simulation</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to launch the simulation and immediately see the garden running autonomously, so that I do not have to configure anything before observing it.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The application is installed and the JDK 18 / JavaFX 18 environment is configured.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener runs the application (<code>mvn javafx:run</code>).</li>
+          <li>A splash screen appears while the garden loads in the background.</li>
+          <li>The system creates the 20×20 grid, instantiates 36 plants across 6 species, 24 sensors, 12 sprinklers, 6 initial insects, and all 5 modules.</li>
+          <li>The simulation engine starts at 1.0× speed without any gardener action.</li>
+          <li>The dashboard appears: the canvas shows all plants as colored circles, sprinklers and sensors are visible at their grid positions.</li>
+          <li>The log viewer shows initialization entries for every component.</li>
+          <li>Plants begin consuming water and nutrients; modules start responding; insects begin moving — all without human input.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All 36 plants are alive at health 100. All 5 modules are enabled. A timestamped log file has been created in <code>logs/</code>.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-02 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-02 · Actor: Gardener</div>
+    <div class="uc-name">Observe Live Garden State</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to see every plant's health, water, nutrients, and growth stage updated in real time, so that I understand the condition of the garden at a glance.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener looks at the canvas: plant circles are color-coded by species, sized by growth stage, and grayed out when dead.</li>
+          <li>The gardener clicks the <strong>Plants</strong> tab — a live table shows each plant's ID, species, health (color-coded green/orange/red/gray), water %, nutrient %, growth stage, and grid position.</li>
+          <li>The gardener clicks the <strong>Sensors</strong> tab — all 24 sensors are listed with their current reading and a red alert flag if the reading is outside the safe threshold.</li>
+          <li>The gardener clicks the <strong>Modules</strong> tab — each of the 5 modules shows its operational state and a running count of activations.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">No state was changed. The gardener has a complete, current picture of the garden.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-03 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-03 · Actor: Gardener</div>
+    <div class="uc-name">Pause and Resume the Simulation</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to pause the simulation at any moment so that I can examine the garden state without it changing while I look.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener presses <strong>SPACE</strong> or clicks the <strong>Pause</strong> button.</li>
+          <li>The simulation engine stops the tick loop; all plants, insects, and modules freeze.</li>
+          <li>The Pause button label changes to <strong>Resume</strong>. The log records: <code>[USER_ACTION] Simulation paused by user</code>.</li>
+          <li>The gardener examines tabs and the canvas at leisure.</li>
+          <li>The gardener presses SPACE again — the tick loop resumes exactly where it paused.</li>
+          <li>The log records: <code>[USER_ACTION] Simulation resumed by user</code>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">No plant or module state was modified during the pause period.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-04 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-04 · Actor: Gardener</div>
+    <div class="uc-name">Adjust Simulation Speed</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to speed up or slow down the simulation so that I can fast-forward through quiet periods or slow down to study specific events.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running or paused.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener drags the <strong>Speed Slider</strong> to the right (toward 5.0×).</li>
+          <li>The simulation engine reduces the tick interval in real time — each tick fires five times faster.</li>
+          <li>The speed label next to the slider updates (e.g., "3.0×"). The log records: <code>[USER_ACTION] Simulation speed set to 3.0x</code>.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Keyboard:</strong> Press <strong>↑</strong> to increase speed by 10%; press <strong>↓</strong> to decrease by 10%.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All modules, plants, and sensors continue running at the new speed. The tick interval is updated immediately.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-05 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-05 · Actor: Gardener</div>
+    <div class="uc-name">Manually Water the Garden</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to trigger an immediate full watering event so that I can respond quickly when I notice plants drying out.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. At least one plant is alive.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener notices low water levels (orange/red) in the Plants tab.</li>
+          <li>The gardener clicks <strong>Manual Water</strong> in the control bar.</li>
+          <li>All 12 sprinklers activate simultaneously across every plant zone.</li>
+          <li>Each living plant's water level increases according to its zone's sprinkler flow rate.</li>
+          <li>The log records: <code>[USER_ACTION] Manual watering triggered by user</code>, followed by <code>[WATERING] Zone SPR-X activated</code> for each sprinkler.</li>
+          <li>The canvas shows all sprinkler icons glowing (active state).</li>
+          <li>Sprinklers deactivate after one watering cycle.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Plants already fully watered:</strong> Water is delivered but capped at 100 %. Overwatering-tolerant species (e.g., Lettuce, tolerance 80 %) absorb it without penalty; low-tolerance species (e.g., Cactus, tolerance 40 %) may take a small health penalty.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All living plants have increased water levels. The event is recorded in the log.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-06 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-06 · Actor: Gardener</div>
+    <div class="uc-name">Manually Trigger Pest Control</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to manually activate pest control at any moment so that I can immediately eliminate a pest outbreak I spot on the canvas.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. At least one pest insect (Aphid or Caterpillar) is alive.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener sees red moving dots (pests) on the canvas near plants with dropping health.</li>
+          <li>The gardener clicks <strong>Pest Control</strong> in the control bar.</li>
+          <li>The Pest Control module runs immediately, outside its normal 5-tick schedule.</li>
+          <li>All live Aphid and Caterpillar instances are eliminated (TARGETED method).</li>
+          <li>Bees and Ladybugs are unaffected.</li>
+          <li>The log records: <code>[USER_ACTION] Manual pest control triggered by user</code> and <code>[PEST_CONTROL] Eliminated X pests. Total eliminated: N</code>.</li>
+          <li>Red pest dots disappear from the canvas.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — No pests present:</strong> The module finds 0 pests, logs "0 active pests detected", and takes no action.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All pest insects are dead. Plants stop receiving pest damage on the next tick.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-07 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-07 · Actor: Gardener</div>
+    <div class="uc-name">Manually Fertilize All Plants</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to immediately inject nutrients into all living plants so that I can respond quickly when I see nutrient levels falling dangerously low.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. At least one plant is alive with nutrient level below 85 %.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener sees nutrient levels dropping toward orange/red in the Plants tab.</li>
+          <li>The gardener clicks <strong>Fertilize All</strong> in the control bar.</li>
+          <li>Nutrients are added to every living plant immediately, capped at the per-species burn threshold.</li>
+          <li>The log records: <code>[USER_ACTION] Manual fertilize-all triggered by user</code>.</li>
+          <li>Plant health begins recovering on subsequent ticks (ideal nutrient range 40–85 % grants +0.5 HP/tick).</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Plant already at nutrient cap:</strong> Fertilization is silently skipped for that plant to prevent nutrient burn above 85 %.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All living plants below the nutrient cap have increased nutrient levels.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-08 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-08 · Actor: Gardener</div>
+    <div class="uc-name">Place a New Plant (Seed Tray)</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to plant a new species in any empty garden cell so that I can add variety or replace plants that have died.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. At least one empty grid cell exists.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener clicks the <strong>Seed Tray</strong> tab in the right panel.</li>
+          <li>Six species buttons are displayed: Tomato, Rose, Sunflower, Carrot, Lettuce, Cactus.</li>
+          <li>The gardener clicks <strong>Tomato</strong> — planting mode activates.</li>
+          <li>The gardener clicks an empty cell at position (2, 5) on the canvas.</li>
+          <li>The system checks the occupancy grid — the cell is empty. A new Tomato is created at (2, 5): health 100, water 50, nutrient 50, stage SEED.</li>
+          <li>The canvas immediately shows a new small colored circle at that cell.</li>
+          <li>The log records: <code>[PLANT] Tomato [PLANT-37] (Solanum lycopersicum) planted at (2, 5)</code>.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative A — Cell is occupied:</strong> The system does nothing. The gardener must choose an empty cell.
+        </div>
+        <div class="alt-flow">
+          <strong>Alternative B — Same species button clicked again:</strong> Planting mode is cancelled.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">A new plant exists on the grid and participates in all subsequent tick updates (watering, fertigation, temperature, light).</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-09 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-09 · Actor: Gardener</div>
+    <div class="uc-name">Reposition an Existing Plant</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to drag an existing plant to a different grid cell so that I can move it into a better-watered or better-lit zone.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. A non-dead plant exists on the grid. At least one other cell is empty.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener clicks and holds on an existing plant at (1, 3).</li>
+          <li>The plant is picked up; its source cell becomes free in the occupancy grid.</li>
+          <li>The gardener drags to (4, 7) and releases.</li>
+          <li>The system confirms (4, 7) is empty; the plant's position is updated.</li>
+          <li>The canvas redraws the plant at its new location.</li>
+          <li>The log records: <code>[USER_ACTION] Plant [PLANT-2] moved from (1, 3) to (4, 7)</code>.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Target cell is occupied:</strong> The plant is returned to its original position. No change occurs.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">The plant is at its new position and receives updates from whichever sensors and modules cover that cell.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-10 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-10 · Actor: Gardener</div>
+    <div class="uc-name">Zoom the Garden Canvas</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to zoom in and out on the canvas so that I can read individual plant and insect icons clearly in a large garden.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The dashboard is open.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener clicks the <strong>+</strong> zoom button — cell size increases; icons appear larger.</li>
+          <li>The gardener clicks <strong>−</strong> to zoom out.</li>
+          <li>The gardener presses <strong>HOME</strong> — the canvas instantly resets to auto-fit mode, showing all 20×20 cells within the current window size.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Window resize:</strong> The canvas recalculates cell size automatically to fit the available pane. No button click needed.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">The canvas is drawn at the selected zoom level. No simulation state was modified.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-11 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-11 · Actor: Gardener</div>
+    <div class="uc-name">Review the Live Simulation Log</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As a gardener, I want to read a live log of every simulation event so that I can understand what each automated module is doing and quickly diagnose problems.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The gardener looks at the <strong>Log Viewer</strong> at the bottom of the dashboard — new entries stream in every tick.</li>
+          <li>The gardener selects <strong>PLANT</strong> from the category dropdown — only plant events are shown (health changes, deaths, growth stages).</li>
+          <li>The gardener selects <strong>WATERING</strong> to confirm that sprinklers are activating on schedule.</li>
+          <li>For deeper analysis, the gardener opens the full log file at <code>logs/garden_YYYYMMDD_HHmmss.log</code> in a text editor.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">No state was changed. The gardener has a complete, timestamped audit trail of all activity.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-12 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-12 · Actor: Watering System</div>
+    <div class="uc-name">Automated Zone Irrigation</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Watering System, I want to activate the correct zone's sprinklers when soil moisture drops below threshold so that plants never die of dehydration without human intervention.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">At least one plant zone has soil moisture below its configured low threshold.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>Tomatoes (rows 1–2) consume 1.2 water units per tick; zone moisture gradually drops.</li>
+          <li>Moisture Sensor SENSOR-1 reads the minimum water level across all plants in the Zone 1 rectangle — it falls below the low threshold (40 %).</li>
+          <li>On the next <code>WateringSystem.update()</code> call, SPR-1, SPR-2, and SPR-3 activate.</li>
+          <li>Each active sprinkler delivers water and nutrients to every plant in the zone rectangle each tick.</li>
+          <li>The log records: <code>[WATERING] Zone SPR-1 activated at (3, 4)</code>.</li>
+          <li>Zone moisture rises above the high threshold (80 %) — all three sprinklers deactivate. The log records the deactivation.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Rain is active:</strong> Rain simultaneously raises moisture. If rain alone keeps moisture above the low threshold, the sprinklers never activate for that zone.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">Zone 1 plant water levels are in the healthy 40–80 % range. Plants receive the +1.2 HP/tick recovery bonus from ideal hydration.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-13 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-13 · Actor: Heating System</div>
+    <div class="uc-name">Automated Climate Control</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Heating System, I want to heat or cool each zone to its species-specific target temperature so that no plant suffers temperature stress damage.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">At least one zone's temperature sensor is reading outside that zone's target range.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario — Overnight heating</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The day/night cycle causes the ambient temperature to drop to 52 °F overnight.</li>
+          <li>Temperature Sensor SENSOR-16 (Zone 5 — Lettuce, target 58 °F) reads 52 °F — below target.</li>
+          <li>HZONE-5 activates heating. The log records: <code>[HEATING] HZONE-5 HEAT ON: 52.0°F &lt; target 58.0°F</code>.</li>
+          <li>The garden's ambient temperature rises 0.15 °F/tick until the zone reaches 58 °F.</li>
+          <li>Heating turns off. The log records: <code>[HEATING] HZONE-5 HEAT OFF: temperature 58.1°F reached target</code>.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Temperature spike (110 °F):</strong> All 6 zones read above their targets simultaneously. All 6 zones activate cooling, pulling the ambient temperature down at 6 × 0.15 = 0.9 °F/tick.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">Each zone's temperature is at or near its target. Temperature-stress health damage is minimized.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-14 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-14 · Actor: Pest Control System</div>
+    <div class="uc-name">Automated Pest Elimination</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Pest Control System, I want to automatically detect and eliminate pest insects so that plants are not continuously damaged while unattended.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. At least one pest insect is alive.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>An Aphid spawns at tick 60 at position (3, 5).</li>
+          <li>Each tick the Aphid is within 2.0 cells of a plant, it deals 0.8 damage/tick (reduced by the plant's pest resistance).</li>
+          <li>Every 5 ticks, <code>PestControl.update()</code> counts live pests — 1 detected; threshold is 1.</li>
+          <li>TARGETED pest control fires. The Aphid is eliminated. The log records: <code>[PEST_CONTROL] 1 active pests detected. Activating TARGETED control.</code></li>
+          <li>The log also records: <code>[INSECT] Aphid [INSECT-5] eliminated by TARGETED pest control.</code></li>
+          <li>Bees and Ladybugs are unaffected. Plant damage stops on the next tick.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Ladybug predation:</strong> A Ladybug moving near the Aphid has a probability each tick of killing it before the 5-tick check fires, providing natural biological control.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All pest insects are eliminated. New pests will respawn ecologically after 60–100 ticks, keeping the module continuously exercised.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-15 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-15 · Actor: Lighting System</div>
+    <div class="uc-name">Automated Grow Lighting</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Lighting System, I want to automatically turn supplemental grow lights on at night and off during the day so that plants always receive their required daily light hours.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation is running. The ambient light level has dropped below 50.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The day/night cycle reaches the evening phase; ambient light falls toward 0.</li>
+          <li>Light sensors read values below 50. <code>LightingSystem.update()</code> detects light &lt; 50 — grow lights activate.</li>
+          <li>The log records: <code>[LIGHTING] Grow lights ON: Natural light 0 below target 60</code>.</li>
+          <li>Supplemental light is added to the garden's light value each tick; plants continue accumulating their Daily Light Integral (DLI) even at night.</li>
+          <li>At sunrise, natural light rises above 60 — grow lights deactivate.</li>
+          <li>The log records: <code>[LIGHTING] Grow lights OFF: Natural light 65 above threshold</code>.</li>
+          <li>This cycle repeats every 200 ticks (one simulated day).</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">Plants satisfy their daily light requirements. Light-deficiency health damage is prevented.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-16 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-16 · Actor: Fertigation System</div>
+    <div class="uc-name">Automated Nutrient Injection</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Fertigation System, I want to inject nutrients into each zone when levels run low so that plants never starve, and stop injecting before burn thresholds are reached.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">At least one zone has average nutrient levels below its configured low threshold.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>Roses (rows 5–6) consume 0.4 nutrients/tick; over 12 ticks the zone average drops to 35.2 % — below the threshold of 40 %.</li>
+          <li><code>FertigationSystem.update()</code> fires on the 12-tick interval and identifies Zone 'Roses' as needing injection.</li>
+          <li>8.0 nutrient units are injected into each Rose in the zone. The log records: <code>[FERTIGATION] Zone 'Roses': fertilized 3 plants (nutrients: 35.2% -&gt; 43.2%)</code>.</li>
+          <li>On the next 12-tick check, levels are above the low threshold — injection is skipped.</li>
+          <li>If nutrient levels reached 85 % (cap), the system skips injection entirely. The log records: <code>[FERTIGATION] Zone 'Roses': all plants above threshold (avg 72.4%), skipping</code>.</li>
+        </ol>
+        <div class="alt-flow">
+          <strong>Alternative — Nutrient burn:</strong> If a plant somehow exceeds 85 %, it takes <code>-(level − 85) × 0.04 HP/tick</code> damage each tick. The fertigation cap prevents this under normal automated operation.
+        </div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">Rose nutrient levels remain in the ideal 40–85 % range, yielding +0.5 HP/tick recovery bonus.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-17 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-17 · Actor: Monitoring System</div>
+    <div class="uc-name">Inject a Rain Event</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Monitoring System, I want to inject a rain event so that I can verify the garden handles excess moisture correctly and the watering system adapts appropriately.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content"><code>initializeGarden()</code> has been called. The garden is running.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The Monitoring System calls <code>api.rain(25)</code> on Day 1.</li>
+          <li>The API converts 25 mm into a per-tick drip rate (25 ÷ 200 = 0.125 units/tick) and sets <code>isRaining = true</code> in the garden.</li>
+          <li>The log records: <code>[API] Day 1 — Rain event: 25 units (0.125/tick)</code> and <code>[WEATHER] Rain started: intensity 0.125 units/tick</code>.</li>
+          <li>Rain delivers water to all plants every tick for the full day. Zone moisture levels rise; some sprinklers that would otherwise activate are suppressed.</li>
+          <li>After 200 ticks, rain stops. The log records: <code>[WEATHER] Rain stopped after 200 ticks</code>.</li>
+          <li><code>log.txt</code> records: <code>DAY=1,EVENT=rain,EVENT_VALUE=25,PLANTS_ALIVE=16</code>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All plant water levels have increased. The watering system correctly throttled back during rain. <code>log.txt</code> confirms 16 plants alive.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-18 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-18 · Actor: Monitoring System</div>
+    <div class="uc-name">Inject an Extreme Temperature</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Monitoring System, I want to force an extreme temperature so that I can verify the heating/cooling system protects plants and no plant dies from the spike.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content"><code>initializeGarden()</code> has been called. The garden is running.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The Monitoring System calls <code>api.temperature(110)</code> on Day 5.</li>
+          <li>The API sets a temperature override of 110 °F for the current day. The log records: <code>[API] Day 5 — Temperature override: 110.0°F for this day</code>.</li>
+          <li>On the next <code>HeatingSystem.update()</code>, all 6 zones detect temperatures above their targets — all 6 activate cooling.</li>
+          <li>The log records <code>COOL ON</code> entries for all 6 zones. Combined cooling pulls ambient temperature down at 0.9 °F/tick.</li>
+          <li>Plants experience brief temperature-stress damage during the initial spike; cooling limits the duration and severity.</li>
+          <li>At end of day the override clears; the environment returns to its normal seasonal range.</li>
+          <li><code>log.txt</code> records: <code>DAY=5,EVENT=temperature,EVENT_VALUE=110,PLANTS_ALIVE=16</code>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All plants survived the spike. <code>log.txt</code> confirms 16 plants alive after Day 5.</td>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-19 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-19 · Actor: Monitoring System</div>
+    <div class="uc-name">Inject a Parasite Outbreak</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Monitoring System, I want to inject a pest insect directly into the garden so that I can verify the pest control system reacts correctly under forced conditions.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content"><code>initializeGarden()</code> has been called. The garden is running.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The Monitoring System calls <code>api.parasite("caterpillar")</code> on Day 11.</li>
+          <li>The API spawns a new Caterpillar at a random grid position. The log records: <code>[API] Day 11 — Parasite injected: caterpillar at (8, 14)</code> and <code>[INSECT] Caterpillar [INSECT-9] (PEST) appeared at (8, 14)</code>.</li>
+          <li>The Caterpillar moves each tick, dealing 1.5 damage/tick to plants within 2.0 cells.</li>
+          <li>Within 5 ticks, <code>PestControl.update()</code> detects ≥1 pest and fires TARGETED control.</li>
+          <li>The Caterpillar is eliminated. The log records: <code>[PEST_CONTROL] 1 active pests detected. Eliminated 1 pests.</code></li>
+          <li>Affected plant health recovers over subsequent ticks as all conditions return to ideal.</li>
+          <li><code>log.txt</code> records: <code>DAY=11,EVENT=parasite,EVENT_VALUE=caterpillar,PLANTS_ALIVE=16</code>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">The Caterpillar is dead. Affected plants are recovering. <code>log.txt</code> confirms 16 plants alive.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-20 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-20 · Actor: Monitoring System</div>
+    <div class="uc-name">Query Garden State After 24 Hours</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the Monitoring System, I want to query the complete garden state after 24 simulated hours so that I can record how many plants survived and assess every plant's final health.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">24 calls to <code>sleepOneHour()</code> have been made. The simulation has run for at least 24 simulated hours.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>The Monitoring System calls <code>api.getState()</code>.</li>
+          <li>The API returns a JSON object containing: current day and tick, ambient environment values, and for each plant: ID, species, position, health, water %, nutrient %, growth stage, and alive flag.</li>
+          <li>The Monitoring System reads <code>PLANTS_ALIVE</code> from the JSON to determine the survival score.</li>
+          <li><code>log.txt</code> ends with a <code>=== GARDEN STATE — DAY N ===</code> block listing every plant with HP, water level, and alive status.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">All 16 default plants have <code>alive=true</code> and <code>health &gt; 0</code> in the returned state. The grader can confirm survival without running the program again.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-21 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-21 · Actor: Garden (Automated)</div>
+    <div class="uc-name">Ecological Insect Lifecycle</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the garden ecosystem, insects must spawn, live, interact with plants, and die naturally so that the pest control module is continuously exercised and beneficial insects provide real biological value.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation has been running for at least 60 ticks beyond initial setup.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li>Every 60 ticks a new Aphid spawns at a random grid position.</li>
+          <li>Every 100 ticks a new Caterpillar spawns.</li>
+          <li>Every 150 ticks a new Bee spawns.</li>
+          <li>When the live pest count exceeds 2, a Ladybug spawns to provide biological control.</li>
+          <li>Ladybugs move toward pest insects and have a per-tick probability of killing adjacent pests.</li>
+          <li>Bees move toward flowering plants and pollinate them (small health bonus for flowering-stage plants).</li>
+          <li>Each insect ages every tick; upon reaching its lifespan (Aphid 200, Caterpillar 250, Bee 300, Ladybug 400 ticks), it dies of old age. The log records: <code>[INSECT] Aphid [INSECT-5] died of old age (age: 200 ticks)</code>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">The insect population cycles continuously throughout the simulation. The pest control module is activated on a regular schedule. Beneficial insects remain in the garden.</div>
+    </div>
+  </div>
+
+
+  <!-- ─── UC-22 ─── -->
+  <div class="uc-header">
+    <div class="uc-id">UC-22 · Actor: Garden (Automated)</div>
+    <div class="uc-name">Seasonal Environment Change</div>
+  </div>
+  <div class="uc-body">
+    <div class="uc-row">
+      <div class="uc-label">User Story</div>
+      <div class="uc-content">
+        <div class="story-box">As the garden environment, the simulation must cycle through four seasons so that temperature baselines, day length, and rain probabilities change over time, continuously challenging all five automated modules.</div>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Preconditions</div>
+      <div class="uc-content">The simulation has been running for at least 1,000 ticks.</div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Main Scenario</div>
+      <div class="uc-content">
+        <ol class="scenario">
+          <li><strong>SPRING (ticks 0–999):</strong> Moderate temperature baseline (~62 °F), moderate rain probability, growing day length. All modules operate in normal ranges.</li>
+          <li>At tick 1,000 the season changes to <strong>SUMMER</strong>. Baseline rises (~75 °F), rain becomes less frequent, days lengthen. Heating System cools more; Lighting System activates for shorter nights.</li>
+          <li>At tick 2,000 the season changes to <strong>AUTUMN</strong>. Baseline cools (~58 °F), rain frequency increases. Heating System activates more often.</li>
+          <li>At tick 3,000 the season changes to <strong>WINTER</strong>. Low baseline (~45 °F), rare rain, short days. Heating System runs nearly continuously; Lighting System activates early each evening. Lettuce and Carrot zones (cold-tolerant) require less heating than Tomato and Sunflower zones.</li>
+          <li>The log records each transition: <code>[GARDEN] Season changed to SUMMER</code>.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="uc-row">
+      <div class="uc-label">Postconditions</div>
+      <div class="uc-content">The garden survives all four seasons. All 5 modules adapt automatically to the seasonal environment without any human intervention.</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       SECTION 6 — NON-FUNCTIONAL REQUIREMENTS
+  ══════════════════════════════════════════ -->
+  <h2 class="section-title" id="s6">6. Non-Functional Requirements</h2>
+  <table>
+    <thead><tr><th style="width:90px">ID</th><th>Requirement</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="badge">NFR-01</span></td>
+        <td><strong>Reliability:</strong> The simulation must not crash due to any unhandled exception. All runtime errors are caught at the <code>SimulationEngine</code> level, logged as <code>[ERROR]</code>, and the garden continues operating.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-02</span></td>
+        <td><strong>Longevity:</strong> The simulation must run continuously and unattended for 24+ real-world hours with all plants surviving, under externally injected stress events.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-03</span></td>
+        <td><strong>UI Responsiveness:</strong> The JavaFX dashboard must remain fully responsive at all simulation speeds (0.1×–5.0×). Canvas rendering executes on the JavaFX Application Thread via <code>AnimationTimer</code>.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-04</span></td>
+        <td><strong>Log Durability:</strong> Log entries must be flushed to disk at minimum every 50 entries so that no more than ~50 entries are lost in the event of a force-quit.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-05</span></td>
+        <td><strong>Grid Integrity:</strong> No two entities may ever occupy the same grid cell. The occupancy grid enforces this in O(1) time on every plant placement and move operation.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-06</span></td>
+        <td><strong>Authentic Health Logic:</strong> Plant health must not be hardcoded to remain high. Plants die realistically if their water, nutrient, temperature, or light needs are not met by the automated modules.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-07</span></td>
+        <td><strong>Log Readability:</strong> Every log entry must be a single, human-readable line in the format <code>[TIMESTAMP] [LEVEL] [CATEGORY] message</code>, readable in any plain-text editor without special tools.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-08</span></td>
+        <td><strong>Module Count:</strong> The system must include a minimum of 3 standalone automated modules beyond the plants. This implementation provides 5: Watering System, Heating System, Pest Control, Lighting System, and Fertigation System.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-09</span></td>
+        <td><strong>Memory Safety:</strong> The in-memory log is capped at 50,000 entries to prevent unbounded RAM growth during 24+ hour runs. The file-based log retains the complete history.</td>
+      </tr>
+      <tr>
+        <td><span class="badge">NFR-10</span></td>
+        <td><strong>Thread Safety:</strong> All shared collections (plants, insects, sensors, modules, log entries) use synchronized or concurrent data structures to prevent race conditions between the simulation thread and the JavaFX rendering thread.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="divider"/>
+  <p style="text-align:center; font-size:9.5pt; color:#888;">
+    Computerized Garden Simulation · CSEN 275 · Requirements Analysis Document
+  </p>
+
+</div>
+</body>
+</html>

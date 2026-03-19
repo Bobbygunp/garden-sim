@@ -51,10 +51,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>garden.Launcher</mainClass>
-                    <arguments>
-                        <argument>2000</argument>
-                    </arguments>
+                    <mainClass>garden.api.GardenSimulator</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -14,6 +14,11 @@ public class Rose extends Plant {
         this.ticksToNextStage = 60;
         this.pestResistance = 0.2;
         this.waterTolerance = 0.6;
+        this.droughtThreshold   = 10.0;
+        this.overwaterThreshold = 85.0;
+        this.idealWaterMin      = 40.0;
+        this.idealWaterMax      = 70.0;
+        this.drainageRate       = 1.2;  // Well-drained garden bed — drains reasonably fast
         this.temperatureSensitivity = 0.30; // Moderate — resilient but not rugged
     }
 }

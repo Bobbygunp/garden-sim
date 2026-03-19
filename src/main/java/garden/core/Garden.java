@@ -52,6 +52,7 @@ public class Garden {
     // API overrides — set by GardenSimulationAPI for the duration of one simulated day
     private boolean temperatureOverrideActive = false;
     private double temperatureOverrideValue = 65.0;
+    private boolean rainDisabled = false;
 
     private final Random random = new Random();
 
@@ -94,9 +95,9 @@ public class Garden {
         Position spr1 = new Position(3, 4);
         Position spr2 = new Position(3, 10);
         Position spr3 = new Position(3, 16);
-        wateringSystem.addSprinkler(spr1, 8.0, 1.5, 40.0, 80.0).linkSensor(ms1);
-        wateringSystem.addSprinkler(spr2, 8.0, 1.5, 40.0, 80.0).linkSensor(ms1);
-        wateringSystem.addSprinkler(spr3, 8.0, 1.5, 40.0, 80.0).linkSensor(ms1);
+        wateringSystem.addSprinkler(spr1, 8.0, 1.5, 30.0, 70.0).linkSensor(ms1);
+        wateringSystem.addSprinkler(spr2, 8.0, 1.5, 30.0, 70.0).linkSensor(ms1);
+        wateringSystem.addSprinkler(spr3, 8.0, 1.5, 30.0, 70.0).linkSensor(ms1);
         markOccupied(spr1); markOccupied(spr2); markOccupied(spr3);
 
         // --- Zone 2: Roses (Very High Moisture) ---
@@ -107,8 +108,8 @@ public class Garden {
         addSensor(ms2);
         Position spr4 = new Position(7, 4);
         Position spr5 = new Position(7, 12);
-        wateringSystem.addSprinkler(spr4, 8.0, 1.0, 50.0, 90.0).linkSensor(ms2);
-        wateringSystem.addSprinkler(spr5, 8.0, 1.0, 50.0, 90.0).linkSensor(ms2);
+        wateringSystem.addSprinkler(spr4, 8.0, 1.0, 25.0, 65.0).linkSensor(ms2);
+        wateringSystem.addSprinkler(spr5, 8.0, 1.0, 25.0, 65.0).linkSensor(ms2);
         markOccupied(spr4); markOccupied(spr5);
 
         // --- Zone 3: Sunflowers (Moderate Moisture) ---
@@ -133,8 +134,8 @@ public class Garden {
         addSensor(ms4_carrot);
         Position spr8 = new Position(13, 4);
         Position spr9 = new Position(13, 10);
-        wateringSystem.addSprinkler(spr8, 4.0, 1.0, 35.0, 60.0).linkSensor(ms4_carrot);
-        wateringSystem.addSprinkler(spr9, 4.0, 1.0, 35.0, 60.0).linkSensor(ms4_carrot);
+        wateringSystem.addSprinkler(spr8, 4.0, 1.0, 25.0, 60.0).linkSensor(ms4_carrot);
+        wateringSystem.addSprinkler(spr9, 4.0, 1.0, 25.0, 60.0).linkSensor(ms4_carrot);
         markOccupied(spr8); markOccupied(spr9);
 
         // --- Zone 4b: Lettuce (Row 14) — High water demand, higher thresholds ---
@@ -146,7 +147,7 @@ public class Garden {
         ms4_lettuce.setSensingRange(14, 14, 0, cols - 1);
         addSensor(ms4_lettuce);
         Position spr10 = new Position(13, 16);
-        wateringSystem.addSprinkler(spr10, 8.0, 3.0, 45.0, 75.0).linkSensor(ms4_lettuce);
+        wateringSystem.addSprinkler(spr10, 8.0, 3.0, 40.0, 75.0).linkSensor(ms4_lettuce);
         markOccupied(spr10);
 
         // --- Zone 5: Cacti (Arid/Dry Zone) ---
@@ -160,8 +161,8 @@ public class Garden {
         addSensor(ms5);
         Position spr11 = new Position(18, 4);
         Position spr12 = new Position(18, 15);
-        wateringSystem.addSprinkler(spr11, 4.0, 1.0, 25.0, 50.0).linkSensor(ms5);
-        wateringSystem.addSprinkler(spr12, 4.0, 1.0, 25.0, 50.0).linkSensor(ms5);
+        wateringSystem.addSprinkler(spr11, 4.0, 1.0, 10.0, 35.0).linkSensor(ms5);
+        wateringSystem.addSprinkler(spr12, 4.0, 1.0, 10.0, 35.0).linkSensor(ms5);
         markOccupied(spr11); markOccupied(spr12);
 
         modules.add(wateringSystem);
@@ -255,7 +256,7 @@ public class Garden {
         // 0.15°F/tick per zone × 6 zones = 0.90°F/tick max HVAC power.
         // Natural drift rate is 0.2°F/tick, so HVAC can always win against any
         // external temperature (40-120°F) and hold internal temp in the safe range.
-        heatingSystem.setTemperatureAdjustRate(0.15);
+        heatingSystem.setTemperatureAdjustRate(0.5);
         heatingSystem.addZone(new Position(3, 13),  70.0).linkSensor(ts1);  // Tomatoes: ideal 60-85°F
         heatingSystem.addZone(new Position(7, 1),   67.0).linkSensor(ts2);  // Roses: ideal 55-80°F
         heatingSystem.addZone(new Position(10, 1),  70.0).linkSensor(ts3);  // Sunflowers: ideal 55-91°F
@@ -323,7 +324,7 @@ public class Garden {
             updateEnvironment();
 
             // 1b. Apply Rain Effect: Rain increases water level for all plants
-            if (isRaining) {
+            if (isRaining && !rainDisabled) {
                 for (Plant plant : plants) {
                     if (plant.isAlive()) {
                         // Rain intensity is 1.0 to 5.0; we apply a smaller portion 
@@ -350,9 +351,12 @@ public class Garden {
                 module.update(this);
             }
 
-            // 4. Update all plants (with temperature, light, and humidity)
+            // 4. Update all plants — each plant receives its zone's temperature
             for (Plant plant : plants) {
-                plant.update(currentTemperature, currentLightLevel, currentHumidity);
+                double plantTemp = (heatingSystem != null)
+                        ? heatingSystem.getZoneTemperatureAt(plant.getPosition(), currentTemperature)
+                        : currentTemperature;
+                plant.update(plantTemp, currentLightLevel, currentHumidity);
             }
 
             // 5. Update all insects (optimization: only pass alive plants)
@@ -413,13 +417,18 @@ public class Garden {
             case WINTER -> 0.0015;
         };
 
-        if (!isRaining && random.nextDouble() < rainChance) {
-            isRaining = true;
-            rainIntensity = 1.0 + random.nextDouble() * 4.0;
-            GardenLogger.getInstance().log("WEATHER", String.format("It started raining! Intensity: %.1f", rainIntensity));
-        } else if (isRaining && random.nextDouble() < 0.02) { // 2% chance per tick to stop
+        if (!rainDisabled) {
+            if (!isRaining && random.nextDouble() < rainChance) {
+                isRaining = true;
+                rainIntensity = 1.0 + random.nextDouble() * 4.0;
+                GardenLogger.getInstance().log("WEATHER", String.format("It started raining! Intensity: %.1f", rainIntensity));
+            } else if (isRaining && random.nextDouble() < 0.02) {
+                isRaining = false;
+                GardenLogger.getInstance().log("WEATHER", "The rain has stopped.");
+            }
+        } else {
             isRaining = false;
-            GardenLogger.getInstance().log("WEATHER", "The rain has stopped.");
+            rainIntensity = 0;
         }
 
         // --- 3. Light, Temperature & Humidity Calculations ---
@@ -625,6 +634,8 @@ public class Garden {
         this.temperatureOverrideValue = Math.max(40, Math.min(120, tempF));
         this.temperatureOverrideActive = true;
     }
+
+    public void setRainDisabled(boolean disabled) { this.rainDisabled = disabled; }
 
     /** Remove temperature override and resume natural seasonal cycle. */
     public void clearTemperatureOverride() {
