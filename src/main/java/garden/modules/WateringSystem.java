@@ -231,6 +231,9 @@ public class WateringSystem implements GardenModule {
     @Override
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+        if (!enabled) {
+            sprinklers.forEach(s -> s.setActive(false));
+        }
         GardenLogger.getInstance().log("WATERING",
                 "Watering System " + (enabled ? "ENABLED" : "DISABLED"));
     }

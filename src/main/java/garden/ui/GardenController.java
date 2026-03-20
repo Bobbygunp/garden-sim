@@ -372,7 +372,21 @@ public class GardenController implements Initializable {
                 : "-fx-background-color: #21262d;")
                 + " -fx-padding: 3 8; -fx-background-radius: 12;");
 
-        titleRow.getChildren().addAll(nameLabel, badge);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button toggleBtn = new Button(mod.isEnabled() ? "Disable" : "Enable");
+        toggleBtn.setStyle(mod.isEnabled()
+                ? "-fx-background-color: #6e1818; -fx-text-fill: #ff7b72; -fx-border-color: #ff7b72; -fx-border-width: 1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 3 10;"
+                : "-fx-background-color: #0f2d0f; -fx-text-fill: #3fb950; -fx-border-color: #3fb950; -fx-border-width: 1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 3 10;");
+        toggleBtn.setOnAction(e -> {
+            boolean nowEnabled = !mod.isEnabled();
+            mod.setEnabled(nowEnabled);
+            GardenLogger.getInstance().log("USER_ACTION",
+                    mod.getModuleName() + (nowEnabled ? " enabled by user" : " disabled by user"));
+        });
+
+        titleRow.getChildren().addAll(nameLabel, badge, spacer, toggleBtn);
 
         Label summary = new Label(mod.getStatusSummary());
         summary.setWrapText(true);
@@ -1038,7 +1052,7 @@ public class GardenController implements Initializable {
             double cy = y + cellH / 2.0;
             double cellMin = Math.min(cellW, cellH);
 
-            if (spr.isActive()) {
+            if (spr.isActive() && garden.getWateringSystem().isEnabled()) {
                 long time = System.currentTimeMillis();
                 
                 // 1. Energetic Pulsing Glow
