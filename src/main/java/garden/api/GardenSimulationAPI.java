@@ -13,26 +13,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Public API for the automated garden simulation.
- * Implements the interface described in "Gardening System APIs.pdf".
- *
- * The garden runs continuously in a background thread after initializeGarden() is called.
- * The TA's script injects events (rain/temperature/parasite) and sleeps 1 real hour
- * between each event. The garden processes ticks autonomously during that hour.
- *
- * Tick rate: 18 seconds per tick  →  200 ticks = 1 real hour = 1 simulated day.
- *
- * Usage (mirrors TA pseudo-code):
- *   GardenSimulationAPI api = new GardenSimulationAPI();
- *   api.initializeGarden();           // starts background tick thread
- *   api.rain(10);
- *   Thread.sleep(3_600_000);          // TA's sleepOneHour() — garden runs on its own
- *   api.temperature(85);
- *   Thread.sleep(3_600_000);
- *   // ... 24 hours total ...
- *   api.getState();
- */
+
 public class GardenSimulationAPI {
 
     private static final int  TICKS_PER_DAY       = 200;
@@ -48,7 +29,6 @@ public class GardenSimulationAPI {
 
     /**
      * Blocks until the background thread completes the current simulated day.
-     * Used by GardenSimulator in quick mode so events are never injected mid-day.
      */
     public void awaitDayEnd() {
         int targetDay = currentDay + 1;
@@ -75,14 +55,11 @@ public class GardenSimulationAPI {
     private volatile double  rainWaterPerTick = 0.0;
     private volatile boolean rainActive       = false;
 
-    // -------------------------------------------------------------------------
-    // Public API Methods
-    // -------------------------------------------------------------------------
+
 
     /**
      * Initialises the garden from the config file and starts the background
      * simulation thread. Must be called first.
-     * Guarantees >= 10 alive plants covering all varieties.
      */
     public void initializeGarden() {
         // Stop any previously running simulation
@@ -124,10 +101,7 @@ public class GardenSimulationAPI {
     }
 
     /**
-     * Returns a map of all alive plant data:
-     *   "plants"           -> List<String>       — plant names
-     *   "waterRequirement" -> List<Integer>       — daily water need per plant
-     *   "parasites"        -> List<List<String>>  — parasites each plant is vulnerable to
+     * Returns a map of all alive plant data
      */
     public Map<String, Object> getPlants() {
         List<String>       names     = new ArrayList<>();
@@ -148,13 +122,7 @@ public class GardenSimulationAPI {
         return result;
     }
 
-    /**
-     * Simulates rainfall for the current simulated day.
-     * Water is applied per-tick by the background thread.
-     * Resets automatically after TICKS_PER_DAY ticks (end of current day).
-     *
-     * @param amount total water units to distribute over the day
-     */
+   
     public void rain(int amount) {
         if (amount <= 0) return;
         rainWaterPerTick = amount / (double) TICKS_PER_DAY;
@@ -169,12 +137,7 @@ public class GardenSimulationAPI {
         System.out.printf("[API] Day %d — rain(%d)%n", currentDay + 1, amount);
     }
 
-    /**
-     * Sets the garden temperature for the current simulated day.
-     * Overrides the natural seasonal cycle; resets at end of current day.
-     *
-     * @param tempF temperature in Fahrenheit (valid range: 40–120)
-     */
+    
     public void temperature(int tempF) {
         int clamped = Math.max(40, Math.min(120, tempF));
         garden.setTemperatureOverride(clamped);
@@ -190,7 +153,6 @@ public class GardenSimulationAPI {
 
     /**
      * Triggers a parasite infestation. Spawns 4 insects of the named type.
-     * PestControl responds autonomously; plants heal gradually over time.
      *
      * Accepted names (case-insensitive): aphid, caterpillar, bee, ladybug, insects
      * "insects" spawns a mixed aphid + caterpillar infestation.
@@ -261,9 +223,8 @@ public class GardenSimulationAPI {
     /** Public stop for testing. */
     public void stopSimulationPublic() { stopSimulation(); }
 
-    // -------------------------------------------------------------------------
     // Background simulation thread
-    // -------------------------------------------------------------------------
+    
 
     private void startSimulation() {
         running   = true;
@@ -287,8 +248,6 @@ public class GardenSimulationAPI {
 
     /**
      * Main loop: one tick every TICK_INTERVAL_MS.
-     * Rain is applied each tick while active.
-     * Rain and temperature overrides reset at the end of each simulated day.
      */
     private void simulationLoop() {
         while (running) {
@@ -334,9 +293,8 @@ public class GardenSimulationAPI {
         }
     }
 
-    // -------------------------------------------------------------------------
+   
     // Private helpers
-    // -------------------------------------------------------------------------
 
     private Map<String, Integer> loadConfig() {
         String json = null;
@@ -426,9 +384,6 @@ public class GardenSimulationAPI {
 
     /**
      * Writes a daily end-of-day summary to log.txt:
-     *   - Garden-wide stats (temperature, humidity, alive count)
-     *   - Per-plant snapshot (HP, water, nutrients, growth stage)
-     * This runs after every simulated day so the TA can track garden health day-by-day.
      */
     private void writeDailySummary(int day) {
         long alive = garden.getPlants().stream().filter(Plant::isAlive).count();

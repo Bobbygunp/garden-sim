@@ -4,10 +4,7 @@ import garden.logging.GardenLogger;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.*;
 
-/**
- * The SimulationEngine drives the garden simulation forward.
- * It uses a JavaFX AnimationTimer to tick the garden at a configurable speed.
- */
+
 public class SimulationEngine {
 
     private final Garden garden;

@@ -3,13 +3,7 @@ package garden.api;
 import garden.core.Garden;
 import garden.model.plants.Plant;
 
-/**
- * Drought test: NO rain, NO watering system.
- * Runs the garden directly (no background thread, no API).
- *
- * Run via IntelliJ: right-click → Run 'DroughtTest.main()'
- * Run via Maven:    mvn exec:java -Dexec.mainClass="garden.api.DroughtTest"
- */
+
 public class DroughtTest {
 
     private static final int TICKS_PER_DAY = 200;
@@ -21,20 +15,16 @@ public class DroughtTest {
         System.out.println(" " + TEST_DAYS + " days (" + (TEST_DAYS * TICKS_PER_DAY) + " ticks)");
         System.out.println("=======================================================\n");
 
-        // 1. Build garden directly — no API involved
         Garden garden = new Garden("DroughtTest", 20, 20);
         garden.initializeDefaultGarden();
 
-        // 2. Kill all rain — weather engine will never produce it
         garden.setRainDisabled(true);
 
-        // 3. Kill the watering system — sprinklers will never fire
         garden.getWateringSystem().setEnabled(false);
 
         System.out.println("[DroughtTest] Rain:     DISABLED");
         System.out.println("[DroughtTest] Watering: DISABLED\n");
 
-        // 4. Place plants (same species/counts as GardenSimulator default config)
         String[] species = {"tomato", "tomato", "tomato",
                             "rose",   "rose",   "rose",
                             "sunflower", "sunflower",
@@ -49,7 +39,6 @@ public class DroughtTest {
         }
         System.out.printf("Plants placed: %d%n%n", garden.getPlants().size());
 
-        // 5. Tick the garden synchronously day by day — no threads, no surprises
         for (int day = 1; day <= TEST_DAYS; day++) {
             for (int t = 0; t < TICKS_PER_DAY; t++) {
                 garden.tick();
@@ -65,7 +54,7 @@ public class DroughtTest {
             }
         }
 
-        // 6. Final per-plant breakdown
+
         System.out.println("\n--- FINAL PLANT STATE ---");
         for (Plant p : garden.getPlants()) {
             System.out.printf("  %-10s | HP: %5.1f | Water: %5.1f | Stage: %-10s | alive=%b%n",

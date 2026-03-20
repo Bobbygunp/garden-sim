@@ -77,8 +77,6 @@ public class Garden {
 
     /**
      * Initialize the garden with a realistic, industrial-grade layout.
-     * Uses a 'Master Planting Plan' where infrastructure (pipes/sensors) 
-     * and plant rows are organized into structured zones.
      */
     public void initializeDefaultGarden() {
         GardenLogger.getInstance().log("GARDEN", "=== Initializing Professional Garden Layout ===");
@@ -126,9 +124,7 @@ public class Garden {
 
         // --- Zone 4a: Carrots (Row 13) — Low water demand, moderate thresholds ---
         // Sensor in row 12 (empty infrastructure row above carrot bed).
-        // Two gentle sprinklers (1.0 flow each) → 2.0/tick delivered to each carrot.
-        // Net gain when active: 2.0 - 0.8 (carrot need) = 1.2/tick.
-        // Max 4-tick sensor-lag overshoot: ~4.8 units above 60% → peaks ~64.8% (well below 90%).
+      
         MoistureSensor ms4_carrot = new MoistureSensor(new Position(12, 10));
         ms4_carrot.setSensingRange(13, 13, 0, cols - 1);
         addSensor(ms4_carrot);
@@ -140,9 +136,6 @@ public class Garden {
 
         // --- Zone 4b: Lettuce (Row 14) — High water demand, higher thresholds ---
         // Sensor in row 15 (empty infrastructure row below lettuce bed).
-        // Single sprinkler (3.0 flow) → 3.0/tick per plant; lettuce needs 1.1/tick.
-        // Net gain when active: 1.9/tick; max overshoot: ~7.6 → peaks ~82.6% (below 90%).
-        // Lettuce waterTolerance=0.8 means brief high moisture causes minimal penalty.
         MoistureSensor ms4_lettuce = new MoistureSensor(new Position(15, 10));
         ms4_lettuce.setSensingRange(14, 14, 0, cols - 1);
         addSensor(ms4_lettuce);
@@ -152,10 +145,7 @@ public class Garden {
 
         // --- Zone 5: Cacti (Arid/Dry Zone) ---
         // Thresholds: 25% to 50% (drought-tolerant, low flow)
-        // Two drip emitters cover the full row in two halves:
-        //   Left  emitter (col 4, r=4): reaches cacti at cols 1 and 6
-        //   Right emitter (col 15, r=4): reaches cacti at cols 11 and 16
-        // Single moisture sensor at col 9 (center) monitors all cacti.
+    
         MoistureSensor ms5 = new MoistureSensor(new Position(18, 9));
         ms5.setSensingRange(18, 18, 0, cols - 1);
         addSensor(ms5);
@@ -249,13 +239,8 @@ public class Garden {
         addInsect(new Caterpillar(new Position(11, 3)));
 
         // --- Heating System (Zonal) ---
-        // Each plant zone has its own heater linked to its zone temperature sensor.
-        // Targets are set near the midpoint of each species' ideal range.
-        // Per-zone rate 0.05°F/tick → up to 0.30°F/tick when all 6 zones agree.
         heatingSystem = new HeatingSystem();
-        // 0.15°F/tick per zone × 6 zones = 0.90°F/tick max HVAC power.
-        // Natural drift rate is 0.2°F/tick, so HVAC can always win against any
-        // external temperature (40-120°F) and hold internal temp in the safe range.
+        
         heatingSystem.setTemperatureAdjustRate(0.5);
         heatingSystem.addZone(new Position(3, 13),  70.0).linkSensor(ts1);  // Tomatoes: ideal 60-85°F
         heatingSystem.addZone(new Position(7, 1),   67.0).linkSensor(ts2);  // Roses: ideal 55-80°F
@@ -271,9 +256,7 @@ public class Garden {
         lightingSystem = new LightingSystem();
         modules.add(lightingSystem);
 
-        // Zone-specific fertigation: injection rates are calibrated to each species'
-        // nutrientNeedPerTick so all zones stay in the healthy 40-80% range.
-        // Thresholds match the moisture sensor zone rectangles for consistency.
+       
         FertigationSystem fertigationSystem = new FertigationSystem();
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
                 "Tomatoes",       1,  2,  0, cols - 1, 40.0, 85.0, 10.0)); // 0.5/tick — heavy feeder
@@ -367,9 +350,7 @@ public class Garden {
                 insect.update(alivePlantsList, rows, cols);
             }
 
-            // 5b. Biological control: beneficial insects (ladybugs) hunt pests
-            //     Hunt radius 2.0 cells, 30% chance per tick — models real ladybug
-            //     behavior (~50 aphids/day, but not instant kills).
+    
             List<Insect> aliveInsects = insects.stream()
                     .filter(Insect::isAlive).toList();
             for (Insect insect : aliveInsects) {
@@ -458,10 +439,7 @@ public class Garden {
         // Temperature: Target = Seasonal base + day/night swing
         double targetAmbientTemp = baseTemp + (10.0 * sunEffect);
 
-        // When API sets a temperature, use it as the external ambient target the
-        // environment drifts toward — the HVAC module then actively fights it.
-        // This models a real greenhouse: outside temp is extreme, HVAC maintains
-        // safe internal conditions. Hard-setting would bypass the HVAC entirely.
+
         if (temperatureOverrideActive) {
             targetAmbientTemp = temperatureOverrideValue;
         }
@@ -487,16 +465,7 @@ public class Garden {
         }
     }
 
-    /**
-     * Ecologically-driven insect spawning. Each species has a unique spawn
-     * interval and probability that reflects real-world population dynamics:
-     *
-     *   Aphids      — every  60 ticks, 40% chance (prolific asexual reproducers)
-     *   Caterpillars — every 100 ticks, 15% chance (moths lay eggs periodically)
-     *   Bees        — every 150 ticks, 25% chance (stable hive-based population)
-     *   Ladybugs    — every 100 ticks, conditional on pest presence
-     *                  (attracted by aphid/caterpillar pheromones in real life)
-     */
+    
     private void spawnInsectsEcological() {
         // --- Aphids: fast reproducers, most common garden pest ---
         if (currentTick % 60 == 0 && random.nextDouble() < 0.40) {
@@ -589,11 +558,7 @@ public class Garden {
         return true;
     }
 
-    /**
-     * Factory: creates a new plant of the given type at the given position.
-     * Used by the UI seed tray to instantiate plants on demand.
-     * Returns null if the type is unrecognised.
-     */
+    
     public Plant createPlant(String type, Position pos) {
         return switch (type.toLowerCase()) {
             case "tomato"    -> new Tomato(pos);
