@@ -18,7 +18,7 @@ public class Lettuce extends Plant {
         this.overwaterThreshold = 95.0;
         this.idealWaterMin      = 55.0;
         this.idealWaterMax      = 80.0;
-        this.drainageRate       = 0.4;  // Clay-rich soil — retains moisture, drains slowly
-        this.temperatureSensitivity = 0.45; // Bolts quickly in heat, stunts in cold
+        this.drainageRate       = 0.4;
+        this.temperatureSensitivity = 0.45;
     }
 }

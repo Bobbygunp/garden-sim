@@ -26,8 +26,6 @@ public class GardenApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Global safety net: log and swallow any unhandled exception so the
-        // garden keeps running during the 24-hour grading session.
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             try {
                 GardenLogger.getInstance().logError("APPLICATION",
@@ -37,7 +35,6 @@ public class GardenApp extends Application {
         });
 
         try {
-            // --- Splash Screen ---
             Label title = new Label("Computerized Garden Simulation");
             title.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa; -fx-font-family: 'Georgia', serif;");
 
@@ -69,9 +66,6 @@ public class GardenApp extends Application {
             primaryStage.setMaximized(true);
             primaryStage.show();
 
-            // --- Background init: keep the FX thread free so the splash renders ---
-            // Record start time so we can enforce a minimum display of 6 seconds,
-            // giving the professor enough time to read the message.
             final long splashStart = System.currentTimeMillis();
             final long MIN_SPLASH_MS = 6000;
 
@@ -83,13 +77,11 @@ public class GardenApp extends Application {
                     garden.initializeDefaultGarden();
                     simulationEngine = new SimulationEngine(garden);
 
-                    // Wait out any remaining splash time before transitioning
                     long elapsed = System.currentTimeMillis() - splashStart;
                     if (elapsed < MIN_SPLASH_MS) {
                         try { Thread.sleep(MIN_SPLASH_MS - elapsed); } catch (InterruptedException ignored) {}
                     }
 
-                    // Back to FX thread to build and show the main scene
                     Platform.runLater(() -> {
                         try {
                             FXMLLoader loader = new FXMLLoader(
@@ -99,8 +91,6 @@ public class GardenApp extends Application {
 
                             primaryStage.setScene(new Scene(root, 1280, 800));
 
-                            // Two runLater calls so the layout engine measures pane
-                            // sizes after both the scene swap and the maximise pulse.
                             Platform.runLater(() -> Platform.runLater(() -> {
                                 controller.initializeWithModel(garden, simulationEngine);
                                 simulationEngine.start();

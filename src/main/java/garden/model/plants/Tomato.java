@@ -18,7 +18,7 @@ public class Tomato extends Plant {
         this.overwaterThreshold = 90.0;
         this.idealWaterMin      = 45.0;
         this.idealWaterMax      = 75.0;
-        this.drainageRate       = 1.0;  // Loamy soil — moderate drainage
-        this.temperatureSensitivity = 0.55; // Tropical — rapid damage from cold or heat
+        this.drainageRate       = 1.0;
+        this.temperatureSensitivity = 0.55;
     }
 }

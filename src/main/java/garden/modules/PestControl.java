@@ -15,27 +15,27 @@ import java.util.stream.Collectors;
 public class PestControl implements GardenModule {
 
     public enum PestControlMethod {
-        ORGANIC,     // slower but safe for beneficials
-        CHEMICAL,    // fast but kills all insects
-        TARGETED     // only kills pests, moderate speed
+        ORGANIC,
+        CHEMICAL,
+        TARGETED
     }
 
     private boolean enabled;
     private PestControlMethod method;
-    private int pestThreshold;           // number of pests before activating
+    private int pestThreshold;
     private int pestControlActivations;
     private int pestsEliminated;
     private int ticksBetweenChecks;
     private int tickCounter;
-    private int lastActivationTick = -1; // track for UI effects
+    private int lastActivationTick = -1;
 
     public PestControl() {
         this.enabled = true;
         this.method = PestControlMethod.TARGETED;
-        this.pestThreshold = 1; // Trigger immediately on discovery
+        this.pestThreshold = 1;
         this.pestControlActivations = 0;
         this.pestsEliminated = 0;
-        this.ticksBetweenChecks = 5; // Check twice as often
+        this.ticksBetweenChecks = 5;
         this.tickCounter = 0;
 
         GardenLogger.getInstance().log("PEST_CONTROL",
@@ -52,7 +52,6 @@ public class PestControl implements GardenModule {
             if (tickCounter < ticksBetweenChecks) return;
             tickCounter = 0;
 
-            // Count alive pests
             List<Insect> alivePests = garden.getInsects().stream()
                     .filter(Insect::isAlive)
                     .filter(i -> i.getType() == Insect.InsectType.PEST)
@@ -77,7 +76,6 @@ public class PestControl implements GardenModule {
 
         switch (method) {
             case CHEMICAL:
-                // Kills all insects, including beneficial ones
                 for (Insect insect : garden.getInsects()) {
                     if (insect.isAlive()) {
                         insect.kill("Chemical pest control");
@@ -89,7 +87,6 @@ public class PestControl implements GardenModule {
                 break;
 
             case TARGETED:
-                // Only kills pest-type insects
                 for (Insect pest : pests) {
                     if (pest.isAlive()) {
                         pest.kill("Targeted pest control");
@@ -101,7 +98,6 @@ public class PestControl implements GardenModule {
                 break;
 
             case ORGANIC:
-                // Kills some pests (70% chance each), never harms beneficials
                 int killed = 0;
                 for (Insect pest : pests) {
                     if (pest.isAlive() && Math.random() < 0.7) {
@@ -130,7 +126,6 @@ public class PestControl implements GardenModule {
         }
     }
 
-    // --- Getters & Setters ---
     public PestControlMethod getMethod() { return method; }
     public void setMethod(PestControlMethod method) {
         this.method = method;

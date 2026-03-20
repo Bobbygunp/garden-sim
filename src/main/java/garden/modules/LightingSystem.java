@@ -12,8 +12,8 @@ public class LightingSystem implements GardenModule {
 
     private boolean enabled;
     private boolean lightsOn;
-    private double currentLightLevel;    // 0-100
-    private double targetLightLevel;     // desired light level
+    private double currentLightLevel;
+    private double targetLightLevel;
     private int lightOnTicks;
     private int totalActivations;
 
@@ -45,7 +45,6 @@ public class LightingSystem implements GardenModule {
                                     currentLightLevel, targetLightLevel));
                 }
                 lightOnTicks++;
-                // Supplement light
                 double supplement = targetLightLevel - currentLightLevel;
                 garden.adjustLightLevel(supplement * 0.5);
             } else {
@@ -61,7 +60,6 @@ public class LightingSystem implements GardenModule {
         }
     }
 
-    // --- Getters & Setters ---
     public boolean isLightsOn() { return lightsOn; }
     public double getCurrentLightLevel() { return currentLightLevel; }
     public double getTargetLightLevel() { return targetLightLevel; }

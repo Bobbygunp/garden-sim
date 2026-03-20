@@ -41,7 +41,6 @@ import java.util.ResourceBundle;
  */
 public class GardenController implements Initializable {
 
-    // --- FXML-injected UI components ---
     @FXML private Button pauseButton;
     @FXML private Slider speedSlider;
     @FXML private Label tickLabel;
@@ -53,7 +52,6 @@ public class GardenController implements Initializable {
     @FXML private Button zoomOutButton;
     @FXML private Label zoomLabel;
 
-    // Environment panel labels & progress bars
     @FXML private Label tempLabel;
     @FXML private Label lightLabel;
     @FXML private Label humidityLabel;
@@ -65,39 +63,29 @@ public class GardenController implements Initializable {
     @FXML private ProgressBar lightProgressBar;
     @FXML private ProgressBar humidityProgressBar;
 
-    // Tab content VBoxes
     @FXML private VBox moduleStatusList;
     @FXML private VBox plantStatusList;
     @FXML private VBox insectStatusList;
 
-    // Log viewer
     @FXML private ComboBox<String> logFilterCombo;
     @FXML private TextArea logArea;
 
-    // --- Model references ---
     private Garden garden;
     private SimulationEngine engine;
     private ImageManager imageManager;
 
-    /**
-     * Cell width and height in pixels — computed separately so the canvas
-     * fills the full left pane regardless of its aspect ratio.
-     * cellW = viewportWidth  / cols
-     * cellH = viewportHeight / rows
-     * At zoom 1.0 the canvas covers the entire viewport with no black gaps.
-     */
+    /** Cell width and height in pixels. */
     private double cellW = 38.0;
     private double cellH = 38.0;
 
-    /** Zoom multiplier: 1.0 = fill pane exactly, >1.0 = scrollable zoom-in. */
+    /** Zoom multiplier for the garden canvas. */
     private double zoomLevel = 1.0;
 
-    /** Simulated ticks per day (must match Garden.dayNightCycle). */
+    /** Simulated ticks per day. */
     private static final int DAY_NIGHT_CYCLE = 200;
 
     private AnimationTimer renderTimer;
 
-    // --- Seed Tray (PvZ-style placement) ---
     @FXML private Button seedTomato;
     @FXML private Button seedRose;
     @FXML private Button seedSunflower;
@@ -109,7 +97,6 @@ public class GardenController implements Initializable {
     /** Plant type currently selected from the seed tray, or null if none. */
     private String placingPlantType = null;
 
-    // --- Drag & Drop State (move existing plants) ---
     private Plant draggingPlant = null;
     private double dragCanvasX = 0, dragCanvasY = 0;
     private Position dragHoverCell = null;
@@ -136,22 +123,17 @@ public class GardenController implements Initializable {
         gardenCanvas.setWidth(garden.getCols() * cellW);
         gardenCanvas.setHeight(garden.getRows() * cellH);
 
-        // Recompute canvas size whenever the viewport changes (divider drag / window resize).
-        // viewportBoundsProperty fires on every layout pass and reports the true visible area.
         canvasScrollPane.viewportBoundsProperty().addListener((obs, o, n) -> updateCellSize());
         Platform.runLater(this::updateCellSize);
 
-        // Bind speed slider to simulation engine
         speedSlider.valueProperty().addListener((obs, oldVal, newVal) ->
                 engine.setSimulationSpeed(newVal.doubleValue()));
 
-        // Canvas mouse handlers — shared by placement mode and drag-to-move mode
         gardenCanvas.setOnMouseMoved(this::onMouseMoved);
         gardenCanvas.setOnMousePressed(this::onCanvasPressed);
         gardenCanvas.setOnMouseDragged(this::onCanvasDragged);
         gardenCanvas.setOnMouseReleased(this::onCanvasReleased);
 
-        // ESC cancels placement mode
         Platform.runLater(() -> {
             if (gardenCanvas.getScene() != null) {
                 gardenCanvas.getScene().addEventFilter(
@@ -161,10 +143,8 @@ public class GardenController implements Initializable {
             }
         });
 
-        // Register tick callback for logic-based UI refresh (text labels, tabs)
         engine.setOnTickCallback(() -> Platform.runLater(this::updateLabelsAndTabs));
 
-        // Dedicated 60fps loop for smooth canvas rendering and interpolation
         renderTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -176,15 +156,7 @@ public class GardenController implements Initializable {
         updateLabelsAndTabs();
     }
 
-    /**
-     * Recalculates cellW/cellH from the viewport bounds and zoom level.
-     *
-     * cellW = vpWidth  / cols * zoom  → canvas width  == vpWidth  * zoom
-     * cellH = vpHeight / rows * zoom  → canvas height == vpHeight * zoom
-     *
-     * At zoom 1.0 the canvas covers the viewport exactly (no black borders).
-     * At zoom > 1.0 the canvas is larger than the viewport and scrollbars appear.
-     */
+    /** Recalculates cell size from viewport bounds and zoom level. */
     private void updateCellSize() {
         if (garden == null) return;
 
@@ -201,7 +173,6 @@ public class GardenController implements Initializable {
             gardenCanvas.setWidth(garden.getCols() * cellW);
             gardenCanvas.setHeight(garden.getRows() * cellH);
             imageManager = new ImageManager((int) Math.round(Math.min(cellW, cellH)));
-            // No explicit redraw needed — the AnimationTimer redraws at 60fps
         }
     }
 
@@ -269,11 +240,9 @@ public class GardenController implements Initializable {
             double dayProgress = (tick % DAY_NIGHT_CYCLE) / (double) DAY_NIGHT_CYCLE;
             String phase = dayProgress < 0.5 ? "Daytime" : "Nighttime";
 
-            // --- Toolbar labels ---
             tickLabel.setText(String.format("Tick: %d", tick));
             dayLabel.setText(String.format("Day %d  -  %s", day, phase));
 
-            // --- Environment cards ---
             double temp = garden.getCurrentTemperature();
             tempLabel.setText(String.format("%.1f F", temp));
             tempProgressBar.setProgress(Math.max(0, Math.min(1.0, (temp - 40.0) / 55.0)));
@@ -286,7 +255,6 @@ public class GardenController implements Initializable {
             humidityLabel.setText(String.format("%.0f%%", humidity));
             humidityProgressBar.setProgress(humidity / 100.0);
 
-            // --- Garden stats ---
             long alivePlants = garden.getPlants().stream().filter(Plant::isAlive).count();
             plantsAliveLabel.setText(String.format("Plants alive:   %d / %d", alivePlants, garden.getPlants().size()));
 
@@ -304,14 +272,12 @@ public class GardenController implements Initializable {
             }
             dayPhaseLabel.setText(String.format("Phase:   %s  (day %d)", phase, day));
 
-            // --- Throttled Tab Updates ---
             long now = System.currentTimeMillis();
-            if (now - lastTabUpdateTime >= 500) { // Only update tabs twice per second to prevent lag
+            if (now - lastTabUpdateTime >= 500) {
                 lastTabUpdateTime = now;
                 updateTabs();
             }
 
-            // --- Log (every 5 ticks to reduce load) ---
             if (tick % 5 == 0) {
                 refreshLog();
             }
@@ -322,19 +288,16 @@ public class GardenController implements Initializable {
     }
 
     private void updateTabs() {
-        // --- Module tab ---
         moduleStatusList.getChildren().clear();
         for (GardenModule mod : garden.getModules()) {
             moduleStatusList.getChildren().add(createModuleCard(mod));
         }
 
-        // --- Plants tab ---
         plantStatusList.getChildren().clear();
         for (Plant plant : garden.getPlants()) {
             plantStatusList.getChildren().add(createPlantCard(plant));
         }
 
-        // --- Insects tab ---
         insectStatusList.getChildren().clear();
         long aliveCount = garden.getInsects().stream().filter(Insect::isAlive).count();
         if (aliveCount == 0) {
@@ -396,19 +359,16 @@ public class GardenController implements Initializable {
         return card;
     }
 
-    /**
-     * Returns a species-specific accent colour used for the card left-border
-     * and name tinting.  Gives each species a unique visual identity.
-     */
+    /** Returns the display color for a plant species. */
     private String getSpeciesColor(String species) {
         String s = species.toLowerCase();
-        if (s.contains("tomato"))    return "#e74c3c"; // red
-        if (s.contains("rose"))      return "#e91e8c"; // pink
-        if (s.contains("sunflower")) return "#f1c40f"; // gold
-        if (s.contains("carrot"))    return "#e67e22"; // orange
-        if (s.contains("lettuce"))   return "#2ecc71"; // green
-        if (s.contains("cactus"))    return "#1abc9c"; // teal
-        return "#8b949e";                              // default grey
+        if (s.contains("tomato"))    return "#e74c3c";
+        if (s.contains("rose"))      return "#e91e8c";
+        if (s.contains("sunflower")) return "#f1c40f";
+        if (s.contains("carrot"))    return "#e67e22";
+        if (s.contains("lettuce"))   return "#2ecc71";
+        if (s.contains("cactus"))    return "#1abc9c";
+        return "#8b949e";
     }
 
     /** Maps a growth stage to a short, human-friendly label + colour. */
@@ -430,7 +390,6 @@ public class GardenController implements Initializable {
         String speciesColor = getSpeciesColor(plant.getName());
         String[] stageBadge = getStageBadge(plant.getGrowthStage());
 
-        // Outer card with species-coloured left accent border
         VBox card = new VBox(8);
         card.getStyleClass().add("card");
         String borderStyle = alive
@@ -439,7 +398,6 @@ public class GardenController implements Initializable {
                 : "-fx-opacity: 0.45;";
         card.setStyle(card.getStyle() + borderStyle);
 
-        // --- Row 1: Name + Stage badge ---
         HBox titleRow = new HBox(8);
         titleRow.setStyle("-fx-alignment: CENTER_LEFT;");
 
@@ -450,7 +408,6 @@ public class GardenController implements Initializable {
         Label speciesLabel = new Label(plant.getSpecies());
         speciesLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #6e7681; -fx-font-style: italic;");
 
-        // Stage badge (coloured pill)
         Label stageLbl = new Label(stageBadge[0]);
         stageLbl.setFont(Font.font("System", FontWeight.BOLD, 9));
         stageLbl.setTextFill(Color.WHITE);
@@ -463,7 +420,6 @@ public class GardenController implements Initializable {
 
         card.getChildren().add(titleRow);
 
-        // --- Dead plants: just the skull row ---
         if (!alive) {
             HBox deadRow = new HBox(6);
             deadRow.setStyle("-fx-alignment: CENTER;");
@@ -474,13 +430,11 @@ public class GardenController implements Initializable {
             return card;
         }
 
-        // --- Row 2: Position + age ---
         Label posAge = new Label(String.format("Pos %s  |  Age: %d ticks",
                 plant.getPosition(), plant.getAgeTicks()));
         posAge.setStyle("-fx-font-family: Monospaced; -fx-font-size: 10px; -fx-text-fill: #6e7681;");
         card.getChildren().add(posAge);
 
-        // --- Row 3-5: Stat bars ---
         card.getChildren().add(buildStatBar("HP",
                 plant.getHealth(), "#3fb950", "#f0883e", "#f85149", "#2ea043"));
         card.getChildren().add(buildStatBar("WATER",
@@ -491,23 +445,18 @@ public class GardenController implements Initializable {
         return card;
     }
 
-    /**
-     * Builds a richly styled stat bar row with a label, coloured track,
-     * percentage text, and glow effect when the value is critically low.
-     */
+    /** Builds a styled stat row with label, progress bar, and percentage. */
     private HBox buildStatBar(String label, double value,
                               String highColor, String midColor, String lowColor,
                               String trackBg) {
         HBox row = new HBox(6);
         row.setStyle("-fx-alignment: CENTER_LEFT;");
 
-        // Stat label with fixed width
         Label lbl = new Label(label);
         lbl.setPrefWidth(42);
         lbl.setStyle("-fx-font-family: Monospaced; -fx-font-size: 10px; -fx-font-weight: bold; "
                 + "-fx-text-fill: #8b949e;");
 
-        // Progress bar
         ProgressBar bar = new ProgressBar(value / 100.0);
         bar.setPrefHeight(10);
         bar.setMinHeight(10);
@@ -522,16 +471,14 @@ public class GardenController implements Initializable {
         bar.setStyle(String.format(
                 "-fx-accent: %s; -fx-control-inner-background: %s; "
               + "-fx-background-color: transparent; -fx-background-radius: 4; ",
-                accent, trackBg + "33")); // 33 = 20% alpha hex suffix for track
+                accent, trackBg + "33"));
 
-        // Percentage with colour that matches the bar
         Label pct = new Label(String.format("%.0f%%", value));
         pct.setPrefWidth(38);
         pct.setStyle(String.format(
                 "-fx-font-family: Monospaced; -fx-font-size: 11px; -fx-font-weight: bold; "
               + "-fx-text-fill: %s;", accent));
 
-        // Critical glow: if value < 15%, make the row pulse visually
         if (value < 15) {
             row.setStyle(row.getStyle()
                     + String.format("-fx-background-color: %s22; -fx-background-radius: 4;", lowColor));
@@ -624,7 +571,6 @@ public class GardenController implements Initializable {
         }
     }
 
-    /** Scales up the active seed card and resets the rest. */
     private void highlightActiveSeedCard() {
         Button[] cards = {seedTomato, seedRose, seedSunflower, seedCarrot, seedLettuce, seedCactus};
         String[] types = {"tomato", "rose", "sunflower", "carrot", "lettuce", "cactus"};
@@ -646,7 +592,7 @@ public class GardenController implements Initializable {
     // CANVAS MOUSE HANDLERS — placement mode + drag-to-move mode
     // =========================================================================
 
-    /** Updates cursor and hover cell — fires while mouse moves WITHOUT button held. */
+    /** Updates cursor and hover cell while the mouse moves. */
     private void onMouseMoved(MouseEvent e) {
         if (garden == null) return;
         dragCanvasX = e.getX();
@@ -663,13 +609,12 @@ public class GardenController implements Initializable {
         gardenCanvas.setCursor(p != null && p.isAlive() ? Cursor.OPEN_HAND : Cursor.DEFAULT);
     }
 
-    /** Handles both placement clicks and drag-to-move press. */
+    /** Handles placement clicks and drag-to-move press. */
     private void onCanvasPressed(MouseEvent e) {
         if (garden == null) return;
         int row = Math.max(0, Math.min(garden.getRows() - 1, (int)(e.getY() / cellH)));
         int col = Math.max(0, Math.min(garden.getCols() - 1, (int)(e.getX() / cellW)));
 
-        // --- PLACEMENT MODE ---
         if (placingPlantType != null) {
             if (e.isSecondaryButtonDown()) { cancelPlacement(); return; }
             if (!e.isPrimaryButtonDown()) return;
@@ -682,13 +627,10 @@ public class GardenController implements Initializable {
                         capitalize(placingPlantType) + " planted at " + pos);
                 }
             }
-            // Stay in placement mode — user can keep clicking to fill the row.
-            // Right-click or ESC exits.
             e.consume();
             return;
         }
 
-        // --- DRAG-TO-MOVE MODE (pick up an existing alive plant) ---
         if (!e.isPrimaryButtonDown()) return;
         Plant p = getPlantAt(row, col);
         if (p != null && p.isAlive()) {
@@ -702,7 +644,7 @@ public class GardenController implements Initializable {
         }
     }
 
-    /** Tracks cursor while mouse button is held (drag-to-move or drag-to-preview). */
+    /** Tracks cursor while mouse button is held. */
     private void onCanvasDragged(MouseEvent e) {
         dragCanvasX = e.getX();
         dragCanvasY = e.getY();
@@ -712,7 +654,7 @@ public class GardenController implements Initializable {
         if (draggingPlant != null || placingPlantType != null) e.consume();
     }
 
-    /** Completes a drag-to-move. */
+    /** Completes a drag-to-move action. */
     private void onCanvasReleased(MouseEvent e) {
         if (draggingPlant == null) return;
         int row = Math.max(0, Math.min(garden.getRows() - 1, (int)(e.getY() / cellH)));
@@ -750,7 +692,7 @@ public class GardenController implements Initializable {
         return isInCorrectZoneForType(plant.getName(), pos);
     }
 
-    /** Zone check by type name string (used for both placement and drag-to-move). */
+    /** Zone check by type name string. */
     private boolean isInCorrectZoneForType(String type, Position pos) {
         int row = pos.getRow();
         return switch (type.toLowerCase()) {

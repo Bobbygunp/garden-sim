@@ -64,9 +64,9 @@ public class HeatingSystem implements GardenModule {
 
     private boolean enabled;
     private Mode mode;
-    private double temperatureAdjustRate; // degrees per tick per active zone
-    private double currentAdjustment;     // net adjustment this tick (used by UI glow)
-    private int heatingActivations;       // total across all zones
+    private double temperatureAdjustRate;
+    private double currentAdjustment;
+    private int heatingActivations;
     private int coolingActivations;
 
     private final List<HeatingZone> zones;
@@ -74,7 +74,7 @@ public class HeatingSystem implements GardenModule {
     public HeatingSystem() {
         this.enabled = true;
         this.mode = Mode.AUTO;
-        this.temperatureAdjustRate = 0.05; // per zone per tick; 6 zones = 0.30 max total
+        this.temperatureAdjustRate = 0.05;
         this.currentAdjustment = 0;
         this.heatingActivations = 0;
         this.coolingActivations = 0;
@@ -101,7 +101,6 @@ public class HeatingSystem implements GardenModule {
             double netAdjustment = 0;
 
             for (HeatingZone zone : zones) {
-                // Drift this zone's temperature toward garden ambient (natural heat exchange)
                 double zoneTemp = zone.getCurrentTemperature();
                 if (zoneTemp < ambientTemp) {
                     zoneTemp = Math.min(ambientTemp, zoneTemp + 0.2);
@@ -115,7 +114,6 @@ public class HeatingSystem implements GardenModule {
 
                 if ((mode == Mode.AUTO || mode == Mode.HEATING)
                         && zoneTemp < zone.getTargetTemperature() - 2.0) {
-                    // Zone too cold — heat this zone only
                     zone.setHeatingActive(true);
                     zone.setCoolingActive(false);
                     zone.setCurrentTemperature(zoneTemp + temperatureAdjustRate);
@@ -130,7 +128,6 @@ public class HeatingSystem implements GardenModule {
 
                 } else if ((mode == Mode.AUTO || mode == Mode.COOLING)
                         && zoneTemp > zone.getTargetTemperature() + 2.0) {
-                    // Zone too hot — cool this zone only
                     zone.setCoolingActive(true);
                     zone.setHeatingActive(false);
                     zone.setCurrentTemperature(zoneTemp - temperatureAdjustRate);
@@ -144,7 +141,6 @@ public class HeatingSystem implements GardenModule {
                     netAdjustment -= temperatureAdjustRate;
 
                 } else {
-                    // Zone within range — deactivate
                     if (wasHeating || wasCooling) {
                         GardenLogger.getInstance().log("HEATING",
                                 String.format("%s stable at %.1f°F (target %.1f°F)",

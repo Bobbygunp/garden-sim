@@ -7,13 +7,12 @@ public class MoistureSensor extends Sensor {
     private double minReading;
     private double avgReading;
     
-    // Zoned Sensing: Precise rectangular coverage
     private int minRow, maxRow, minCol, maxCol;
     private boolean useZonedSensing = false;
 
     public MoistureSensor(Position position) {
         super("Moisture Sensor", "%", position, 20.0, 80.0);
-        setUpdateInterval(4); // Sense every 4 ticks (~30 minutes)
+        setUpdateInterval(4);
         this.minReading = 50.0;
         this.avgReading = 50.0;
     }
@@ -41,10 +40,7 @@ public class MoistureSensor extends Sensor {
     public double getMinReading() { return minReading; }
     public double getAvgReading() { return avgReading; }
 
-    /** 
-     * Smart Zoned Sensing: tracks both the minimum and average water levels
-     * of plants strictly within its configured zone boundaries.
-     */
+    /** Tracks min and average water level of plants in sensor coverage. */
     public void update(java.util.List<garden.model.plants.Plant> nearbyPlants, int currentTick) {
         if (currentTick % getUpdateInterval() != 0) return;
 
@@ -65,12 +61,10 @@ public class MoistureSensor extends Sensor {
             this.minReading = 50.0;
             this.avgReading = 50.0;
         } else {
-            // Fail-Safe: minReading is the thirstiest plant in the specific zone.
             this.minReading = targets.stream().mapToDouble(p -> p.getWaterLevel()).min().orElse(50.0);
             this.avgReading = targets.stream().mapToDouble(p -> p.getWaterLevel()).average().orElse(50.0);
         }
         
-        // We report the MINIMUM as the primary reading to trigger the watering system.
         super.update(minReading, currentTick);
     }
 }

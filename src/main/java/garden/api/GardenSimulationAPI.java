@@ -17,12 +17,12 @@ import java.util.regex.Pattern;
 public class GardenSimulationAPI {
 
     private static final int  TICKS_PER_DAY       = 200;
-    private static final long REAL_TIME_TICK_MS   = 18_000L; // 18s/tick → 200 ticks = 1 real hour
-    private static final long QUICK_MODE_TICK_MS  = 50L;     // 50ms/tick → 200 ticks = 10 seconds
+    private static final long REAL_TIME_TICK_MS   = 18_000L;
+    private static final long QUICK_MODE_TICK_MS  = 50L;
 
-    private long tickIntervalMs = REAL_TIME_TICK_MS; // default: real-time
+    private long tickIntervalMs = REAL_TIME_TICK_MS;
 
-    /** Call before initializeGarden() to run at 50ms/tick (200 ticks = ~10 seconds per day). */
+    /** Call before initializeGarden() to use a shorter tick interval. */
     public void setQuickMode(boolean quick) {
         this.tickIntervalMs = quick ? QUICK_MODE_TICK_MS : REAL_TIME_TICK_MS;
     }
@@ -41,17 +41,14 @@ public class GardenSimulationAPI {
 
     private Garden  garden;
     private int     currentDay       = 0;
-    private int     dayTickCounter   = 0;   // ticks elapsed in the current simulated day
+    private int     dayTickCounter   = 0;
 
-    // Background simulation thread
     private Thread  simThread;
     private volatile boolean running = false;
 
-    // Track the last event each day for getState() logging
     private volatile String lastEvent      = "none";
     private volatile String lastEventValue = "none";
 
-    // Rain state — applied per-tick, auto-resets after TICKS_PER_DAY ticks
     private volatile double  rainWaterPerTick = 0.0;
     private volatile boolean rainActive       = false;
 
@@ -62,7 +59,6 @@ public class GardenSimulationAPI {
      * simulation thread. Must be called first.
      */
     public void initializeGarden() {
-        // Stop any previously running simulation
         stopSimulation();
 
         garden       = new Garden("API Garden", 20, 20);
@@ -73,17 +69,14 @@ public class GardenSimulationAPI {
         rainActive   = false;
         rainWaterPerTick = 0;
 
-        // Clear log.txt so each new run starts with a fresh log
         new File("logs").mkdirs();
         try (FileWriter fw = new FileWriter(LOG_PATH, StandardCharsets.UTF_8, false)) {
-            // truncate only
         } catch (IOException e) {
             System.err.println("[API] Warning: could not clear " + LOG_PATH + ": " + e.getMessage());
         }
 
         garden.initializeDefaultGarden();
 
-        // Load config and place plants
         Map<String, Integer> plantCounts = loadConfig();
         for (Map.Entry<String, Integer> entry : plantCounts.entrySet()) {
             placePlants(entry.getKey().toLowerCase(), entry.getValue());
@@ -96,7 +89,6 @@ public class GardenSimulationAPI {
         writeApiLog(0, "init", "none", alive);
         System.out.println("[API] Garden initialised — " + alive + " plants alive.");
 
-        // Start background simulation thread
         startSimulation();
     }
 
@@ -211,25 +203,22 @@ public class GardenSimulationAPI {
         System.out.println(sb.toString().trim());
     }
 
-    /** Alias — spec pseudo-code uses both spellings. */
+    /** Alias for compatibility. */
     public void getStatus() { getState(); }
 
-    /** Alias — spec pseudo-code uses both spellings. */
+    /** Alias for compatibility. */
     public void parasites(String type) { parasite(type); }
 
-    /** Expose garden for module failure testing. */
+    /** Expose garden for testing. */
     public Garden getGarden() { return garden; }
 
     /** Public stop for testing. */
     public void stopSimulationPublic() { stopSimulation(); }
 
-    // Background simulation thread
-    
-
     private void startSimulation() {
         running   = true;
         simThread = new Thread(this::simulationLoop, "garden-sim-thread");
-        simThread.setDaemon(true);   // JVM exits when main thread finishes
+        simThread.setDaemon(true);
         simThread.start();
         System.out.println("[API] Background simulation thread started " +
                 "(tick interval: " + tickIntervalMs + "ms, " +
@@ -252,7 +241,6 @@ public class GardenSimulationAPI {
     private void simulationLoop() {
         while (running) {
             try {
-                // Apply rain water before tick (cap at 85% to prevent overwatering)
                 if (rainActive) {
                     for (Plant p : garden.getPlants()) {
                         if (p.isAlive()) {
@@ -264,7 +252,6 @@ public class GardenSimulationAPI {
                 garden.tick();
                 dayTickCounter++;
 
-                // End of simulated day: reset daily overrides and log status
                 if (dayTickCounter >= TICKS_PER_DAY) {
                     dayTickCounter = 0;
                     currentDay++;
@@ -288,13 +275,9 @@ public class GardenSimulationAPI {
                 break;
             } catch (Exception e) {
                 GardenLogger.getInstance().logError("API", "Simulation thread error", e);
-                // Continue running — garden must not crash
             }
         }
     }
-
-   
-    // Private helpers
 
     private Map<String, Integer> loadConfig() {
         String json = null;
@@ -306,7 +289,7 @@ public class GardenSimulationAPI {
         if (json == null) {
             try (InputStream is = getClass().getResourceAsStream("/garden_config.json")) {
                 if (is != null) json = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            } catch (IOException e) { /* fall through */ }
+            } catch (IOException e) { }
         }
         return json == null ? defaultConfig() : parseConfig(json);
     }
@@ -395,21 +378,17 @@ public class GardenSimulationAPI {
 
         StringBuilder sb = new StringBuilder();
 
-        // Header
         sb.append(String.format(
                 "--- DAY %d SUMMARY | Temp: %.1fF | Humidity: %.1f%% | Plants: %d alive, %d dead ---%n",
                 day, garden.getCurrentTemperature(), garden.getCurrentHumidity(), alive, dead));
 
-        // Today's injected event
         sb.append(String.format("  EVENT:    %s(%s)%n", lastEvent, lastEventValue));
 
-        // One line per module — shows the TA each subsystem responded
         sb.append(String.format("  WATERING: %s%n", garden.getWateringSystem().getStatusSummary()));
         sb.append(String.format("  HEATING:  %s%n", garden.getHeatingSystem().getStatusSummary()));
         sb.append(String.format("  PESTS:    %s | Active pests: %d%n",
                 garden.getPestControl().getStatusSummary(), activePests));
 
-        // Per-plant snapshot
         for (Plant p : garden.getPlants()) {
             sb.append(String.format(
                     "  DAY=%d | %-10s | HP=%5.1f | Water=%5.1f | Stage=%-10s | alive=%b%n",

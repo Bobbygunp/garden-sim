@@ -21,10 +21,10 @@ public abstract class Insect {
     private final String name;
     private final InsectType type;
     private Position position;
-    private Position previousPosition; // for smooth interpolation
+    private Position previousPosition;
     private boolean alive;
-    private double damagePerTick;    // damage to plants per tick (pests only)
-    private double movementRange;    // how far it can move per tick
+    private double damagePerTick;
+    private double movementRange;
     private int lifespanTicks;
     private int ageTicks;
 
@@ -48,28 +48,22 @@ public abstract class Insect {
                 String.format("%s [%s] (%s) appeared at %s", name, id, type, position));
     }
 
-    /**
-     * Update insect behavior each tick. Moves around and interacts with plants.
-     */
+    /** Update insect behavior each tick. */
     public void update(List<Plant> nearbyPlants, int gridRows, int gridCols) {
         if (!alive) return;
 
         try {
             ageTicks++;
 
-            // Update interpolation start point
             previousPosition = position;
 
-            // Natural death
             if (ageTicks >= lifespanTicks) {
                 die("Reached end of lifespan");
                 return;
             }
 
-            // Move randomly
             move(gridRows, gridCols);
 
-            // Interact with nearby plants (throttled logging every 50 ticks to avoid spam)
             boolean shouldLog = (ageTicks % 50 == 0);
 
             if (type == InsectType.PEST) {
@@ -103,11 +97,9 @@ public abstract class Insect {
     }
 
     private void move(int gridRows, int gridCols) {
-        // Calculate potential delta
         double dr = (random.nextInt(3) - 1) * movementRange;
         double dc = (random.nextInt(3) - 1) * movementRange;
 
-        // If movementRange < 1.0, treat it as a probability of moving 1 full cell
         int moveR = (int) dr;
         if (moveR == 0 && dr != 0 && random.nextDouble() < Math.abs(dr)) {
             moveR = (dr > 0) ? 1 : -1;
@@ -126,15 +118,7 @@ public abstract class Insect {
         }
     }
 
-    /**
-     * Biological control: BENEFICIAL insects hunt and eat nearby pests.
-     * Called from Garden.tick() after normal insect updates, passing all live insects.
-     * Only BENEFICIAL-type insects (e.g., Ladybugs) do anything here.
-     *
-     * @param allInsects the full list of live insects in the garden
-     * @param huntRadius how close a pest must be to get eaten
-     * @param killChance probability (0.0-1.0) of killing a pest per tick when in range
-     */
+    /** Beneficial insects can hunt nearby pests. */
     public void predateInsects(List<Insect> allInsects, double huntRadius, double killChance) {
         if (!alive || type != InsectType.BENEFICIAL) return;
 
@@ -144,7 +128,6 @@ public abstract class Insect {
             if (target.getPosition().distanceTo(this.position) <= huntRadius) {
                 if (random.nextDouble() < killChance) {
                     target.kill("Eaten by " + name + " [" + id + "]");
-                    // Only eat one pest per tick (realistic — ladybugs eat ~50 aphids/day)
                     if (ageTicks % 50 == 0) {
                         GardenLogger.getInstance().log("INSECT",
                                 String.format("%s [%s] ate %s [%s] at %s (biological control)",
@@ -156,7 +139,6 @@ public abstract class Insect {
         }
     }
 
-    /** Kill this insect (e.g., via pest control). */
     public void kill(String reason) {
         die(reason);
     }
@@ -167,7 +149,6 @@ public abstract class Insect {
                 String.format("%s [%s] died. Reason: %s", name, id, reason));
     }
 
-    // --- Getters ---
     public String getId() { return id; }
     public String getName() { return name; }
     public InsectType getType() { return type; }

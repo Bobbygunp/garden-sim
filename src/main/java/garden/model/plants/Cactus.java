@@ -18,7 +18,7 @@ public class Cactus extends Plant {
         this.overwaterThreshold = 60.0;
         this.idealWaterMin      = 15.0;
         this.idealWaterMax      = 40.0;
-        this.drainageRate       = 3.0;  // Sandy/rocky soil — drains very fast
-        this.temperatureSensitivity = 0.10; // Extremely resilient — barely reacts to temp extremes
+        this.drainageRate       = 3.0;
+        this.temperatureSensitivity = 0.10;
     }
 }

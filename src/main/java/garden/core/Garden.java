@@ -21,35 +21,29 @@ public class Garden {
     private final int rows;
     private final int cols;
 
-    // Collections of garden entities
     private final List<Plant> plants;
     private final List<Insect> insects;
     private final List<Sensor> sensors;
     private final List<GardenModule> modules;
 
-    // Efficient Spatial Map: Quick O(1) lookup for occupied grid cells
     private final boolean[][] occupancyGrid;
 
-    // Environmental state
-    private double currentTemperature;  // °F
-    private double currentLightLevel;   // 0-100
-    private double currentHumidity;     // 0-100%
+    private double currentTemperature;
+    private double currentLightLevel;
+    private double currentHumidity;
     private int currentTick;
-    private int dayNightCycle;          // ticks per full day
+    private int dayNightCycle;
     
-    // Season & Weather State
     private Season currentSeason = Season.SPRING;
     private boolean isRaining = false;
-    private double rainIntensity = 0.0; // 0.0 to 5.0 water per tick
-    private final int ticksPerSeason = 1000; // 5 days per season (200 * 5)
+    private double rainIntensity = 0.0;
+    private final int ticksPerSeason = 1000;
 
-    // Modules (typed references for direct access)
     private WateringSystem wateringSystem;
     private HeatingSystem heatingSystem;
     private PestControl pestControl;
     private LightingSystem lightingSystem;
 
-    // API overrides — set by GardenSimulationAPI for the duration of one simulated day
     private boolean temperatureOverrideActive = false;
     private double temperatureOverrideValue = 65.0;
     private boolean rainDisabled = false;
@@ -69,7 +63,7 @@ public class Garden {
         this.currentLightLevel = 60.0;
         this.currentHumidity = 50.0;
         this.currentTick = 0;
-        this.dayNightCycle = 200; // 200 ticks = 1 simulated day
+        this.dayNightCycle = 200;
 
         GardenLogger.getInstance().log("GARDEN",
                 String.format("Garden '%s' created: %dx%d grid", name, rows, cols));
@@ -81,12 +75,8 @@ public class Garden {
     public void initializeDefaultGarden() {
         GardenLogger.getInstance().log("GARDEN", "=== Initializing Professional Garden Layout ===");
 
-        // 1. INFRASTRUCTURE LAYER (Sprinklers & Sensors)
         wateringSystem = new WateringSystem();
         
-        // --- Zone 1: Tomatoes (High Moisture) ---
-        // Thresholds: 40% to 80%
-        // Hardware moved to Row 3 (Plants are in Rows 1-2)
         MoistureSensor ms1 = new MoistureSensor(new Position(3, 7));
         ms1.setSensingRange(1, 2, 0, cols - 1);
         addSensor(ms1);
@@ -98,9 +88,6 @@ public class Garden {
         wateringSystem.addSprinkler(spr3, 8.0, 1.5, 30.0, 70.0).linkSensor(ms1);
         markOccupied(spr1); markOccupied(spr2); markOccupied(spr3);
 
-        // --- Zone 2: Roses (Very High Moisture) ---
-        // Thresholds: 50% to 90%
-        // Hardware moved to Row 7 (Plants are in Rows 5-6)
         MoistureSensor ms2 = new MoistureSensor(new Position(7, 8));
         ms2.setSensingRange(5, 6, 0, cols - 1);
         addSensor(ms2);
@@ -110,9 +97,6 @@ public class Garden {
         wateringSystem.addSprinkler(spr5, 8.0, 1.0, 25.0, 65.0).linkSensor(ms2);
         markOccupied(spr4); markOccupied(spr5);
 
-        // --- Zone 3: Sunflowers (Moderate Moisture) ---
-        // Thresholds: 30% to 70%
-        // Hardware moved to Row 10 (Plants are in Row 9)
         MoistureSensor ms3 = new MoistureSensor(new Position(10, 11));
         ms3.setSensingRange(9, 9, 0, cols - 1);
         addSensor(ms3);
@@ -122,9 +106,7 @@ public class Garden {
         wateringSystem.addSprinkler(spr7, 8.0, 2.5, 30.0, 70.0).linkSensor(ms3);
         markOccupied(spr6); markOccupied(spr7);
 
-        // --- Zone 4a: Carrots (Row 13) — Low water demand, moderate thresholds ---
-        // Sensor in row 12 (empty infrastructure row above carrot bed).
-      
+        
         MoistureSensor ms4_carrot = new MoistureSensor(new Position(12, 10));
         ms4_carrot.setSensingRange(13, 13, 0, cols - 1);
         addSensor(ms4_carrot);
@@ -134,8 +116,6 @@ public class Garden {
         wateringSystem.addSprinkler(spr9, 4.0, 1.0, 25.0, 60.0).linkSensor(ms4_carrot);
         markOccupied(spr8); markOccupied(spr9);
 
-        // --- Zone 4b: Lettuce (Row 14) — High water demand, higher thresholds ---
-        // Sensor in row 15 (empty infrastructure row below lettuce bed).
         MoistureSensor ms4_lettuce = new MoistureSensor(new Position(15, 10));
         ms4_lettuce.setSensingRange(14, 14, 0, cols - 1);
         addSensor(ms4_lettuce);
@@ -143,9 +123,7 @@ public class Garden {
         wateringSystem.addSprinkler(spr10, 8.0, 3.0, 40.0, 75.0).linkSensor(ms4_lettuce);
         markOccupied(spr10);
 
-        // --- Zone 5: Cacti (Arid/Dry Zone) ---
-        // Thresholds: 25% to 50% (drought-tolerant, low flow)
-    
+
         MoistureSensor ms5 = new MoistureSensor(new Position(18, 9));
         ms5.setSensingRange(18, 18, 0, cols - 1);
         addSensor(ms5);
@@ -157,36 +135,33 @@ public class Garden {
 
         modules.add(wateringSystem);
 
-        // Ambient Temperature Monitoring (corners + center)
         addSensor(new TemperatureSensor(new Position(0, 0)));
         addSensor(new TemperatureSensor(new Position(0, cols - 1)));
         addSensor(new TemperatureSensor(new Position(rows - 1, 0)));
         addSensor(new TemperatureSensor(new Position(rows - 1, cols - 1)));
         addSensor(new TemperatureSensor(new Position(rows / 2, cols / 2)));
 
-        // Zone Temperature Sensors — one per plant zone, placed in infrastructure rows.
-        // Each sensor is linked to a HeatingZone so the heater reacts to the local reading.
-        TemperatureSensor ts1 = new TemperatureSensor(new Position(3, 13));   // Tomato zone
+        TemperatureSensor ts1 = new TemperatureSensor(new Position(3, 13));
         ts1.setSensingRange(1, 2, 0, cols - 1);
         addSensor(ts1);
 
-        TemperatureSensor ts2 = new TemperatureSensor(new Position(7, 1));    // Rose zone
+        TemperatureSensor ts2 = new TemperatureSensor(new Position(7, 1));
         ts2.setSensingRange(5, 6, 0, cols - 1);
         addSensor(ts2);
 
-        TemperatureSensor ts3 = new TemperatureSensor(new Position(10, 1));   // Sunflower zone
+        TemperatureSensor ts3 = new TemperatureSensor(new Position(10, 1));
         ts3.setSensingRange(9, 9, 0, cols - 1);
         addSensor(ts3);
 
-        TemperatureSensor ts4 = new TemperatureSensor(new Position(12, 1));   // Carrot zone
+        TemperatureSensor ts4 = new TemperatureSensor(new Position(12, 1));
         ts4.setSensingRange(13, 13, 0, cols - 1);
         addSensor(ts4);
 
-        TemperatureSensor ts5 = new TemperatureSensor(new Position(15, 1));   // Lettuce zone
+        TemperatureSensor ts5 = new TemperatureSensor(new Position(15, 1));
         ts5.setSensingRange(14, 14, 0, cols - 1);
         addSensor(ts5);
 
-        TemperatureSensor ts6 = new TemperatureSensor(new Position(18, 2));   // Cactus zone
+        TemperatureSensor ts6 = new TemperatureSensor(new Position(18, 2));
         ts6.setSensingRange(18, 18, 0, cols - 1);
         addSensor(ts6);
         
@@ -198,39 +173,6 @@ public class Garden {
         addSensor(new LightSensor(new Position(rows - 1, cols - 6)));
         addSensor(new LightSensor(new Position(rows / 2, 13)));
 
-        // 2. PLANTING LAYER — commented out so the garden starts empty.
-        //    Plants are placed interactively via the PvZ-style seed tray in the UI.
-        //    Zone rows: Tomato=1-2, Rose=5-6, Sunflower=9, Carrot=13, Lettuce=14, Cactus=18.
-        //
-        // Uncomment below to restore pre-planted beds:
-        //
-        // // Bed 1: Tomatoes (Rows 1-2)
-        // for (int c = 1; c < cols - 1; c += 3) {
-        //     addPlant(new Tomato(new Position(1, c)));
-        //     addPlant(new Tomato(new Position(2, c)));
-        // }
-        // // Bed 2: Roses (Rows 5-6)
-        // for (int c = 1; c < cols - 1; c += 3) {
-        //     addPlant(new Rose(new Position(5, c)));
-        //     addPlant(new Rose(new Position(6, c)));
-        // }
-        // // Bed 3: Sunflowers (Row 9)
-        // for (int c = 2; c < cols - 1; c += 4) {
-        //     addPlant(new Sunflower(new Position(9, c)));
-        // }
-        // // Bed 4: Carrots & Lettuce (Rows 13-14)
-        // for (int c = 1; c < cols - 1; c += 2) {
-        //     addPlant(new Carrot(new Position(13, c)));
-        //     addPlant(new Lettuce(new Position(14, c)));
-        // }
-        // // Bed 5: Cacti (Row 18)
-        // for (int c = 1; c < cols; c += 5) {
-        //     Cactus cactus = new Cactus(new Position(18, c));
-        //     cactus.water(30);
-        //     addPlant(cactus);
-        // }
-
-        // --- Add Insects ---
         addInsect(new Bee(new Position(4, 4)));
         addInsect(new Bee(new Position(8, 8)));
         addInsect(new Bee(new Position(6, 16)));
@@ -238,16 +180,15 @@ public class Garden {
         addInsect(new Aphid(new Position(3, 5)));
         addInsect(new Caterpillar(new Position(11, 3)));
 
-        // --- Heating System (Zonal) ---
         heatingSystem = new HeatingSystem();
         
         heatingSystem.setTemperatureAdjustRate(0.5);
-        heatingSystem.addZone(new Position(3, 13),  70.0).linkSensor(ts1);  // Tomatoes: ideal 60-85°F
-        heatingSystem.addZone(new Position(7, 1),   67.0).linkSensor(ts2);  // Roses: ideal 55-80°F
-        heatingSystem.addZone(new Position(10, 1),  70.0).linkSensor(ts3);  // Sunflowers: ideal 55-91°F
-        heatingSystem.addZone(new Position(12, 1),  62.0).linkSensor(ts4);  // Carrots: ideal 45-75°F
-        heatingSystem.addZone(new Position(15, 1),  58.0).linkSensor(ts5);  // Lettuce: ideal 40-70°F
-        heatingSystem.addZone(new Position(18, 2),  72.0).linkSensor(ts6);  // Cacti: ideal 50-100°F
+        heatingSystem.addZone(new Position(3, 13), 70.0).linkSensor(ts1);
+        heatingSystem.addZone(new Position(7, 1), 67.0).linkSensor(ts2);
+        heatingSystem.addZone(new Position(10, 1), 70.0).linkSensor(ts3);
+        heatingSystem.addZone(new Position(12, 1), 62.0).linkSensor(ts4);
+        heatingSystem.addZone(new Position(15, 1), 58.0).linkSensor(ts5);
+        heatingSystem.addZone(new Position(18, 2), 72.0).linkSensor(ts6);
         modules.add(heatingSystem);
 
         pestControl = new PestControl();
@@ -259,17 +200,17 @@ public class Garden {
        
         FertigationSystem fertigationSystem = new FertigationSystem();
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
-                "Tomatoes",       1,  2,  0, cols - 1, 40.0, 85.0, 10.0)); // 0.5/tick — heavy feeder
+            "Tomatoes", 1, 2, 0, cols - 1, 40.0, 85.0, 10.0));
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
-                "Roses",          5,  6,  0, cols - 1, 40.0, 85.0,  8.0)); // 0.4/tick — moderate feeder
+            "Roses", 5, 6, 0, cols - 1, 40.0, 85.0, 8.0));
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
-                "Sunflowers",     9,  9,  0, cols - 1, 40.0, 85.0, 10.0)); // 0.5/tick — heavy feeder
+            "Sunflowers", 9, 9, 0, cols - 1, 40.0, 85.0, 10.0));
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
-                "Carrots",        13, 13, 0, cols - 1, 40.0, 85.0,  6.0)); // 0.3/tick — light feeder
+            "Carrots", 13, 13, 0, cols - 1, 40.0, 85.0, 6.0));
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
-                "Lettuce",        14, 14, 0, cols - 1, 40.0, 85.0,  5.0)); // 0.25/tick — light feeder
+            "Lettuce", 14, 14, 0, cols - 1, 40.0, 85.0, 5.0));
         fertigationSystem.addZone(new FertigationSystem.FertigationZone(
-                "Cacti",         18, 18,  0, cols - 1, 20.0, 55.0,  2.0)); // 0.05/tick — minimal needs
+            "Cacti", 18, 18, 0, cols - 1, 20.0, 55.0, 2.0));
         modules.add(fertigationSystem);
 
         GardenLogger.getInstance().log("GARDEN",
@@ -303,38 +244,31 @@ public class Garden {
         try {
             currentTick++;
 
-            // 1. Update environment (Seasons & Weather)
             updateEnvironment();
 
-            // 1b. Apply Rain Effect: Rain increases water level for all plants
             if (isRaining && !rainDisabled) {
                 for (Plant plant : plants) {
                     if (plant.isAlive()) {
-                        // Rain intensity is 1.0 to 5.0; we apply a smaller portion 
-                        // to prevent instant overwatering (0.05 to 0.25 units/tick)
                         plant.water(rainIntensity * 0.05, true);
                     }
                 }
             }
 
-            // 2. Update all sensors
             List<Plant> alivePlants = plants.stream().filter(Plant::isAlive).toList();
             for (Sensor sensor : sensors) {
                 if (sensor instanceof TemperatureSensor) {
                     sensor.update(currentTemperature, currentTick);
                 } else if (sensor instanceof MoistureSensor ms) {
-                    ms.update(alivePlants, currentTick); // Realistic local measurement
+                    ms.update(alivePlants, currentTick);
                 } else if (sensor instanceof LightSensor) {
                     sensor.update(currentLightLevel, currentTick);
                 }
             }
 
-            // 3. Update all modules
             for (GardenModule module : modules) {
                 module.update(this);
             }
 
-            // 4. Update all plants — each plant receives its zone's temperature
             for (Plant plant : plants) {
                 double plantTemp = (heatingSystem != null)
                         ? heatingSystem.getZoneTemperatureAt(plant.getPosition(), currentTemperature)
@@ -342,7 +276,6 @@ public class Garden {
                 plant.update(plantTemp, currentLightLevel, currentHumidity);
             }
 
-            // 5. Update all insects (optimization: only pass alive plants)
             List<Plant> alivePlantsList = plants.stream()
                     .filter(Plant::isAlive)
                     .toList();
@@ -357,17 +290,12 @@ public class Garden {
                 insect.predateInsects(aliveInsects, 2.0, 0.3);
             }
 
-            // 6. Ecologically-driven insect spawning — each species has its own
-            //    spawn interval and probability, modelling real population dynamics.
             spawnInsectsEcological();
 
-            // 6b. Clean up dead entities every 200 ticks to prevent list growth
             if (currentTick % 200 == 0) {
                 insects.removeIf(i -> !i.isAlive());
-                // Note: Dead plants are kept in the list so they remain visible on the grid
             }
 
-            // 7. Periodic status log
             if (currentTick % 50 == 0) {
                 logPeriodicStatus();
             }
@@ -375,12 +303,10 @@ public class Garden {
         } catch (Exception e) {
             GardenLogger.getInstance().logError("GARDEN",
                     "Error during tick " + currentTick, e);
-            // Garden must not crash - continue operating
         }
     }
 
     private void updateEnvironment() {
-        // --- 1. Season Transition Logic ---
         Season oldSeason = currentSeason;
         int seasonIndex = (currentTick / ticksPerSeason) % 4;
         currentSeason = Season.values()[seasonIndex];
@@ -389,8 +315,6 @@ public class Garden {
             GardenLogger.getInstance().log("GARDEN", "=== SEASON CHANGE: Welcome to " + currentSeason + " ===");
         }
 
-        // --- 2. Rain/Weather Engine ---
-        // Rain probability varies by season: Spring(0.3%), Summer(0.05%), Autumn(0.2%), Winter(0.15%)
         double rainChance = switch (currentSeason) {
             case SPRING -> 0.003; 
             case SUMMER -> 0.0005;
@@ -412,11 +336,9 @@ public class Garden {
             rainIntensity = 0;
         }
 
-        // --- 3. Light, Temperature & Humidity Calculations ---
         double dayProgress = (currentTick % dayNightCycle) / (double) dayNightCycle;
         double sunEffect = Math.sin(dayProgress * 2 * Math.PI - Math.PI / 2);
 
-        // Seasonal Baselines
         double baseTemp = switch (currentSeason) {
             case SPRING -> 65.0;
             case SUMMER -> 85.0;
@@ -431,12 +353,10 @@ public class Garden {
             case WINTER -> 40.0;
         };
 
-        // Light: Immediate reset is fine (light doesn't have "inertia" like temp)
         double naturalLight = Math.max(0, maxLight * sunEffect);
         if (isRaining) naturalLight *= 0.5;
         currentLightLevel = naturalLight;
 
-        // Temperature: Target = Seasonal base + day/night swing
         double targetAmbientTemp = baseTemp + (10.0 * sunEffect);
 
 
@@ -444,16 +364,13 @@ public class Garden {
             targetAmbientTemp = temperatureOverrideValue;
         }
 
-        // Drifts towards the target ambient temperature naturally (0.2 degrees per tick)
         if (currentTemperature < targetAmbientTemp) {
             currentTemperature = Math.min(targetAmbientTemp, currentTemperature + 0.2);
         } else if (currentTemperature > targetAmbientTemp) {
             currentTemperature = Math.max(targetAmbientTemp, currentTemperature - 0.2);
         }
-        // Add a small amount of random drift
         currentTemperature += (random.nextGaussian() * 0.1);
 
-        // Humidity: Drifts towards target (higher at night, higher when raining)
         double targetHumidity = isRaining ? 85.0 : 40.0;
         targetHumidity += 20.0 * (-sunEffect); 
         targetHumidity = Math.max(20, Math.min(100, targetHumidity));
@@ -467,27 +384,21 @@ public class Garden {
 
     
     private void spawnInsectsEcological() {
-        // --- Aphids: fast reproducers, most common garden pest ---
         if (currentTick % 60 == 0 && random.nextDouble() < 0.40) {
             Position pos = new Position(random.nextInt(rows), random.nextInt(cols));
             addInsect(new Aphid(pos));
         }
 
-        // --- Caterpillars: periodic moth egg-laying ---
         if (currentTick % 100 == 0 && random.nextDouble() < 0.15) {
             Position pos = new Position(random.nextInt(rows), random.nextInt(cols));
             addInsect(new Caterpillar(pos));
         }
 
-        // --- Bees: stable pollinator population, slow arrival ---
         if (currentTick % 150 == 0 && random.nextDouble() < 0.25) {
             Position pos = new Position(random.nextInt(rows), random.nextInt(cols));
             addInsect(new Bee(pos));
         }
 
-        // --- Ladybugs: biological control, attracted by pest presence ---
-        // Only spawn when pests exist — models real pheromone-based attraction.
-        // Higher pest count increases spawn probability (more food = more attractive).
         if (currentTick % 100 == 0) {
             long pestCount = insects.stream()
                     .filter(Insect::isAlive)
@@ -495,7 +406,6 @@ public class Garden {
                     .count();
 
             if (pestCount > 0) {
-                // Base 20% chance, scaling up to 60% when heavily infested (10+ pests)
                 double spawnChance = Math.min(0.60, 0.20 + pestCount * 0.04);
                 if (random.nextDouble() < spawnChance) {
                     Position pos = new Position(random.nextInt(rows), random.nextInt(cols));
@@ -531,7 +441,6 @@ public class Garden {
                 .orElse(50.0);
     }
 
-    // --- Entity Management ---
     public void addPlant(Plant plant) {
         if (!isPositionOccupied(plant.getPosition())) {
             plants.add(plant);
@@ -568,7 +477,7 @@ public class Garden {
             case "lettuce"   -> new Lettuce(pos);
             case "cactus"    -> {
                 Cactus c = new Cactus(pos);
-                c.water(30); // pre-hydrate like the original setup
+                c.water(30);
                 yield c;
             }
             default -> null;
@@ -589,7 +498,6 @@ public class Garden {
         }
     }
 
-    // --- Environmental Adjustments (used by modules) ---
     public void adjustTemperature(double delta) {
         currentTemperature += delta;
     }
@@ -611,7 +519,6 @@ public class Garden {
         currentLightLevel = Math.max(0, Math.min(100, currentLightLevel + delta));
     }
 
-    // --- Getters ---
     public String getName() { return name; }
     public int getRows() { return rows; }
     public int getCols() { return cols; }

@@ -10,18 +10,15 @@ public class SimulationEngine {
     private final Garden garden;
     private AnimationTimer timer;
 
-    // Simulation state
     private final BooleanProperty running = new SimpleBooleanProperty(false);
     private final BooleanProperty paused = new SimpleBooleanProperty(false);
     private final IntegerProperty tickCount = new SimpleIntegerProperty(0);
     private final DoubleProperty simulationSpeed = new SimpleDoubleProperty(1.0);
 
-    // Timing
     private long lastTickTime = 0;
     private long nextTickExpectedTime = 0;
-    private static final long BASE_TICK_INTERVAL_NS = 500_000_000L; // 0.5 seconds base
+    private static final long BASE_TICK_INTERVAL_NS = 500_000_000L;
 
-    // Callbacks for UI updates
     private Runnable onTickCallback;
 
     public SimulationEngine(Garden garden) {
@@ -44,10 +41,7 @@ public class SimulationEngine {
         GardenLogger.getInstance().log("APPLICATION", "Simulation Engine initialized.");
     }
 
-    /** 
-     * Returns the progress towards the next tick (0.0 to 1.0).
-     * Used for smooth UI interpolation.
-     */
+    /** Returns progress towards the next tick (0.0 to 1.0). */
     public double getTickProgress() {
         if (!running.get() || paused.get()) return 0;
         long now = System.nanoTime();
@@ -66,13 +60,11 @@ public class SimulationEngine {
                 onTickCallback.run();
             }
         } catch (Exception e) {
-            // CRITICAL: The simulation must never crash
             GardenLogger.getInstance().logError("APPLICATION",
                     "Exception during simulation tick - recovering", e);
         }
     }
 
-    /** Start the simulation. */
     public void start() {
         if (!running.get()) {
             running.set(true);
@@ -83,26 +75,22 @@ public class SimulationEngine {
         }
     }
 
-    /** Stop the simulation completely. */
     public void stop() {
         running.set(false);
         timer.stop();
         GardenLogger.getInstance().log("APPLICATION", "Simulation STOPPED.");
     }
 
-    /** Pause/resume the simulation. */
     public void togglePause() {
         paused.set(!paused.get());
         GardenLogger.getInstance().log("APPLICATION",
                 "Simulation " + (paused.get() ? "PAUSED" : "RESUMED"));
     }
 
-    /** Set callback that fires every tick (for UI updates). */
     public void setOnTickCallback(Runnable callback) {
         this.onTickCallback = callback;
     }
 
-    // --- Properties for JavaFX binding ---
     public BooleanProperty runningProperty() { return running; }
     public BooleanProperty pausedProperty() { return paused; }
     public IntegerProperty tickCountProperty() { return tickCount; }

@@ -24,12 +24,12 @@ public class WateringSystem implements GardenModule {
     public static class Sprinkler {
         private final String id;
         private final Position position;
-        private final double radius;    // coverage radius in grid units
-        private final double flowRate;  // water amount per tick when active
+        private final double radius;
+        private final double flowRate;
         private boolean active;
         private double thresholdLow;
         private double thresholdHigh;
-        private MoistureSensor linkedSensor; // Dedicated zone sensor — set via linkSensor()
+        private MoistureSensor linkedSensor;
 
         private static int counter = 0;
 
@@ -61,8 +61,8 @@ public class WateringSystem implements GardenModule {
 
     private boolean enabled;
     private final List<Sprinkler> sprinklers;
-    private double moistureThresholdLow;    // below this -> start watering
-    private double moistureThresholdHigh;   // above this -> stop watering
+    private double moistureThresholdLow;
+    private double moistureThresholdHigh;
     private int totalWateringEvents;
 
     public WateringSystem() {
@@ -107,14 +107,11 @@ public class WateringSystem implements GardenModule {
                     .filter(Plant::isAlive)
                     .collect(Collectors.toList());
 
-            // Realistic Zoned Control: Check each sprinkler zone independently
             for (Sprinkler sprinkler : sprinklers) {
-                boolean zoneNeedsWater = sprinkler.isActive(); // Maintain current state by default
+                boolean zoneNeedsWater = sprinkler.isActive();
 
-                // 1. Check this zone's dedicated sensor (explicit link prevents cross-zone interference)
                 MoistureSensor ms = sprinkler.getLinkedSensor();
 
-                // FALLBACK: If no sensor is linked, try to find the nearest one in the garden
                 if (ms == null) {
                     ms = garden.getSensors().stream()
                             .filter(s -> s instanceof MoistureSensor)
@@ -137,7 +134,6 @@ public class WateringSystem implements GardenModule {
                     }
                 }
 
-                // 2. Safety Net: Check individual plants in this zone
                 /* 
                     if (!zoneNeedsWater) {
                         List<Plant> plantsInZone = alivePlants.stream()
@@ -145,8 +141,6 @@ public class WateringSystem implements GardenModule {
                                 .toList();
                         
                         if (!plantsInZone.isEmpty()) {
-                            // If active, stay on until ALL plants in zone are above 75%
-                            // If inactive, turn on if ANY plant is below low threshold
                             if (sprinkler.isActive()) {
                                 zoneNeedsWater = plantsInZone.stream().anyMatch(p -> p.getWaterLevel() < 75.0);
                             } else {
@@ -156,7 +150,6 @@ public class WateringSystem implements GardenModule {
                     }
                 */
 
-                // 3. Actuate only this specific zone
                 if (zoneNeedsWater) {
                     if (!sprinkler.isActive()) {
                         sprinkler.setActive(true);
@@ -164,10 +157,6 @@ public class WateringSystem implements GardenModule {
                         GardenLogger.getInstance().log("WATERING",
                             "Zone " + sprinkler.getId() + " activated at " + sprinkler.getPosition());
                     }
-                    // Apply water only to plants within this sprinkler's sensor zone.
-                    // Using zone bounds (not Euclidean radius) prevents cross-zone
-                    // interference where one zone's sprinklers keep another zone's
-                    // plants moist, causing sensors to give misleading readings.
                     for (Plant plant : alivePlants) {
                         boolean inZone;
                         if (ms != null && ms.isZoned()) {
@@ -217,7 +206,6 @@ public class WateringSystem implements GardenModule {
                         sprinklers.size(), alivePlants.size()));
     }
 
-    // --- Getters & Setters ---
     public List<Sprinkler> getSprinklers() { return sprinklers; }
     public int getTotalWateringEvents() { return totalWateringEvents; }
     public double getMoistureThresholdLow() { return moistureThresholdLow; }

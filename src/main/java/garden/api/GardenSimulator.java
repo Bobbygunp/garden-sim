@@ -4,15 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Mirrors the TA's grading script from "Gardening System APIs.pdf".
- *
- * The garden runs continuously in a background thread (started by initializeGarden()).
- * sleepOneHour() here is the TA's own local helper — it simply sleeps 1 real hour.
- * The garden keeps ticking autonomously during that sleep.
- *
- * Run modes:
- *   mvn exec:java                        — quick test (no real sleep, uses short sleep)
- *   mvn exec:java -Dexec.args="--real-time" — full 24-hour TA simulation
+ * Runs the API simulation in quick mode or real-time mode.
  */
 public class GardenSimulator {
 
@@ -30,9 +22,8 @@ public class GardenSimulator {
         }
 
         gardenAPI = new GardenSimulationAPI();
-        if (!realTime) gardenAPI.setQuickMode(true); // 50ms/tick → ~10s per day
+        if (!realTime) gardenAPI.setQuickMode(true);
 
-        // Beginning of the simulation
         gardenAPI.initializeGarden();
         HashMap<String, Object> initialPlantDetails = (HashMap<String, Object>) gardenAPI.getPlants();
         System.out.println("\n[Initial plant details]");
@@ -41,11 +32,9 @@ public class GardenSimulator {
         System.out.println("  parasites:        " + initialPlantDetails.get("parasites"));
         System.out.println();
 
-        // Day 1 — rain only
         gardenAPI.rain(25);
         sleepOneHour();
 
-        // Days 2–23 — random events each day (seeded for reproducibility)
         Random rng = new Random(42);
         String[] parasiteTypes = {"aphid", "caterpillar", "insects"};
         int[]    temps         = {45, 60, 72, 85, 95, 110};
@@ -59,21 +48,14 @@ public class GardenSimulator {
             sleepOneHour();
         }
 
-        // Day 24 — temperature + parasite (worst case)
         gardenAPI.temperature(60);
         gardenAPI.parasite("insects");
         sleepOneHour();
 
-        // After 24 days — assess performance
         gardenAPI.getState();
     }
 
-    /**
-     * The TA's local sleepOneHour() helper.
-     * Real-time mode : sleeps 1 real hour — garden runs autonomously in background.
-     * Quick mode     : waits until the background thread finishes the current day,
-     *                  so events are never injected before the previous day completes.
-     */
+    /** Sleep helper for simulation day progression. */
     private static void sleepOneHour() {
         if (realTime) {
             try { Thread.sleep(3_600_000L); }

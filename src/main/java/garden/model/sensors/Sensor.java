@@ -65,7 +65,6 @@ public abstract class Sensor {
         }
     }
 
-    // --- Getters ---
     public String getId() { return id; }
     public String getName() { return name; }
     public Position getPosition() { return position; }
@@ -76,7 +75,6 @@ public abstract class Sensor {
     public double getMaxThreshold() { return maxThreshold; }
     public int getUpdateInterval() { return updateInterval; }
 
-    // --- Setters for thresholds ---
     public void setMinThreshold(double min) { this.minThreshold = min; }
     public void setMaxThreshold(double max) { this.maxThreshold = max; }
     public void setUpdateInterval(int interval) { this.updateInterval = Math.max(1, interval); }

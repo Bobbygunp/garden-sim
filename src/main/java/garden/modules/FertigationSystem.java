@@ -8,26 +8,16 @@ import garden.util.Position;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Module 5: Fertigation & Soil Nutrition System
- * Zone-aware: each planting bed has its own nutrient thresholds and injection
- * rate calibrated to that species' consumption. This mirrors real greenhouse
- * fertigation controllers which maintain EC (electrical conductivity) targets
- * per crop zone rather than applying a blanket dose to the whole garden.
- */
+/** Module 5: Fertigation & Soil Nutrition System - zone-aware per-crop nutrient control. */
 public class FertigationSystem implements GardenModule {
 
-    /**
-     * A rectangular planting zone with its own fertigation parameters.
-     * Matches the moisture sensor zone layout so nutrients and water are
-     * managed consistently per crop type.
-     */
+    /** A rectangular planting zone with its own fertigation parameters. */
     public static class FertigationZone {
         private final String name;
         private final int minRow, maxRow, minCol, maxCol;
-        private final double thresholdLow;   // fertilize when nutrientLevel drops below this %
-        private final double thresholdHigh;  // do not fertilize above this % (prevents salt buildup)
-        private final double injectionRate;  // nutrients added per check interval
+        private final double thresholdLow;
+        private final double thresholdHigh;
+        private final double injectionRate;
 
         public FertigationZone(String name, int minRow, int maxRow, int minCol, int maxCol,
                                 double thresholdLow, double thresholdHigh, double injectionRate) {
@@ -55,7 +45,7 @@ public class FertigationSystem implements GardenModule {
     private boolean enabled = true;
     private final List<FertigationZone> zones = new ArrayList<>();
     private int fertilizationEvents = 0;
-    private final int checkInterval = 12; // Check soil chemistry every 12 ticks (~1.5 hours)
+    private final int checkInterval = 12;
 
     public FertigationSystem() {
         GardenLogger.getInstance().log("FERTIGATION", "Soil Nutrition System initialized. Interval: 12 ticks.");
@@ -86,14 +76,11 @@ public class FertigationSystem implements GardenModule {
                 double level = plant.getNutrientLevel();
 
                 if (zone != null) {
-                    // Zone-specific: only inject if below this zone's threshold
-                    // and not already above the high cap (avoids nutrient burn)
                     if (level < zone.getThresholdLow() && level < zone.getThresholdHigh()) {
                         plant.addNutrients(zone.getInjectionRate());
                         anyFertilized = true;
                     }
                 } else {
-                    // Fallback for any plant not covered by a configured zone
                     if (level < 20.0) {
                         plant.addNutrients(5.0);
                         anyFertilized = true;

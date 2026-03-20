@@ -9,16 +9,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Singleton logger that maintains a detailed, navigable log of every
- * occurrence and interaction in the garden simulation.
- *
- * Log Format:
- *   [TIMESTAMP] [CATEGORY] MESSAGE
- *
- * Categories include: APPLICATION, PLANT, INSECT, WATERING, HEATING,
- * PEST_CONTROL, LIGHTING, SENSOR, WEATHER, GARDEN, USER_ACTION, etc.
- *
- * Logs are written to both a file and kept in memory for UI display.
+ * Singleton logger for file and in-memory simulation logs.
  */
 public class GardenLogger {
 
@@ -32,12 +23,11 @@ public class GardenLogger {
     private final List<LogEntry> allEntries;
     private final String logFileName;
 
-    // --- Log Entry Record ---
     public static class LogEntry {
         private final LocalDateTime timestamp;
         private final String category;
         private final String message;
-        private final String level; // INFO, WARN, ERROR
+        private final String level;
 
         public LogEntry(String level, String category, String message) {
             this.timestamp = LocalDateTime.now();
@@ -62,7 +52,6 @@ public class GardenLogger {
         recentEntries = new ConcurrentLinkedQueue<>();
         allEntries = Collections.synchronizedList(new ArrayList<>());
 
-        // Create log directory
         new File(LOG_DIR).mkdirs();
         logFileName = LOG_DIR + "/garden_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
@@ -85,19 +74,16 @@ public class GardenLogger {
         return instance;
     }
 
-    /** Log an INFO-level message. */
     public void log(String category, String message) {
         LogEntry entry = new LogEntry("INFO", category, message);
         writeEntry(entry);
     }
 
-    /** Log a WARN-level message. */
     public void logWarning(String category, String message) {
         LogEntry entry = new LogEntry("WARN", category, message);
         writeEntry(entry);
     }
 
-    /** Log an ERROR-level message with exception details. */
     public void logError(String category, String message, Exception e) {
         String fullMessage = message + " | Exception: " + e.getClass().getSimpleName()
                 + " - " + e.getMessage();
@@ -105,7 +91,6 @@ public class GardenLogger {
         writeEntry(entry);
     }
 
-    /** Log an ERROR-level message. */
     public void logError(String category, String message) {
         LogEntry entry = new LogEntry("ERROR", category, message);
         writeEntry(entry);
@@ -117,18 +102,15 @@ public class GardenLogger {
         allEntries.add(entry);
         recentEntries.add(entry);
 
-        // Keep recent entries bounded (last 500)
         while (recentEntries.size() > 500) {
             recentEntries.poll();
         }
 
-        // Prevent unbounded memory growth during long runs (24+ hours)
         if (allEntries.size() > MAX_ALL_ENTRIES) {
             int excess = allEntries.size() - MAX_ALL_ENTRIES;
             allEntries.subList(0, excess).clear();
         }
 
-        // Write to file — flush every 50 entries to avoid per-entry disk I/O
         if (fileWriter != null) {
             fileWriter.println(entry.toString());
             if (allEntries.size() % 50 == 0) {
@@ -137,19 +119,16 @@ public class GardenLogger {
         }
     }
 
-    /** Get recent log entries (up to last 500). */
     public List<LogEntry> getRecentEntries() {
         return new ArrayList<>(recentEntries);
     }
 
-    /** Get all log entries. */
     public List<LogEntry> getAllEntries() {
         synchronized (allEntries) {
             return new ArrayList<>(allEntries);
         }
     }
 
-    /** Filter entries by category. */
     public List<LogEntry> getEntriesByCategory(String category) {
         synchronized (allEntries) {
             List<LogEntry> filtered = new ArrayList<>();
@@ -162,7 +141,6 @@ public class GardenLogger {
         }
     }
 
-    /** Filter entries by level (INFO, WARN, ERROR). */
     public List<LogEntry> getEntriesByLevel(String level) {
         synchronized (allEntries) {
             List<LogEntry> filtered = new ArrayList<>();

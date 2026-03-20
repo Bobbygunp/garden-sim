@@ -18,7 +18,7 @@ public class Rose extends Plant {
         this.overwaterThreshold = 85.0;
         this.idealWaterMin      = 40.0;
         this.idealWaterMax      = 70.0;
-        this.drainageRate       = 1.2;  // Well-drained garden bed — drains reasonably fast
-        this.temperatureSensitivity = 0.30; // Moderate — resilient but not rugged
+        this.drainageRate       = 1.2;
+        this.temperatureSensitivity = 0.30;
     }
 }

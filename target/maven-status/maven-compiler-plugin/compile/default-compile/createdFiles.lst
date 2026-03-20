@@ -3,7 +3,6 @@ garden\CactusDiagnosticTest.class
 garden\modules\HeatingSystem$HeatingZone.class
 garden\modules\WateringSystem.class
 garden\SystemTest.class
-garden\model\plants\Plant$1.class
 garden\modules\GardenModule.class
 garden\model\plants\Cactus.class
 garden\ui\ImageManager.class
@@ -29,13 +28,11 @@ garden\Launcher.class
 garden\ui\GardenController$2.class
 garden\util\Position.class
 garden\model\insects\Insect.class
-garden\modules\PestControl$1.class
 garden\logging\GardenLogger$LogEntry.class
 garden\api\GardenSimulator.class
 garden\model\plants\Plant$GrowthStage.class
 garden\model\plants\Plant.class
 garden\modules\FertigationSystem$FertigationZone.class
-garden\core\Garden$1.class
 garden\model\insects\Ladybug.class
 garden\core\Garden.class
 garden\model\insects\Aphid.class

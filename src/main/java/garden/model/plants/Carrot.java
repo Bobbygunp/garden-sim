@@ -18,7 +18,7 @@ public class Carrot extends Plant {
         this.overwaterThreshold = 85.0;
         this.idealWaterMin      = 35.0;
         this.idealWaterMax      = 65.0;
-        this.drainageRate       = 1.5;  // Loose/sandy soil — roots need good aeration
-        this.temperatureSensitivity = 0.25; // Hardy root veg — handles temperature swings well
+        this.drainageRate       = 1.5;
+        this.temperatureSensitivity = 0.25;
     }
 }

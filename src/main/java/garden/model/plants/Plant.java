@@ -13,44 +13,38 @@ public abstract class Plant {
         SEED, SPROUT, VEGETATIVE, FLOWERING, FRUITING, MATURE, WILTING, DEAD
     }
 
-    // Identity
     private final String id;
     private final String name;
     private final String species;
-    private Position position; // mutable to allow drag-and-drop repositioning
+    private Position position;
 
-    // Health & Status
-    private double health;          // 0.0 - 100.0
-    private double waterLevel;      // 0.0 - 100.0
-    private double nutrientLevel;   // 0.0 - 100.0
+    private double health;
+    private double waterLevel;
+    private double nutrientLevel;
     private GrowthStage growthStage;
-    private int ageTicks;           // simulation ticks since planted
+    private int ageTicks;
     private boolean alive;
 
-    // Daily Light Integral (DLI) tracking — accumulates light each tick,
-    // evaluates satisfaction once per simulated day (200 ticks).
-    private double lightAccumulator;    // sum of light values this day cycle
-    private int lightTickCounter;       // ticks since last daily evaluation
-    private double lastLightSatisfaction = 1.0; // ratio of received vs needed (0.0-2.0+)
+    private double lightAccumulator;
+    private int lightTickCounter;
+    private double lastLightSatisfaction = 1.0;
     private static final int DAY_CYCLE_TICKS = 200;
 
-    // Environmental preferences (subclasses set these)
     protected double idealTemperatureMin;
     protected double idealTemperatureMax;
-    protected double temperatureSensitivity = 0.35; // HP lost per degree outside ideal range
-    protected double waterNeedPerTick;      // how much water consumed per tick
-    protected double nutrientNeedPerTick;   // how many nutrients consumed per tick
-    protected double lightNeedHours;        // ideal light hours per day
-    protected int ticksToNextStage;         // ticks needed to advance growth stage
-    protected double pestResistance;        // 0.0 - 1.0
-    protected double waterTolerance;        // 0.0 - 1.0 (1.0 = highly resistant to overwatering)
+    protected double temperatureSensitivity = 0.35;
+    protected double waterNeedPerTick;
+    protected double nutrientNeedPerTick;
+    protected double lightNeedHours;
+    protected int ticksToNextStage;
+    protected double pestResistance;
+    protected double waterTolerance;
 
-    // Per-species water thresholds (subclasses override these)
-    protected double droughtThreshold   = 10.0;  // below this → drought stress
-    protected double overwaterThreshold = 90.0;  // above this → overwater damage
-    protected double idealWaterMin      = 40.0;  // ideal range lower bound
-    protected double idealWaterMax      = 70.0;  // ideal range upper bound
-    protected double drainageRate       = 0.8;   // water drained per tick when above idealWaterMax (soil drainage)
+    protected double droughtThreshold   = 10.0;
+    protected double overwaterThreshold = 90.0;
+    protected double idealWaterMin      = 40.0;
+    protected double idealWaterMax      = 70.0;
+    protected double drainageRate       = 0.8;
 
     private static int idCounter = 0;
 
@@ -83,25 +77,15 @@ public abstract class Plant {
 
         try {
             ageTicks++;
-            
-            // Consume water and nutrients
-            // NOTE: Each tick, the plant loses water and nutrients according to its needs.
-            // If there isn’t enough replenishment (via rain, watering, or fertigation), 
-            // the waterLevel can drop below the critical threshold (<10). When this happens, 
-            // the plant suffers a 2.5 HP/tick penalty, which over time drives its health to zero.
+
             waterLevel = Math.max(0, waterLevel - waterNeedPerTick);
-            // Soil drainage: excess water above idealWaterMax drains passively each tick.
-            // Rate reflects soil type — sandy (cactus) drains fast, clay (lettuce) retains moisture.
             if (waterLevel > idealWaterMax) {
                 waterLevel = Math.max(idealWaterMax, waterLevel - drainageRate);
             }
             nutrientLevel = Math.max(0, nutrientLevel - nutrientNeedPerTick);
 
-            // Calculate health effects
             double healthDelta = 0;
 
-            // Water stress — thresholds are per-species (subclasses set droughtThreshold,
-            // overwaterThreshold, idealWaterMin, idealWaterMax).
             if (waterLevel < droughtThreshold) {
                 healthDelta -= 2.5;
                 if (waterLevel <= 0) {
@@ -109,18 +93,14 @@ public abstract class Plant {
                             String.format("%s [%s] is critically dehydrated!", name, id));
                 }
             } else if (waterLevel > overwaterThreshold) {
-                // Overwatering penalty: scaled by species waterTolerance.
-                // Low tolerance (e.g. Cactus 0.4) = -1.8 HP/tick at threshold.
-                // High tolerance (e.g. Lettuce 0.8) = -0.6 HP/tick at threshold.
                 double overwaterPenalty = 3.0 * (1.0 - waterTolerance);
                 healthDelta -= Math.max(0.1, overwaterPenalty);
             } else if (waterLevel > idealWaterMin && waterLevel < idealWaterMax) {
-                healthDelta += 1.2; // IDEAL RANGE: Improved healing
+                healthDelta += 1.2;
             } else {
-                healthDelta += 0.5; // Acceptable range
+                healthDelta += 0.5;
             }
 
-            // Temperature stress
             if (currentTemperature < idealTemperatureMin || currentTemperature > idealTemperatureMax) {
                 double tempStress = 0;
                 if (currentTemperature < idealTemperatureMin) {
@@ -130,36 +110,25 @@ public abstract class Plant {
                 }
                 healthDelta -= tempStress;
             } else {
-                healthDelta += 0.6; // Good temp healing
+                healthDelta += 0.6;
             }
 
-            // Nutrient stress
             if (nutrientLevel < 10) {
-                healthDelta -= 1.5;                      // Critical deficiency
+                healthDelta -= 1.5;
             } else if (nutrientLevel > 85) {
-                // Nutrient burn: excess salts in soil damage roots (leaf scorch in real life)
-                healthDelta -= (nutrientLevel - 85) * 0.04; // up to -0.6 HP/tick at 100%
+                healthDelta -= (nutrientLevel - 85) * 0.04;
             } else if (nutrientLevel > 40) {
-                healthDelta += 0.5;                      // Ideal range bonus
+                healthDelta += 0.5;
             }
 
-            // ---- DAILY LIGHT INTEGRAL (DLI) ----
-            // Accumulate light over the day cycle, then evaluate once per "day".
-            // lightNeedHours maps to how many hours of good light the plant needs.
-            // We convert the accumulated average into equivalent "light hours" and
-            // compare against lightNeedHours to derive a satisfaction ratio.
             lightAccumulator += currentLight;
             lightTickCounter++;
 
             if (lightTickCounter >= DAY_CYCLE_TICKS) {
                 double avgLight = lightAccumulator / DAY_CYCLE_TICKS;
-                // Convert average light to equivalent "good light hours" per day.
-                // If avgLight==50 (half-strength all day), that's ~12 hours equivalent.
-                // Full daylight (100) all day would be 24 hours equivalent.
                 double lightHoursReceived = (avgLight / 100.0) * 24.0;
                 lastLightSatisfaction = Math.min(2.0, lightHoursReceived / lightNeedHours);
 
-                // Log extreme light stress
                 if (lastLightSatisfaction < 0.5) {
                     GardenLogger.getInstance().logWarning("PLANT",
                             String.format("%s [%s] severe light deficit: received %.1fh, needs %.0fh",
@@ -169,21 +138,14 @@ public abstract class Plant {
                 lightTickCounter = 0;
             }
 
-            // Apply light satisfaction effect each tick (based on last daily evaluation)
             if (lastLightSatisfaction < 0.7) {
-                // Insufficient light — stress proportional to deficit
                 healthDelta -= (0.7 - lastLightSatisfaction) * 1.5;
             } else if (lastLightSatisfaction >= 0.9) {
-                // Good light — small health boost
                 healthDelta += 0.2;
             }
 
-            // ---- HUMIDITY EFFECTS ----
-            // High humidity (>85%) promotes fungal disease — health drain.
-            // Low humidity (<30%) causes transpiration stress — mild penalty.
-            // Optimal range (40-70%) gives a small bonus.
             if (currentHumidity > 85) {
-                double fungalRisk = (currentHumidity - 85) / 15.0; // 0.0 at 85%, 1.0 at 100%
+                double fungalRisk = (currentHumidity - 85) / 15.0;
                 healthDelta -= fungalRisk * 0.8;
                 if (currentHumidity > 90 && ageTicks % 100 == 0) {
                     GardenLogger.getInstance().logWarning("PLANT",
@@ -191,27 +153,22 @@ public abstract class Plant {
                                     name, id, currentHumidity));
                 }
             } else if (currentHumidity < 30) {
-                double dryStress = (30 - currentHumidity) / 30.0; // 0.0 at 30%, 1.0 at 0%
+                double dryStress = (30 - currentHumidity) / 30.0;
                 healthDelta -= dryStress * 0.6;
             } else if (currentHumidity >= 40 && currentHumidity <= 70) {
-                healthDelta += 0.15; // Optimal humidity bonus
+                healthDelta += 0.15;
             }
 
-            // Apply health change
             health = Math.max(0, Math.min(100, health + healthDelta));
-            
-            // Check for death
             if (health <= 0) {
                 die("Health reached zero");
                 return;
             }
 
-            // Growth stage advancement (ensure at least one full cycle has passed)
             if (ageTicks > 0 && ageTicks % ticksToNextStage == 0 && health > 30) {
                 advanceGrowthStage();
             }
 
-            // Wilting check
             if (health < 20 && growthStage != GrowthStage.DEAD) {
                 if (growthStage != GrowthStage.WILTING) {
                     growthStage = GrowthStage.WILTING;
@@ -296,7 +253,6 @@ public abstract class Plant {
                 String.format("%s [%s] DIED. Reason: %s", name, id, reason));
     }
 
-    // --- Getters ---
     public void setPosition(Position pos) { this.position = pos; }
     public String getId() { return id; }
     public String getName() { return name; }
@@ -312,7 +268,6 @@ public abstract class Plant {
     public double getWaterNeedPerTick() { return waterNeedPerTick; }
     public double getIdealWaterMax() { return idealWaterMax; }
 
-    /** Returns a display-friendly status summary. */
     public String getStatusSummary() {
         return String.format("%s (%s) | Stage: %s | HP: %.0f%% | Water: %.0f%% | Nutrients: %.0f%%",
                 name, species, growthStage, health, waterLevel, nutrientLevel);
